@@ -24,11 +24,11 @@
 		3853A5E62180ED0B0061DB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3853A5E82180ED0E0061DB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3853A5EB2180ED0E0061DB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3853A5ED2180ED0E0061DB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3853A5F72180F0460061DB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3853A5FA2180F11F0061DB09 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		3853A5FC2180F3D30061DB09 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		3853A5FE2180F44C0061DB09 /* AudioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtils.swift; sourceTree = "<group>"; };
+		3853A6002180F68D0061DB09 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RadioFmApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		B786C0E790CCCC5A0FE7E97B /* Pods-RadioFmApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RadioFmApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FE89FF1BE8DFC9A3FE1F8A /* Pods-RadioFmApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 		3853A5F42180EF590061DB09 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3853A5ED2180ED0E0061DB09 /* Info.plist */,
+				3853A6002180F68D0061DB09 /* Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -421,7 +421,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NT5BY9QYB;
-				INFOPLIST_FILE = "$(SRCROOT)/RadioFmApp/Supporting Files/Info.plist";
+				INFOPLIST_FILE = RadioFmApp/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -441,7 +442,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NT5BY9QYB;
-				INFOPLIST_FILE = "$(SRCROOT)/RadioFmApp/Supporting Files/Info.plist";
+				INFOPLIST_FILE = RadioFmApp/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
