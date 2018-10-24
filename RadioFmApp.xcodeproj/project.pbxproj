@@ -12,6 +12,7 @@
 		3853A5E92180ED0E0061DB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3853A5E82180ED0E0061DB09 /* Assets.xcassets */; };
 		3853A5EC2180ED0E0061DB09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3853A5EA2180ED0E0061DB09 /* LaunchScreen.storyboard */; };
 		3853A5F82180F0460061DB09 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3853A5F72180F0460061DB09 /* Foundation.framework */; };
+		3853A5FB2180F11F0061DB09 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FA2180F11F0061DB09 /* Configuration.swift */; };
 		83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		3853A5EB2180ED0E0061DB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3853A5ED2180ED0E0061DB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3853A5F72180F0460061DB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3853A5FA2180F11F0061DB09 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		B786C0E790CCCC5A0FE7E97B /* Pods-RadioFmApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RadioFmApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FE89FF1BE8DFC9A3FE1F8A /* Pods-RadioFmApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				3853A5E12180ED0B0061DB09 /* AppDelegate.swift */,
+				3853A5FA2180F11F0061DB09 /* Configuration.swift */,
 				3853A5F52180EF670061DB09 /* Controllers */,
 				3853A5F62180EF740061DB09 /* Utils */,
 			);
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3853A5FB2180F11F0061DB09 /* Configuration.swift in Sources */,
 				3853A5E22180ED0B0061DB09 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
