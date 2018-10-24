@@ -8,21 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		3853A5E22180ED0B0061DB09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5E12180ED0B0061DB09 /* AppDelegate.swift */; };
-		3853A5E42180ED0B0061DB09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5E32180ED0B0061DB09 /* ViewController.swift */; };
 		3853A5E72180ED0B0061DB09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3853A5E52180ED0B0061DB09 /* Main.storyboard */; };
 		3853A5E92180ED0E0061DB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3853A5E82180ED0E0061DB09 /* Assets.xcassets */; };
 		3853A5EC2180ED0E0061DB09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3853A5EA2180ED0E0061DB09 /* LaunchScreen.storyboard */; };
+		3853A5F82180F0460061DB09 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3853A5F72180F0460061DB09 /* Foundation.framework */; };
 		83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3853A5DE2180ED0B0061DB09 /* RadioFmApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RadioFmApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3853A5E12180ED0B0061DB09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3853A5E32180ED0B0061DB09 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3853A5E62180ED0B0061DB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3853A5E82180ED0E0061DB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3853A5EB2180ED0E0061DB09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3853A5ED2180ED0E0061DB09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3853A5F72180F0460061DB09 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		B786C0E790CCCC5A0FE7E97B /* Pods-RadioFmApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RadioFmApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FE89FF1BE8DFC9A3FE1F8A /* Pods-RadioFmApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -33,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3853A5F82180F0460061DB09 /* Foundation.framework in Frameworks */,
 				83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -61,14 +62,45 @@
 		3853A5E02180ED0B0061DB09 /* RadioFmApp */ = {
 			isa = PBXGroup;
 			children = (
-				3853A5E12180ED0B0061DB09 /* AppDelegate.swift */,
-				3853A5E32180ED0B0061DB09 /* ViewController.swift */,
-				3853A5E52180ED0B0061DB09 /* Main.storyboard */,
 				3853A5E82180ED0E0061DB09 /* Assets.xcassets */,
+				3853A5F32180EF490061DB09 /* Code */,
 				3853A5EA2180ED0E0061DB09 /* LaunchScreen.storyboard */,
-				3853A5ED2180ED0E0061DB09 /* Info.plist */,
+				3853A5E52180ED0B0061DB09 /* Main.storyboard */,
+				3853A5F42180EF590061DB09 /* Supporting Files */,
 			);
 			path = RadioFmApp;
+			sourceTree = "<group>";
+		};
+		3853A5F32180EF490061DB09 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				3853A5E12180ED0B0061DB09 /* AppDelegate.swift */,
+				3853A5F52180EF670061DB09 /* Controllers */,
+				3853A5F62180EF740061DB09 /* Utils */,
+			);
+			path = Code;
+			sourceTree = "<group>";
+		};
+		3853A5F42180EF590061DB09 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3853A5ED2180ED0E0061DB09 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3853A5F52180EF670061DB09 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		3853A5F62180EF740061DB09 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		6049CE07CACADDC22E2121A6 /* Pods */ = {
@@ -83,6 +115,7 @@
 		7ECBCF3F36EBC628405365C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3853A5F72180F0460061DB09 /* Foundation.framework */,
 				BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */,
 			);
 			name = Frameworks;
@@ -100,6 +133,7 @@
 				3853A5DB2180ED0B0061DB09 /* Frameworks */,
 				3853A5DC2180ED0B0061DB09 /* Resources */,
 				5110DF65C2D6ED03CCCA08BE /* [CP] Embed Pods Frameworks */,
+				3853A5F92180F0840061DB09 /* Run Script Build */,
 			);
 			buildRules = (
 			);
@@ -157,6 +191,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		3853A5F92180F0840061DB09 /* Run Script Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script Build";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=`/bin/date +%Y%m%d%H%M%S`\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\n";
+		};
 		38674E480065FDE7B1EE22CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -208,7 +260,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3853A5E42180ED0B0061DB09 /* ViewController.swift in Sources */,
 				3853A5E22180ED0B0061DB09 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,9 +409,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NT5BY9QYB;
-				INFOPLIST_FILE = RadioFmApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RadioFmApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.company.RadioFmApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -375,9 +429,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5NT5BY9QYB;
-				INFOPLIST_FILE = RadioFmApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RadioFmApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.company.RadioFmApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
