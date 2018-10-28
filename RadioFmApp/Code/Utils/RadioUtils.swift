@@ -57,20 +57,20 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     func radioPlayer(_ player: FRadioPlayer, playbackStateDidChange state: FRadioPlaybackState) {
         switch state {
             case .playing:
-                NSLog("[FRadioPlayer] Log: playback state changed to PLAYING")
+                NSLog("[FRadioPlayer] Log: Playback is PLAYING...")
                 break
             case .paused:
-                NSLog("[FRadioPlayer] Log: playback state changed to PAUSED")
+                NSLog("[FRadioPlayer] Log: Playback was PAUSED...")
                 break
             case .stopped:
-                NSLog("[FRadioPlayer] Log: playback state changed to STOPPED")
+                NSLog("[FRadioPlayer] Log: Playback has STOPPED...")
                 break
             default: break
         }
     }
 
     func radioPlayer(_ player: FRadioPlayer, itemDidChange url: URL?) {
-        if Verbose.Active { NSLog("[FRadioPlayer] Log: item changed @ \(url?.absoluteString ?? "unknown URL")") }
+        if Verbose.Active { NSLog("[FRadioPlayer] Log: Loading radio station @ \(url?.absoluteString ?? "unknown URL")") }
     }
 
     func radioPlayer(_ player: FRadioPlayer, metadataDidChange rawValue: String?) {

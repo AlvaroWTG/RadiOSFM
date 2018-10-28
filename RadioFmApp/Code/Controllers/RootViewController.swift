@@ -30,6 +30,37 @@ class RootViewController: UIViewController, RadioDelegate {
         self.button.setTitle("PLAY", for: .normal)
     }
 
+    // MARK: - Inherited functions from RadioUtils delegate
+
+    func util(_ util: RadioUtils, playerStateChanged state: FRadioPlayerState) {
+        switch state {
+            case .error:
+                NSLog("[FRadioPlayer] Error! Player failed to load!")
+                break
+            case .loading:
+                NSLog("[FRadioPlayer] Log: Player is loading...")
+                break
+            case .loadingFinished:
+                NSLog("[FRadioPlayer] Log: Player finished loading...")
+                break
+            case .readyToPlay:
+                NSLog("[FRadioPlayer] Log: Player is ready to play...")
+                break
+            case .urlNotSet:
+                NSLog("[FRadioPlayer] Log: Player has NO URL set...")
+                break
+            default: break
+        }
+    }
+
+    func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?) {
+        if let url = url { self.refreshArtwork(url) }
+        if let value = rawValue {
+            NSLog("[FRadioPlayer] Log: Received metadata - \(value)")
+            DispatchQueue.main.async { self.labelArtwork.text = value }
+        }
+    }
+
     // MARK: - IBAction function implementation
 
     /**
@@ -52,7 +83,7 @@ class RootViewController: UIViewController, RadioDelegate {
     private func refreshArtwork(_ url: URL) {
         do { // download image
             let data = try Data(contentsOf: url)
-            NSLog("[FRadioPlayer] Log: artwork changed @ \(url.absoluteString)")
+            NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)")
             DispatchQueue.main.async { self.imageView.image = UIImage(data: data) }
         } catch { NSLog("Exception!") }
     }
