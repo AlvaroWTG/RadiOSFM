@@ -7,18 +7,8 @@
 //
 
 import UIKit
-import FRadioPlayer
 
-class RootViewController: UIViewController, RadioDelegate {
-
-    // MARK: - Properties
-
-    /** Property that represents the button for the view */
-    @IBOutlet weak var button: UIButton!
-    /** Property that represents the image view for the view */
-    @IBOutlet weak var imageView: UIImageView!
-    /** Property that represents the label for the artwork */
-    @IBOutlet weak var labelArtwork: UILabel!
+class RootViewController: UIViewController {
 
     // MARK: - Inherited functions from UIView controller
 

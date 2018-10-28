@@ -7,8 +7,22 @@
 //
 
 import UIKit
+import FRadioPlayer
 
-class TableViewController: UIViewController {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RadioDelegate {
+
+    // MARK: - Properties
+
+    /** Property that represents the button for the view */
+    @IBOutlet weak var button: UIButton!
+    /** Property that represents the button for the view */
+    @IBOutlet weak var imageView: UIImageView!
+    /** Property that represents the button for the view */
+    @IBOutlet weak var labelArtwork: UILabel!
+    /** Property that represents the image view for the view */
+    @IBOutlet weak var tableView: UITableView!
+
+    // MARK: - Inherited functions from UIView controller
 
     override func viewDidLoad() {
         super.viewDidLoad()
