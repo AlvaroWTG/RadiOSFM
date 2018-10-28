@@ -17,7 +17,9 @@ protocol RadioDelegate: class {
      - parameter error: The error value of the response
      - parameter message: The string value of the message
      */
-    func util(_ util: RadioUtils, didReceiveResponse status: Int, error: Error?, message: String?)
+    func util(_ util: RadioUtils, playerStateChanged state: FRadioPlayerState)
+    
+    func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?)
 }
 
 class RadioUtils: NSObject, FRadioPlayerDelegate {
@@ -49,11 +51,34 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     // MARK: - Inherited function from FRadioPlayer delegate
 
     func radioPlayer(_ player: FRadioPlayer, playerStateDidChange state: FRadioPlayerState) {
-        NSLog("[FRadioPlayer] Log: player state changed to \(state)")
+        if self.delegate != nil { self.delegate?.util(self, playerStateChanged: state) }
     }
 
     func radioPlayer(_ player: FRadioPlayer, playbackStateDidChange state: FRadioPlaybackState) {
-        NSLog("[FRadioPlayer] Log: playback state changed to \(state)")
+        switch state {
+            case .playing:
+                NSLog("[FRadioPlayer] Log: playback state changed to PLAYING")
+                break
+            case .paused:
+                NSLog("[FRadioPlayer] Log: playback state changed to PAUSED")
+                break
+            case .stopped:
+                NSLog("[FRadioPlayer] Log: playback state changed to STOPPED")
+                break
+            default: break
+        }
+    }
+
+    func radioPlayer(_ player: FRadioPlayer, itemDidChange url: URL?) {
+        if Verbose.Active { NSLog("[FRadioPlayer] Log: item changed @ \(url?.absoluteString ?? "unknown URL")") }
+    }
+
+    func radioPlayer(_ player: FRadioPlayer, metadataDidChange rawValue: String?) {
+        if self.delegate != nil { self.delegate?.util(self, metadataChanged: rawValue, url: nil) }
+    }
+
+    func radioPlayer(_ player: FRadioPlayer, artworkDidChange artworkURL: URL?) {
+        if self.delegate != nil { self.delegate?.util(self, metadataChanged: nil, url: artworkURL) }
     }
 
     // MARK: - Functions
