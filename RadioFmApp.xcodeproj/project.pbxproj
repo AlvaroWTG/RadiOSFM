@@ -16,6 +16,7 @@
 		3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FC2180F3D30061DB09 /* RootViewController.swift */; };
 		3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FE2180F44C0061DB09 /* AudioUtils.swift */; };
 		3853A6032180F8B50061DB09 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A6022180F8B50061DB09 /* NetworkUtils.swift */; };
+		38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDC2185BD750045CE66 /* RadioUtils.swift */; };
 		83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		3853A5FE2180F44C0061DB09 /* AudioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtils.swift; sourceTree = "<group>"; };
 		3853A6002180F68D0061DB09 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RadioFmApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		3853A6022180F8B50061DB09 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
+		38F0DBDC2185BD750045CE66 /* RadioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioUtils.swift; sourceTree = "<group>"; };
 		B786C0E790CCCC5A0FE7E97B /* Pods-RadioFmApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RadioFmApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FE89FF1BE8DFC9A3FE1F8A /* Pods-RadioFmApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			children = (
 				3853A5FE2180F44C0061DB09 /* AudioUtils.swift */,
 				3853A6022180F8B50061DB09 /* NetworkUtils.swift */,
+				38F0DBDC2185BD750045CE66 /* RadioUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				3853A6032180F8B50061DB09 /* NetworkUtils.swift in Sources */,
 				3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */,
 				3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */,
+				38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
