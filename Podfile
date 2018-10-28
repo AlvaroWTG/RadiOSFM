@@ -10,7 +10,6 @@ target 'RadioFmApp' do
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'Toast'
-  pod 'ReachabilitySwift'
   pod 'Mute'
   pod 'Alamofire'
   pod 'FRadioPlayer'

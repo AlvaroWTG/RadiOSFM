@@ -5,7 +5,6 @@ PODS:
   - Fabric (1.8.0)
   - FRadioPlayer (0.1.11)
   - Mute (0.3.0)
-  - ReachabilitySwift (4.3.0)
   - Toast (4.0.0)
   - ViewDeck (3.1.0)
 
@@ -15,7 +14,6 @@ DEPENDENCIES:
   - Fabric
   - FRadioPlayer
   - Mute
-  - ReachabilitySwift
   - Toast
   - ViewDeck
 
@@ -26,7 +24,6 @@ SPEC REPOS:
     - Fabric
     - FRadioPlayer
     - Mute
-    - ReachabilitySwift
     - Toast
     - ViewDeck
 
@@ -36,10 +33,9 @@ SPEC CHECKSUMS:
   Fabric: 4ac1cdfef3004ccd83ce0959b91eda8a6e37df72
   FRadioPlayer: 27b1b7dd33d12ff01b67dc57c89999baf0bbb3e6
   Mute: 448b37cf5b12dd87f742dcea6141898e25422dea
-  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   ViewDeck: 942d90dd23c9f97cc8038be352255378167edcca
 
-PODFILE CHECKSUM: b1bdc8cc4fc898e6c09b1608ea9543b091902888
+PODFILE CHECKSUM: 9be99212c51bb7c70169f50ff15dc435b6ae8943
 
 COCOAPODS: 1.5.3
