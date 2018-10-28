@@ -9,6 +9,18 @@
 import UIKit
 import FRadioPlayer
 
+class MainViewCell: UITableViewCell {
+
+    // MARK: - Properties
+
+    /** Property that represents the label for the user */
+    @IBOutlet weak var labelTitle: UILabel!
+    /** Property that represents the image view for the user */
+    @IBOutlet weak var iconView: UIImageView!
+    /** Property that represents the image view for the user */
+    @IBOutlet weak var starView: UIImageView!
+}
+
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RadioDelegate {
 
     // MARK: - Properties

@@ -34,8 +34,12 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.titles = ["Stations", "Favorites", "Top20", "Evaluate", "Share App", "Sleep"]
+        self.images = ["", "", "", "", "", ""]
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
         self.tableView.bounces = false
     }
 
@@ -44,12 +48,10 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuViewCell", for: indexPath) as! MenuViewCell
         self.tableView = tableView
-        if self.isHidden(indexPath.row) { cell.separatorInset = UIEdgeInsets(top: 0, left: cell.bounds.size.width, bottom: 0, right: 0) }
         if let path = self.images[indexPath.row] as? String { cell.iconView.image = UIImage(named: path) }
         if let key = self.titles[indexPath.row] as? String { // label title
             cell.labelTitle.text = NSLocalizedString(key, comment: Tag.Empty)
             cell.labelTitle.adjustsFontSizeToFitWidth = true
-            cell.labelTitle.textColor = Color.k808080
             cell.labelTitle.numberOfLines = 0
         }
         cell.backgroundColor = .white

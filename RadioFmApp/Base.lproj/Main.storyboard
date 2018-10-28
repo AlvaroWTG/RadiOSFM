@@ -65,7 +65,7 @@
                                 <rect key="frame" x="0.0" y="138" width="320" height="430"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="tgm-qk-hBq">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MenuViewCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuViewCell" id="tgm-qk-hBq" customClass="MenuViewCell" customModule="RadioFmApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tgm-qk-hBq" id="QAg-tW-i7O">
@@ -95,6 +95,10 @@
                                                 <constraint firstItem="RaE-AB-nU6" firstAttribute="top" secondItem="QAg-tW-i7O" secondAttribute="top" id="fm8-mV-nkm"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconView" destination="iFz-kO-MYe" id="7Lo-e8-5WT"/>
+                                            <outlet property="labelTitle" destination="RaE-AB-nU6" id="owk-df-vWL"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -136,7 +140,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="wOx-8T-3SC">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MainViewCell" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MainViewCell" id="wOx-8T-3SC" customClass="MainViewCell" customModule="RadioFmApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wOx-8T-3SC" id="hxJ-sf-4Nm">
@@ -175,6 +179,11 @@
                                                 <constraint firstAttribute="bottom" secondItem="CwU-0C-iOG" secondAttribute="bottom" constant="-0.5" id="uU6-j7-dMj"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="iconView" destination="Mlq-Sk-HLb" id="qX4-yh-iOT"/>
+                                            <outlet property="labelTitle" destination="CwU-0C-iOG" id="XUE-6u-lzY"/>
+                                            <outlet property="starView" destination="sip-DX-e51" id="TWn-hz-eo7"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
