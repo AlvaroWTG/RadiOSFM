@@ -86,12 +86,16 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     /**
      Function that configures the audio util and device
      */
-    func configure() {
-        if let player = FRadioPlayer.shared {
-            player.delegate = self
-            player.radioURL = URL(string: "http://example.com/station.mp3")
-            self.player = player
-            self.player?.play()
-        }
+    func configure(_ stationURL: String) {
+        self.player = FRadioPlayer.shared
+        player!.radioURL = URL(string: stationURL)
+        player!.delegate = self
+    }
+
+    /**
+     Function that play the radio station
+     */
+    func play() {
+        if let player = self.player { if !player.isPlaying { player.play() } }
     }
 }
