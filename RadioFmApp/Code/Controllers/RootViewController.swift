@@ -15,66 +15,132 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.topViewController?.navigationItem.title = "RadiOS FM"
-        self.button.setTitle("PLAY", for: .normal)
+
+        // Setup observers and push launch view controller
+        NotificationCenter.default.addObserver(self, selector: #selector(self.swapBackButton(_:)), name: .swapBackButton, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.selectMenuItem(_:)), name: .selectMenuItem, object: nil)
+        self.push("TableViewController", animated: false)
     }
 
-    // MARK: - Inherited functions from RadioUtils delegate
-
-    func util(_ util: RadioUtils, playerStateChanged state: FRadioPlayerState) {
-        switch state {
-            case .error:
-                NSLog("[FRadioPlayer] Error! Player failed to load!")
-                break
-            case .loading:
-                NSLog("[FRadioPlayer] Log: Player is loading...")
-                break
-            case .loadingFinished:
-                NSLog("[FRadioPlayer] Log: Player finished loading...")
-                break
-            case .readyToPlay:
-                NSLog("[FRadioPlayer] Log: Player is ready to play...")
-                break
-            case .urlNotSet:
-                NSLog("[FRadioPlayer] Log: Player has NO URL set...")
-                break
-            default: break
-        }
-    }
-
-    func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?) {
-        if let url = url { self.refreshArtwork(url) }
-        if let value = rawValue {
-            NSLog("[FRadioPlayer] Log: Received metadata - \(value)")
-            DispatchQueue.main.async { self.labelArtwork.text = value }
-        }
-    }
-
-    // MARK: - IBAction function implementation
+    // MARK: - Notification observers
 
     /**
-     Function that performs an action when the menu button is clicked
+     Function that handle the selected menu item
+     - parameter notification: The notification object received
+     */
+    @objc func selectMenuItem(_ notification: Notification) {
+        if notification.name == .selectMenuItem {
+            if let row = notification.object as? Int {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                var viewController: UIViewController? = nil
+                switch row {
+                    case 0: // home / contract
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 1: // avb / terms
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 2: // terms / privacy
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 3: // privacy / faq
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 4: // faq / email
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 5: // email / phone
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 6: // phone / about us
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    case 7: // about us
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        break
+                    default: break
+                }
+                if viewController != nil { // push view controller
+                    viewController?.navigationItem.hidesBackButton = true
+                    self.navigationController?.pushViewController(viewController!, animated: true)
+                    self.setBarButton("MenuButton")
+                }
+                self.menuWillShow(nil)
+            }
+        }
+    }
+
+    /**
+     Function that shows/hides the left-side menu
+     - parameter notification: The notification object received
+     */
+    @objc func swapBackButton(_ notification: Notification) {
+        if notification.name == .swapBackButton {
+            let titleView = self.navigationController?.topViewController?.navigationItem.titleView
+            let navigationTitle = self.navigationController?.topViewController?.navigationItem.title
+            if navigationTitle == Tag.Empty || titleView != nil {
+                self.setBarButton("MenuButton")
+                if self.navigationController?.topViewController?.navigationItem.rightBarButtonItem != nil {
+                    self.navigationController?.topViewController?.navigationItem.rightBarButtonItem?.customView?.isHidden = false
+                }
+            } else { self.setBarButton("BackButton") }
+        }
+    }
+
+    // MARK: - Functions
+
+    /**
+     Function that removes the present view controller
+     - parameter sender: The button sender of the action
+     */
+    @objc private func didPressBack(_ sender: UIButton?) {
+        self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: .swapBackButton, object: nil)
+    }
+
+    /**
+     Function that shows/hides the left-side menu
      - parameter sender: The identifier of the sender of the action
      */
-    @IBAction func didPress(_ sender: UIButton) {
-        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", " http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-        RadioUtils.shared.configure(urls[7])
-        RadioUtils.shared.delegate = self
+    @objc private func menuWillShow(_ sender: UIButton?) {
+        NotificationCenter.default.post(name: .toggleMenu, object: sender != nil)
     }
-    
-    
-    // MARK: - IBAction function implementation
 
     /**
-     Function that refreshes the artwork
-     - parameter url: The url or the artwork
+     Function that presents a view controller with a name and animation
+     - parameter identifier: The name of the view controller that needs to be presented
+     - parameter animated: Wheter is animation or not
      */
-    private func refreshArtwork(_ url: URL) {
-        do { // download image
-            let data = try Data(contentsOf: url)
-            NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)")
-            DispatchQueue.main.async { self.imageView.image = UIImage(data: data) }
-        } catch { NSLog("Exception!") }
+    private func push(_ identifier: String, animated: Bool) {
+        if self.navigationController?.topViewController != self { self.navigationController?.popToRootViewController(animated: false) }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let viewController: UIViewController?
+        if identifier == "TableViewController" { // main
+            viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+        } else { viewController = nil }
+        if let viewController = viewController { // push view controller
+            viewController.navigationItem.hidesBackButton = true
+            self.navigationController?.pushViewController(viewController, animated: animated)
+            self.setBarButton("MenuButton")
+        } else { NSLog("Error: Invalid View controller identifier: \(identifier)") }
+    }
+
+    /**
+     Function that creates and sets the left bar button item
+     - parameter identifier: The identifier of the button
+     */
+    private func setBarButton(_ identifier: String) {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        self.navigationController?.topViewController?.navigationItem.leftBarButtonItem = nil
+        if identifier == "MenuButton" { // create and show Menu button
+            button.addTarget(self, action: #selector(menuWillShow(_:)), for: .touchUpInside)
+            button.setImage(UIImage(named: "ic_menu"), for: .normal)
+            button.contentMode = .center
+        } else { // Create and show Back button
+            button.addTarget(self.navigationController?.topViewController, action: #selector(didPressBack(_:)), for: .touchUpInside)
+            button.setImage(UIImage(named: "ic_back"), for: .normal)
+            button.contentMode = .scaleAspectFit
+        }
+        self.navigationController?.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
     }
 }
