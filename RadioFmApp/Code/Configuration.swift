@@ -23,12 +23,16 @@ extension UIApplication {
 
 extension Notification.Name {
     public static let alertNotification = Notification.Name("alertNotification")
+    public static let selectMenuItem = Notification.Name("selectMenuItem")
+    public static let swapBackButton = Notification.Name("swapBackButton")
+    public static let toggleMenu = Notification.Name("toggleMenu")
 }
 
 // MARK: - STRUCTURES
 
 // Constants for color definitions used in the app
 struct Color {
+    static let k1097FB = UIColor(red: 16/255, green: 151/255, blue: 251/255, alpha: 1) // light blue
     static let k333333 = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1) // protectonaut dark grey
     static let k64E2E0 = UIColor(red: 100/255, green: 226/255, blue: 224/255, alpha: 1) // protectonaut light blue
     static let k112E6A = UIColor(red: 17/255, green: 46/255, blue: 106/255, alpha: 1) // protectonaut blue
