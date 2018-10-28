@@ -76,10 +76,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      Function that setups the storyboard
      */
     private func initStoryboard() {
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : Color.k1097FB]
-        UIApplication.shared.statusBarView?.backgroundColor = .white
-        UINavigationBar.appearance().tintColor = Color.k1097FB
-        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        UIApplication.shared.statusBarView?.backgroundColor = Color.k1097FB
+        UINavigationBar.appearance().barTintColor = Color.k1097FB
+        UINavigationBar.appearance().tintColor = .white
 
         // Setup Menu Controller Using ViewDeckController and Nib's From Storyboard
         self.window = UIWindow(frame: UIScreen.main.bounds)
