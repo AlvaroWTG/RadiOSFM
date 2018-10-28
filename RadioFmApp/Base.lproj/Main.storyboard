@@ -18,11 +18,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qdB-3d-CER">
+                                <rect key="frame" x="100" y="195" width="120" height="120"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="BV5-Vu-LHS"/>
+                                    <constraint firstAttribute="width" constant="120" id="NLB-GD-Xg9"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XrN-Gl-zqC">
+                                <rect key="frame" x="16" y="323" width="288" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PFa-RG-edB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SOp-Qs-SjY">
-                                <rect key="frame" x="16" y="286" width="288" height="60"/>
+                                <rect key="frame" x="16" y="508" width="288" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="u3v-nv-nDV"/>
+                                    <constraint firstAttribute="height" constant="40" id="u3v-nv-nDV"/>
                                 </constraints>
                                 <state key="normal" title="Button">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,8 +50,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="svu-3a-8rz" firstAttribute="bottom" secondItem="SOp-Qs-SjY" secondAttribute="bottom" constant="20" id="1rh-AB-Vb7"/>
+                            <constraint firstItem="XrN-Gl-zqC" firstAttribute="leading" secondItem="svu-3a-8rz" secondAttribute="leading" constant="16" id="7R1-R0-bxh"/>
+                            <constraint firstItem="qdB-3d-CER" firstAttribute="centerX" secondItem="svu-3a-8rz" secondAttribute="centerX" id="GwD-pH-Ndm"/>
                             <constraint firstItem="SOp-Qs-SjY" firstAttribute="leading" secondItem="svu-3a-8rz" secondAttribute="leading" constant="16" id="IiF-L4-Eei"/>
-                            <constraint firstItem="SOp-Qs-SjY" firstAttribute="centerY" secondItem="svu-3a-8rz" secondAttribute="centerY" id="In2-VV-dFs"/>
+                            <constraint firstItem="svu-3a-8rz" firstAttribute="trailing" secondItem="XrN-Gl-zqC" secondAttribute="trailing" constant="16" id="aVL-p9-DjA"/>
+                            <constraint firstItem="qdB-3d-CER" firstAttribute="top" secondItem="svu-3a-8rz" secondAttribute="top" constant="131" id="rwL-uS-UGU"/>
+                            <constraint firstItem="XrN-Gl-zqC" firstAttribute="top" secondItem="qdB-3d-CER" secondAttribute="bottom" constant="8" id="voE-ab-Dfz"/>
                             <constraint firstItem="svu-3a-8rz" firstAttribute="trailing" secondItem="SOp-Qs-SjY" secondAttribute="trailing" constant="16" id="zAX-lc-Agb"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="svu-3a-8rz"/>
@@ -43,11 +64,13 @@
                     <navigationItem key="navigationItem" id="pay-Nq-5WJ"/>
                     <connections>
                         <outlet property="button" destination="SOp-Qs-SjY" id="HXk-Ix-03b"/>
+                        <outlet property="imageView" destination="qdB-3d-CER" id="dKk-qm-bBe"/>
+                        <outlet property="labelArtwork" destination="XrN-Gl-zqC" id="k1B-SK-Iwq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B8M-Je-aVz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1140" y="16.641679160419791"/>
+            <point key="canvasLocation" x="1140" y="15.845070422535212"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0lQ-XG-oQg">
