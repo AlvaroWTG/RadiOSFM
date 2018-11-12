@@ -34,11 +34,15 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 
         // Initial backend request
         if NetworkUtils.shared.isOnline() {
-            self.dismiss(animated: false, completion: nil)
+            Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.fade), userInfo: nil, repeats: false)
 //            DispatchQueue.global(qos: .background).async {
 //                NetworkUtils.shared.delegate = self
 //                NetworkUtils.shared.post(0)
 //            }
+        } else {
+            let position = CSToastPositionCenter
+            let duration = CSToastManager.defaultDuration()
+            self.view.makeToast("Error! No internet connection", duration: duration, position: position)
         }
     }
 
@@ -76,5 +80,17 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 //                NSLocalizedRecoverySuggestionErrorKey : "Is the server up and running?"]
 //            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
 //        }
+    }
+
+    // MARK: - Function
+
+    /**
+     Function that fades in/out a view
+     */
+    @objc private func fade() {
+        DispatchQueue.main.async {
+            self.dismiss(animated: false, completion: nil)
+            NotificationCenter.default.post(name: .homeNotification, object: nil)
+        }
     }
 }
