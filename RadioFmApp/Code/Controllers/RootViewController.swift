@@ -78,7 +78,7 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                         self.requestReview()
                         break
                     case 4: // share
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        self.shareApp()
                         break
                     case 5: // sleep
                         self.presentPickerView()
@@ -222,5 +222,14 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             button.contentMode = .scaleAspectFit
         }
         self.navigationController?.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+
+    /**
+     Function that presents a popover to share app
+     */
+    private func shareApp() {
+        let activityItems = [Api.ErrorDomain, "https://itunes.apple.com/us/app/apple-store/id375380948?mt=8"]
+        let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        self.present(activityViewController, animated: true, completion: nil)
     }
 }

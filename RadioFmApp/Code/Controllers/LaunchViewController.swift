@@ -29,7 +29,7 @@ class LaunchViewController: UIViewController, NetworkDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.labelFooter.text = "Copyright © 2018 Alvricia. All rights reserved."
-        self.imageView.image = UIImage(named: Tag.Empty)
+        self.imageView.image = UIImage(named: "radio_app")
         self.labelTitle.text = "Radio FM iOS App"
 
         // Initial backend request
