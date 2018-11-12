@@ -79,7 +79,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         // Setup footer for player
         self.labelStation.text = "RadiOS FM"
-        self.iconStation.image = UIImage(named: "")
+        self.iconStation.image = UIImage(named: "radio")
         self.iconPlay.image = UIImage(named: "play")
         self.iconPlay.isUserInteractionEnabled = true
         self.footer.isHidden = self.stations.count <= 0
@@ -87,6 +87,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tapToggle.numberOfTouchesRequired = 1
         tapToggle.numberOfTapsRequired = 1
         self.iconPlay.addGestureRecognizer(tapToggle)
+        if self.isPlaying { self.refresh() }
 
         // Swap Back button
         NotificationCenter.default.post(name: .swapBackButton, object: nil)
@@ -200,11 +201,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let row = sender.view?.tag {
             let indexPath = IndexPath(row: row, section: 0)
             if let cell = self.tableView.cellForRow(at: indexPath) as? MainViewCell {
-                if cell.isFavorite {
-                    cell.isFavorite = false
-                } else { cell.isFavorite = true }
-                cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
-                self.populateFavorites(indexPath.row, isAdding: cell.isFavorite)
+                if !self.isFavorites {
+                    if cell.isFavorite {
+                        cell.isFavorite = false
+                    } else { cell.isFavorite = true }
+                    cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+                    self.populateFavorites(indexPath.row, isAdding: cell.isFavorite)
+                } else { self.deleteRowAt(indexPath) } // favorite screen
             }
         }
     }
