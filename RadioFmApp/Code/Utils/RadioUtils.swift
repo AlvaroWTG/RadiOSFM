@@ -12,13 +12,18 @@ import FRadioPlayer
 protocol RadioDelegate: class {
 
     /**
-     This method is invoked when the util receives a response.
-     - parameter util: The util instance that handles communication
-     - parameter error: The error value of the response
-     - parameter message: The string value of the message
+     This method is invoked when the player state changed.
+     - parameter util: The util instance that handles radio
+     - parameter state: The new state that the player is now
      */
     func util(_ util: RadioUtils, playerStateChanged state: FRadioPlayerState)
-    
+
+    /**
+     This method is invoked when the util receives metadata.
+     - parameter util: The util instance that handles radio
+     - parameter rawValue: The raw value of the metadata
+     - parameter url: The url that may contain new information
+     */
     func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?)
 }
 

@@ -131,15 +131,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             NSLog("[FRadioPlayer] Error! Player failed to load!")
             break
         case .loading:
-            NSLog("[FRadioPlayer] Log: Player is loading...")
+            if Verbose.Active { NSLog("[FRadioPlayer] Log: Player is loading...") }
             break
         case .loadingFinished:
-            NSLog("[FRadioPlayer] Log: Player finished loading...")
+            if Verbose.Active { NSLog("[FRadioPlayer] Log: Player finished loading...") }
             self.isPlaying = true
             self.refresh()
             break
         case .readyToPlay:
-            NSLog("[FRadioPlayer] Log: Player is ready to play...")
+            if Verbose.Active { NSLog("[FRadioPlayer] Log: Player is ready to play...") }
             break
         case .urlNotSet:
             NSLog("[FRadioPlayer] Log: Player has NO URL set...")
@@ -151,7 +151,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?) {
         if let url = url { self.refreshArtwork(url) }
         if let value = rawValue {
-            NSLog("[FRadioPlayer] Log: Received metadata - \(value)")
+            if Verbose.Active { NSLog("[FRadioPlayer] Log: Received metadata - \(value)") }
             DispatchQueue.main.async { self.labelStation.text = value }
         }
     }
@@ -214,17 +214,17 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                     if !self.favorites.contains(title) {
                         self.favorites.add(title)
                         self.favoritesUrls.add(url)
-                        NSLog("Log: Added \(title) to Favorites...")
-                    } else { NSLog("Warning! \(title) not found in Favorites -> Insert IGNORED...") }
-                } else { NSLog("Warning! \(url) not found in URL-favorites -> Insert IGNORED...") }
+                        if Verbose.Active { NSLog("Log: Added \(title) to Favorites...") }
+                    } else { if Verbose.Active { NSLog("Warning! \(title) not found in Favorites -> Insert IGNORED...") } }
+                } else { if Verbose.Active { NSLog("Warning! \(url) not found in URL-favorites -> Insert IGNORED...") } }
             } else { // remove
                 if self.favoritesUrls.contains(url) {
                     if self.favorites.contains(title) {
                         self.favorites.remove(title)
                         self.favoritesUrls.remove(url)
                         NSLog("Log: Removed \(title) from Favorites...")
-                    } else { NSLog("Warning! \(title) not found in Favorites -> Delete IGNORED...") }
-                } else { NSLog("Warning! \(url) not found in URL-favorites -> Delete IGNORED...") }
+                    } else { if Verbose.Active { NSLog("Warning! \(title) not found in Favorites -> Delete IGNORED...") } }
+                } else { if Verbose.Active { NSLog("Warning! \(url) not found in URL-favorites -> Delete IGNORED...") } }
             }
             NSLog("Log: \(self.favoritesUrls.count) items stored in favorites...")
         } else { NSLog("Error! Cell indexPath.row out of bounds!") }
@@ -247,9 +247,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func refreshArtwork(_ url: URL) {
         do { // download image
             let data = try Data(contentsOf: url)
-            NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)")
+            if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
             DispatchQueue.main.async { self.iconStation.image = UIImage(data: data) }
-        } catch { NSLog("Exception!") }
+        } catch { NSLog("Exception! An error ocurred trying to load the contents of an URL! Hint:\(error.localizedDescription)") }
     }
 
     /**
