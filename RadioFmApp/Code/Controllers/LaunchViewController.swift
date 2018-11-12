@@ -34,7 +34,7 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 
         // Initial backend request
         if NetworkUtils.shared.isOnline() {
-            Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.fade), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.dismissLaunch), userInfo: nil, repeats: false)
 //            DispatchQueue.global(qos: .background).async {
 //                NetworkUtils.shared.delegate = self
 //                NetworkUtils.shared.post(0)
@@ -87,7 +87,7 @@ class LaunchViewController: UIViewController, NetworkDelegate {
     /**
      Function that fades in/out a view
      */
-    @objc private func fade() {
+    @objc private func dismissLaunch() {
         DispatchQueue.main.async {
             self.dismiss(animated: false, completion: nil)
             NotificationCenter.default.post(name: .homeNotification, object: nil)
