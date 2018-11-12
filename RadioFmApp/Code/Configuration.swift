@@ -30,6 +30,13 @@ extension Notification.Name {
 
 // MARK: - STRUCTURES
 
+// Constants for Protectonaut API values
+struct Api {
+    static let ErrorDomain = "crashlytics.alvricia.radiOS"
+    static let VersionCheckTest = "https://"
+    static let VersionCheckProduction = "https://"
+}
+
 // Constants for color definitions used in the app
 struct Color {
     static let k1097FB = UIColor(red: 16/255, green: 151/255, blue: 251/255, alpha: 1) // light blue

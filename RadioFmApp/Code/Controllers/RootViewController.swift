@@ -19,7 +19,7 @@ class RootViewController: UIViewController {
         // Setup observers and push launch view controller
         NotificationCenter.default.addObserver(self, selector: #selector(self.swapBackButton(_:)), name: .swapBackButton, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.selectMenuItem(_:)), name: .selectMenuItem, object: nil)
-        self.push("TableViewController", animated: false)
+        self.push("LaunchViewController", animated: false)
     }
 
     // MARK: - Notification observers
@@ -117,11 +117,15 @@ class RootViewController: UIViewController {
         let viewController: UIViewController?
         if identifier == "TableViewController" { // main
             viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+        } else if identifier == "LaunchViewController" { // launch
+            viewController = storyboard.instantiateViewController(withIdentifier: identifier)
         } else { viewController = nil }
         if let viewController = viewController { // push view controller
-            viewController.navigationItem.hidesBackButton = true
-            self.navigationController?.pushViewController(viewController, animated: animated)
-            self.setBarButton("MenuButton")
+            if identifier != "LaunchViewController" { // if main view, push it with navigation controller
+                viewController.navigationItem.hidesBackButton = true
+                self.navigationController?.pushViewController(viewController, animated: animated)
+                self.setBarButton("MenuButton")
+            } else { self.present(viewController, animated: animated, completion: nil) }
         } else { NSLog("Error: Invalid View controller identifier: \(identifier)") }
     }
 
