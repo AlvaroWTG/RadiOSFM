@@ -19,6 +19,7 @@
 		38D97D02219972A8004623C9 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D01219972A8004623C9 /* NetworkUtils.swift */; };
 		38D97D0421998B41004623C9 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D0321998B41004623C9 /* ColorUtils.swift */; };
 		38D97D062199AB35004623C9 /* LocalDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D052199AB35004623C9 /* LocalDatabase.swift */; };
+		38D97D092199D192004623C9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D97D072199CFBA004623C9 /* StoreKit.framework */; };
 		38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDC2185BD750045CE66 /* RadioUtils.swift */; };
 		38F0DBDF2185D9920045CE66 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDE2185D9920045CE66 /* TableViewController.swift */; };
 		38F0DBE12185D9A30045CE66 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBE02185D9A30045CE66 /* MenuViewController.swift */; };
@@ -40,6 +41,7 @@
 		38D97D01219972A8004623C9 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		38D97D0321998B41004623C9 /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
 		38D97D052199AB35004623C9 /* LocalDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDatabase.swift; sourceTree = "<group>"; };
+		38D97D072199CFBA004623C9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		38F0DBDC2185BD750045CE66 /* RadioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioUtils.swift; sourceTree = "<group>"; };
 		38F0DBDE2185D9920045CE66 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		38F0DBE02185D9A30045CE66 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38D97D092199D192004623C9 /* StoreKit.framework in Frameworks */,
 				3853A5F82180F0460061DB09 /* Foundation.framework in Frameworks */,
 				83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */,
 			);
@@ -145,6 +148,7 @@
 		7ECBCF3F36EBC628405365C7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				38D97D072199CFBA004623C9 /* StoreKit.framework */,
 				3853A5F72180F0460061DB09 /* Foundation.framework */,
 				BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */,
 			);

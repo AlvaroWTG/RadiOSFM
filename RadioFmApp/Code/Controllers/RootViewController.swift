@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class RootViewController: UIViewController {
 
@@ -47,7 +48,7 @@ class RootViewController: UIViewController {
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
                     case 3: // rate app
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        self.requestReview()
                         break
                     case 4: // share
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
@@ -137,6 +138,18 @@ class RootViewController: UIViewController {
                 self.setBarButton("MenuButton")
             } else { self.present(viewController, animated: animated, completion: nil) }
         } else { NSLog("Error: Invalid View controller identifier: \(identifier)") }
+    }
+
+    /**
+     Function that request a review
+     */
+    private func requestReview() {
+        if #available(iOS 10.3, *) { // iOS 10.3 in advance
+            DispatchQueue.main.async { SKStoreReviewController.requestReview() }
+        } else { // Fallback on earlier versions
+            let appStoreLink = "https://itunes.apple.com/us/app/apple-store/id375380948?mt=8"
+            if let url = URL(string: appStoreLink) { _ = NetworkUtils.shared.open(url) } // apple store
+        }
     }
 
     /**

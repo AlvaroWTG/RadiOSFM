@@ -249,6 +249,24 @@ class NetworkUtils: NSObject {
     }
 
     /**
+     Function that opens an URL on the app
+     - parameter url: A URL (Universal Resource Locator)
+     - returns: Wheter the resource located by the URL was successfully opened
+     */
+    func open(_ url: URL) -> Bool {
+        var result = false
+        if !UIApplication.shared.canOpenURL(url) { return result }
+        UIApplication.shared.open(url, options: [:]) { (success) in
+            if Verbose.Active {
+                let messageError = "[UIApplication] Error! An unknown error when trying to open URL '\(url.absoluteString)'"
+                NSLog(success ? "[UIApplication] Log: URL '\(url.absoluteString)' opened successfully" : messageError)
+            }
+            result = success
+        }
+        return result
+    }
+
+    /**
      Function that post a request with a body
      - parameter level: The level of request
      */
