@@ -43,6 +43,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private var titles = [String]()
     /** Property that represents the list of images names for the menu */
     private var urls = [String]()
+    /** Property that represents wheter is playing radio or not */
+    private var isPlaying = false
     /** Property that represents the selected row */
     private var selectedRow = 0
 
@@ -62,9 +64,14 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.delegate = self
 
         // Setup footer for player
+        self.labelStation.text = "RadiOS FM"
         self.iconStation.image = UIImage(named: "")
         self.iconPlay.image = UIImage(named: "play")
-        self.labelStation.text = "RadiOS FM"
+        self.iconPlay.isUserInteractionEnabled = true
+        let tapToggle = UITapGestureRecognizer(target: self, action: #selector(self.didTap(_:)))
+        tapToggle.numberOfTouchesRequired = 1
+        tapToggle.numberOfTapsRequired = 1
+        self.iconPlay.addGestureRecognizer(tapToggle)
 
         // Swap Back button
         NotificationCenter.default.post(name: .swapBackButton, object: nil)
@@ -118,6 +125,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             break
         case .loadingFinished:
             NSLog("[FRadioPlayer] Log: Player finished loading...")
+            self.isPlaying = true
+            self.refresh()
             break
         case .readyToPlay:
             NSLog("[FRadioPlayer] Log: Player is ready to play...")
@@ -137,6 +146,20 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
 
+    // MARK: - Inherited functions from UITap gesture recognizers
+
+    /**
+     Function that handles the tap gesture
+     - parameter sender: The tap gesture recognizer
+     */
+    @objc func didTap(_ sender: UITapGestureRecognizer) {
+        if self.isPlaying {
+            RadioUtils.shared.stop()
+            self.isPlaying = false
+            self.refresh()
+        } else { self.play(self.selectedRow) }
+    }
+
     // MARK: - Functions
 
     /**
@@ -144,8 +167,11 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      */
     private func play(_ row: Int) {
-        RadioUtils.shared.configure(self.urls[row])
-        RadioUtils.shared.delegate = self
+        if row < self.urls.count {
+            RadioUtils.shared.configure(self.urls[row])
+            RadioUtils.shared.delegate = self
+        } else { NSLog("Error! Cell indexPath.row out of bounds!") }
+    }
 
     /**
      Function that refreshes the player footer
