@@ -43,12 +43,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private var stations = [String]()
     /** Property that represents the list of images names for the menu */
     private var urls = [String]()
-    /** Property that represents the list of titles for the menu */
-    private var favorites = NSMutableArray()
-    /** Property that represents the list of images names for the menu */
-    private var favoritesUrls = NSMutableArray()
     /** Property that represents wheter is playing radio or not */
     private var isPlaying = false
+    /** Property that represents wheter is favorite screen or not */
+    private var isFavorites = false
     /** Property that represents the selected row */
     private var selectedRow = 0
 
@@ -63,8 +61,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.navigationController?.topViewController?.navigationItem.title = self.isFavorites ? "Favorites" : "Stations"
 
         // Setup table view controller and model
-        self.titles = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
-        self.urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
+        if self.isFavorites { // favorites screen
+            LocalDatabase.standard.load(0)
+            LocalDatabase.standard.load(1)
+            self.stations = LocalDatabase.standard.favorites as! [String]
+            self.urls = LocalDatabase.standard.favoritesUrl as! [String]
+        } else { // home screen
+            self.stations = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
+            self.urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
+        }
         self.labelMessage.text = "No radio stations found.".uppercased()
         self.labelMessage.isHidden = self.stations.count > 0
         self.tableView.tableFooterView = UIView(frame: .zero)
@@ -229,8 +234,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     private func refresh() {
         DispatchQueue.main.async {
-            self.labelStation.text = self.isPlaying ? self.titles[self.selectedRow] : "RadiOS FM"
             self.iconPlay.image = UIImage(named: self.isPlaying ? "pause" : "play")
+            let station = UserDefaults.standard.string(forKey: "selectedStation")
+            self.labelStation.text = self.isPlaying ? station : "RadiOS FM"
         }
     }
 
@@ -252,8 +258,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     private func toggle(_ imageView: UIImageView, selected: Bool) -> UIImageView {
         var customView = imageView
-        customView.image = UIImage(named: selected ? "star_full" : "star_empty")
-        if !selected { customView = ColorUtils.shared.renderImage(customView, color: Color.k1097FB, userInteraction: true) }
+        if self.isFavorites { // favorites
+            customView.image = UIImage(named: "rubbish")
+            customView = ColorUtils.shared.renderImage(customView, color: selected ? .red : Color.k1097FB, userInteraction: true)
+        } else { // home screen
+            customView.image = UIImage(named: selected ? "star_full" : "star_empty")
+            if !selected { customView = ColorUtils.shared.renderImage(customView, color: Color.k1097FB, userInteraction: true) }
+        }
         return customView
     }
 }
