@@ -23,6 +23,7 @@ extension UIApplication {
 
 extension Notification.Name {
     public static let alertNotification = Notification.Name("alertNotification")
+    public static let homeNotification = Notification.Name("notificationHome")
     public static let selectMenuItem = Notification.Name("selectMenuItem")
     public static let swapBackButton = Notification.Name("swapBackButton")
     public static let toggleMenu = Notification.Name("toggleMenu")

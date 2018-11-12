@@ -17,6 +17,7 @@ class RootViewController: UIViewController {
         // Do any additional setup after loading the view.
 
         // Setup observers and push launch view controller
+        NotificationCenter.default.addObserver(self, selector: #selector(self.popToHomeScreen(_:)), name: .homeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.swapBackButton(_:)), name: .swapBackButton, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.selectMenuItem(_:)), name: .selectMenuItem, object: nil)
         self.push("LaunchViewController", animated: false)
@@ -104,6 +105,17 @@ class RootViewController: UIViewController {
      */
     @objc private func menuWillShow(_ sender: UIButton?) {
         NotificationCenter.default.post(name: .toggleMenu, object: sender != nil)
+    }
+
+    /**
+     Function that pops to the root and pushes main view controller
+     - parameter notification: The notification object received
+     */
+    @objc func popToHomeScreen(_ notification: Notification) {
+        if notification.name == .homeNotification {
+            self.push("TableViewController", animated: false)
+            self.menuWillShow(nil)
+        }
     }
 
     /**
