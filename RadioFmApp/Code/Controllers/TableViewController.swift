@@ -43,6 +43,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private var titles = [String]()
     /** Property that represents the list of images names for the menu */
     private var urls = [String]()
+    /** Property that represents the list of titles for the menu */
+    private var favorites = NSMutableArray()
+    /** Property that represents the list of images names for the menu */
+    private var favoritesUrls = NSMutableArray()
     /** Property that represents wheter is playing radio or not */
     private var isPlaying = false
     /** Property that represents the selected row */
@@ -84,9 +88,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
             cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
             cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+            cell.starView.isUserInteractionEnabled = true
+            let tapFavorite = UITapGestureRecognizer(target: self, action: #selector(self.didTapFavorite(_:)))
+            tapFavorite.numberOfTouchesRequired = 1
+            tapFavorite.numberOfTapsRequired = 1
+            cell.starView.addGestureRecognizer(tapFavorite)
             cell.labelTitle.adjustsFontSizeToFitWidth = true
             cell.labelTitle.textColor = .gray
             cell.labelTitle.numberOfLines = 0
+            cell.starView.tag = indexPath.row
             cell.backgroundColor = .white
             return cell
         }
@@ -160,6 +170,23 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         } else { self.play(self.selectedRow) }
     }
 
+    /**
+     Function that handles the tap gesture
+     - parameter sender: The tap gesture recognizer
+     */
+    @objc func didTapFavorite(_ sender: UITapGestureRecognizer) {
+        if let row = sender.view?.tag {
+            let indexPath = IndexPath(row: row, section: 0)
+            if let cell = self.tableView.cellForRow(at: indexPath) as? MainViewCell {
+                if cell.isFavorite {
+                    cell.isFavorite = false
+                } else { cell.isFavorite = true }
+                cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+                self.populateFavorites(indexPath.row, isAdding: cell.isFavorite)
+            }
+        }
+    }
+
     // MARK: - Functions
 
     /**
@@ -170,6 +197,36 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if row < self.urls.count {
             RadioUtils.shared.configure(self.urls[row])
             RadioUtils.shared.delegate = self
+        } else { NSLog("Error! Cell indexPath.row out of bounds!") }
+    }
+
+    /**
+     Function that populates the favorites list
+     - parameter row: The row of the cell
+     - parameter isAdding: Whether is adding new or not
+     */
+    private func populateFavorites(_ row: Int, isAdding: Bool) {
+        if row < self.urls.count {
+            let title = self.titles[row]
+            let url = self.urls[row]
+            if isAdding { // add
+                if !self.favoritesUrls.contains(url) {
+                    if !self.favorites.contains(title) {
+                        self.favorites.add(title)
+                        self.favoritesUrls.add(url)
+                        NSLog("Log: Added \(title) to Favorites...")
+                    } else { NSLog("Warning! \(title) not found in Favorites -> Insert IGNORED...") }
+                } else { NSLog("Warning! \(url) not found in URL-favorites -> Insert IGNORED...") }
+            } else { // remove
+                if self.favoritesUrls.contains(url) {
+                    if self.favorites.contains(title) {
+                        self.favorites.remove(title)
+                        self.favoritesUrls.remove(url)
+                        NSLog("Log: Removed \(title) from Favorites...")
+                    } else { NSLog("Warning! \(title) not found in Favorites -> Delete IGNORED...") }
+                } else { NSLog("Warning! \(url) not found in URL-favorites -> Delete IGNORED...") }
+            }
+            NSLog("Log: \(self.favoritesUrls.count) items stored in favorites...")
         } else { NSLog("Error! Cell indexPath.row out of bounds!") }
     }
 
