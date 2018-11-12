@@ -35,35 +35,31 @@ class RootViewController: UIViewController {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 var viewController: UIViewController? = nil
                 switch row {
-                    case 0: // home / contract
+                    case 0: // stations
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        UserDefaults.standard.set(false, forKey: "isFavorites")
+                        break
+                    case 1: // favorites
+                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        UserDefaults.standard.set(true, forKey: "isFavorites")
+                        break
+                    case 2: // Top 20
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
-                    case 1: // avb / terms
+                    case 3: // rate app
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
-                    case 2: // terms / privacy
+                    case 4: // share
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
-                    case 3: // privacy / faq
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
-                        break
-                    case 4: // faq / email
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
-                        break
-                    case 5: // email / phone
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
-                        break
-                    case 6: // phone / about us
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
-                        break
-                    case 7: // about us
+                    case 5: // sleep
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
                     default: break
                 }
-                if viewController != nil { // push view controller
-                    viewController?.navigationItem.hidesBackButton = true
-                    self.navigationController?.pushViewController(viewController!, animated: true)
+                if let controller = viewController{ // push view controller
+                    controller.navigationItem.hidesBackButton = true
+                    self.navigationController?.pushViewController(controller, animated: true)
                     self.setBarButton("MenuButton")
                 }
                 self.menuWillShow(nil)
@@ -129,6 +125,7 @@ class RootViewController: UIViewController {
         let viewController: UIViewController?
         if identifier == "TableViewController" { // main
             viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+            UserDefaults.standard.set(false, forKey: "isFavorites")
         } else if identifier == "LaunchViewController" { // launch
             viewController = storyboard.instantiateViewController(withIdentifier: identifier)
         } else { viewController = nil }

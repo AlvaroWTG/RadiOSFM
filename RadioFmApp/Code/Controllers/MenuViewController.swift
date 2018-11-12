@@ -34,7 +34,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.titles = ["Stations", "Favorites", "Top20", "Evaluate", "Share App", "Sleep"]
+        self.titles = ["Stations", "Favorites", "Top 20", "Rate App", "Share", "Sleep"]
         self.images = ["radio", "star", "top", "rating", "share", "timer"]
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.showsVerticalScrollIndicator = false
