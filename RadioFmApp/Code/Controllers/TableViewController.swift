@@ -135,6 +135,14 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.play(indexPath.row)
     }
 
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return self.isFavorites
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if self.isFavorites && editingStyle == .delete { self.deleteRowAt(indexPath) }
+    }
+
     // MARK: - Inherited functions from RadioUtils delegate
 
     func util(_ util: RadioUtils, playerStateChanged state: FRadioPlayerState) {
@@ -204,6 +212,22 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Functions
 
     /**
+     Function that deletes a row
+     - parameter indexPath: The indexPath of the cell
+     */
+    private func deleteRowAt(_ indexPath: IndexPath) {
+        if indexPath.row < self.urls.count {
+            self.populateFavorites(indexPath.row, isAdding: false)
+            self.stations.remove(at: indexPath.row)
+            self.urls.remove(at: indexPath.row)
+            self.tableView.beginUpdates()
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
+            self.tableView.reloadData()
+        }
+    }
+
+    /**
      Function that plays the radio station
      - parameter row: The row of the cell
      */
@@ -223,9 +247,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if row < self.urls.count {
             let station = self.stations[row]
             let url = self.urls[row]
-            if isAdding { // add
-                LocalDatabase.standard.add(title, url: url)
-            } else { LocalDatabase.standard.remove(title, url: url) } // remove
+            if !isAdding { // remove
+                LocalDatabase.standard.remove(station, url: url)
+            } else { LocalDatabase.standard.add(station, url: url) } // add
         } else { NSLog("Error! Cell indexPath.row out of bounds!") }
     }
 
