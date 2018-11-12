@@ -13,5 +13,6 @@ target 'RadioFmApp' do
   pod 'Mute'
   pod 'Alamofire'
   pod 'FRadioPlayer'
+  pod 'ReachabilitySwift'
 
 end

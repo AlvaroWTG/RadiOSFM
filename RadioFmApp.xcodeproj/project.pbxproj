@@ -16,6 +16,7 @@
 		3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FC2180F3D30061DB09 /* RootViewController.swift */; };
 		3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FE2180F44C0061DB09 /* AudioUtils.swift */; };
 		38D97D002199718D004623C9 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97CFF2199718D004623C9 /* LaunchViewController.swift */; };
+		38D97D02219972A8004623C9 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D01219972A8004623C9 /* NetworkUtils.swift */; };
 		38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDC2185BD750045CE66 /* RadioUtils.swift */; };
 		38F0DBDF2185D9920045CE66 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDE2185D9920045CE66 /* TableViewController.swift */; };
 		38F0DBE12185D9A30045CE66 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBE02185D9A30045CE66 /* MenuViewController.swift */; };
@@ -34,6 +35,7 @@
 		3853A5FE2180F44C0061DB09 /* AudioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtils.swift; sourceTree = "<group>"; };
 		3853A6002180F68D0061DB09 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RadioFmApp/Info.plist; sourceTree = SOURCE_ROOT; };
 		38D97CFF2199718D004623C9 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		38D97D01219972A8004623C9 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		38F0DBDC2185BD750045CE66 /* RadioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioUtils.swift; sourceTree = "<group>"; };
 		38F0DBDE2185D9920045CE66 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		38F0DBE02185D9A30045CE66 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			children = (
 				3853A5FE2180F44C0061DB09 /* AudioUtils.swift */,
 				38F0DBDC2185BD750045CE66 /* RadioUtils.swift */,
+				38D97D01219972A8004623C9 /* NetworkUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FRadioPlayer/FRadioPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/Mute/Mute.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
 				"${BUILT_PRODUCTS_DIR}/Toast/Toast.framework",
 				"${BUILT_PRODUCTS_DIR}/ViewDeck/ViewDeck.framework",
 			);
@@ -266,6 +270,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FRadioPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mute.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toast.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ViewDeck.framework",
 			);
@@ -285,6 +290,7 @@
 				38F0DBDF2185D9920045CE66 /* TableViewController.swift in Sources */,
 				3853A5E22180ED0B0061DB09 /* AppDelegate.swift in Sources */,
 				38F0DBE12185D9A30045CE66 /* MenuViewController.swift in Sources */,
+				38D97D02219972A8004623C9 /* NetworkUtils.swift in Sources */,
 				3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */,
 				3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */,
 				38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */,
