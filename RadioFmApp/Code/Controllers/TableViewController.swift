@@ -102,12 +102,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
             cell.labelTitle.text = NSLocalizedString(self.stations[indexPath.row], comment: Tag.Empty)
             cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
-            cell.starView.isUserInteractionEnabled = true
-            let tapFavorite = UITapGestureRecognizer(target: self, action: #selector(self.didTapFavorite(_:)))
-            tapFavorite.numberOfTouchesRequired = 1
-            tapFavorite.numberOfTapsRequired = 1
-            cell.starView.addGestureRecognizer(tapFavorite)
+            cell.starView.addGestureRecognizer(self.getGesture())
             cell.labelTitle.adjustsFontSizeToFitWidth = true
+            cell.starView.isUserInteractionEnabled = true
             cell.labelTitle.textColor = .gray
             cell.labelTitle.numberOfLines = 0
             cell.starView.tag = indexPath.row
@@ -230,6 +227,17 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.tableView.endUpdates()
             self.tableView.reloadData()
         }
+    }
+
+    /**
+     Function that gets a tap gesture recognizer
+     - returns: The tap gesture recognizer
+     */
+    private func getGesture() -> UITapGestureRecognizer {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.didTapFavorite(_:)))
+        tapGesture.numberOfTouchesRequired = 1
+        tapGesture.numberOfTapsRequired = 1
+        return tapGesture
     }
 
     /**
