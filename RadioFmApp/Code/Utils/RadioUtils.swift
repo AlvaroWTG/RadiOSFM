@@ -9,6 +9,24 @@
 import UIKit
 import FRadioPlayer
 
+struct WatchDog {
+
+    // MARK:- Properties
+
+    /** Property that represents the the data created of daemon */
+    private let created = Date()
+
+    // MARK:- API
+
+    /**
+     Function that logs the duration in miliseconds
+     */
+    func logDuration() {
+        let diff = Date().timeIntervalSince(self.created)
+        NSLog("[WatchDog] Log: Station loaded in \(diff * 1000) ms...")
+    }
+}
+
 protocol RadioDelegate: class {
 
     /**
@@ -45,6 +63,8 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     private var isTooLow: Bool = false
     /** Property that represents the flag whether the device is muted or not */
     private var isMuted: Bool = false
+    /** Property that represents the flag whether the device is muted or not */
+    private var watchDog: WatchDog?
 
     // MARK: - Singleton
 
@@ -57,6 +77,7 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
 
     func radioPlayer(_ player: FRadioPlayer, playerStateDidChange state: FRadioPlayerState) {
         if self.delegate != nil { self.delegate?.util(self, playerStateChanged: state) }
+        if state == .loadingFinished { if let watchDog = self.watchDog { watchDog.logDuration() } }
     }
 
     func radioPlayer(_ player: FRadioPlayer, playbackStateDidChange state: FRadioPlaybackState) {
@@ -92,6 +113,7 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
      Function that configures the audio util and device
      */
     func configure(_ stationURL: String) {
+        self.watchDog = WatchDog()
         self.player = FRadioPlayer.shared
         player!.radioURL = URL(string: stationURL)
         player!.delegate = self
