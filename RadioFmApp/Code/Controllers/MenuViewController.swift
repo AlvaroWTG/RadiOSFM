@@ -27,15 +27,15 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     /** Property that represents the image view for the view */
     @IBOutlet weak var tableView: UITableView!
     /** Property that represents the list of titles for the menu */
-    private var titles = NSMutableArray()
+    private var titles = [String]()
     /** Property that represents the list of images names for the menu */
-    private var images = NSMutableArray()
+    private var images = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.titles = ["Stations", "Favorites", "Top20", "Evaluate", "Share App", "Sleep"]
-        self.images = ["", "", "", "", "", ""]
+        self.images = ["radio", "star", "top", "rating", "share", "timer"]
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.dataSource = self
@@ -48,12 +48,12 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MenuViewCell", for: indexPath) as! MenuViewCell
         self.tableView = tableView
-        if let path = self.images[indexPath.row] as? String { cell.iconView.image = UIImage(named: path) }
-        if let key = self.titles[indexPath.row] as? String { // label title
-            cell.labelTitle.text = NSLocalizedString(key, comment: Tag.Empty)
-            cell.labelTitle.adjustsFontSizeToFitWidth = true
-            cell.labelTitle.numberOfLines = 0
-        }
+        cell.iconView.image = UIImage(named: self.images[indexPath.row])
+        cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
+        cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
+        cell.labelTitle.adjustsFontSizeToFitWidth = true
+        cell.labelTitle.textColor = .gray
+        cell.labelTitle.numberOfLines = 0
         cell.backgroundColor = .white
         return cell
     }
