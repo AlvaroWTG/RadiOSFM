@@ -73,9 +73,10 @@ class RootViewController: UIViewController {
      */
     @objc func swapBackButton(_ notification: Notification) {
         if notification.name == .swapBackButton {
-            let titleView = self.navigationController?.topViewController?.navigationItem.titleView
+            let menuTitles = ["Stations", "Favorites", "Top 20", "Rate App", "Share", "Sleep"]
+//            let titleView = self.navigationController?.topViewController?.navigationItem.titleView
             let navigationTitle = self.navigationController?.topViewController?.navigationItem.title
-            if navigationTitle == Tag.Empty || titleView != nil {
+            if navigationTitle != nil && menuTitles.contains(navigationTitle!) {
                 self.setBarButton("MenuButton")
                 if self.navigationController?.topViewController?.navigationItem.rightBarButtonItem != nil {
                     self.navigationController?.topViewController?.navigationItem.rightBarButtonItem?.customView?.isHidden = false
