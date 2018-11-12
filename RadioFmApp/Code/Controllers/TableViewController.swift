@@ -43,6 +43,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private var titles = [String]()
     /** Property that represents the list of images names for the menu */
     private var urls = [String]()
+    /** Property that represents the selected row */
+    private var selectedRow = 0
 
     // MARK: - Inherited functions from UIView controller
 
@@ -100,6 +102,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        self.selectedRow = indexPath.row
         self.play(indexPath.row)
     }
 
@@ -143,9 +146,14 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func play(_ row: Int) {
         RadioUtils.shared.configure(self.urls[row])
         RadioUtils.shared.delegate = self
+
+    /**
+     Function that refreshes the player footer
+     */
+    private func refresh() {
         DispatchQueue.main.async {
-            self.iconPlay.image = UIImage(named: "pause")
-            self.labelStation.text = self.titles[row]
+            self.labelStation.text = self.isPlaying ? self.titles[self.selectedRow] : "RadiOS FM"
+            self.iconPlay.image = UIImage(named: self.isPlaying ? "pause" : "play")
         }
     }
 
