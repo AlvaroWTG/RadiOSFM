@@ -19,20 +19,30 @@ class MainViewCell: UITableViewCell {
     @IBOutlet weak var iconView: UIImageView!
     /** Property that represents the image view for the user */
     @IBOutlet weak var starView: UIImageView!
+    /** Property that represents wheter is favorite or not */
+    var isFavorite = false
 }
 
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RadioDelegate {
 
     // MARK: - Properties
 
-    /** Property that represents the button for the view */
-    @IBOutlet weak var button: UIButton!
-    /** Property that represents the button for the view */
-    @IBOutlet weak var imageView: UIImageView!
-    /** Property that represents the button for the view */
-    @IBOutlet weak var labelArtwork: UILabel!
+    /** Property that represents wheter is favorite screen or not */
+    private var isFavorites = false
     /** Property that represents the image view for the view */
     @IBOutlet weak var tableView: UITableView!
+    /** Property that represents the label for the user */
+    @IBOutlet weak var footer: UIView!
+    /** Property that represents the label for the user */
+    @IBOutlet weak var labelStation: UILabel!
+    /** Property that represents the image view for the user */
+    @IBOutlet weak var iconStation: UIImageView!
+    /** Property that represents the image view for the user */
+    @IBOutlet weak var iconPlay: UIImageView!
+    /** Property that represents the list of titles for the menu */
+    private var titles = [String]()
+    /** Property that represents the list of images names for the menu */
+    private var urls = [String]()
 
     // MARK: - Inherited functions from UIView controller
 
