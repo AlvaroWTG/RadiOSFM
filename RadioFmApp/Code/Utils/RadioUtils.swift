@@ -93,9 +93,20 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     }
 
     /**
-     Function that play the radio station
+     Function that plays the radio station
      */
     func play() {
-        if let player = self.player { if !player.isPlaying { player.play() } }
+        if let player = self.player {
+            if !player.isPlaying { player.play() }
+        }
+    }
+
+    /**
+     Function that stops the radio station
+     */
+    func stop() {
+        if let player = self.player {
+            if player.isPlaying { player.stop() }
+        }
     }
 }
