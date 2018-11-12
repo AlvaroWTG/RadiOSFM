@@ -28,16 +28,20 @@ class LocalDatabase: NSObject {
     // MARK: - Functions
 
     /**
-     Function that add a protocol to the DB
+     Function that adds an entry to DB
      - parameter element: The element to add
-     - returns: Whether it succeed or not
+     - parameter url: The url to add
      */
-    func add(_ element: String?) -> Bool {
-        if let item = element {
-            self.favorites.add(item)
-            return true
-        }
-        return false
+    func add(_ element: String, url: String) {
+        if !self.favoritesUrl.contains(url) {
+            if !self.favorites.contains(element) {
+                self.favorites.add(element)
+                self.favoritesUrl.add(url)
+                if Verbose.Active { NSLog("[LocalDB] Log: Added \(element) to Favorites...") }
+            } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) not found in Favorites -> Insert IGNORED...") } }
+        } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(url) not found in URL-favorites -> Insert IGNORED...") } }
+        self.synchronize(0)
+        self.synchronize(1)
     }
 
     /**
@@ -58,7 +62,7 @@ class LocalDatabase: NSObject {
                     }
                 }
                 self.favorites = storedFavorites
-            } else if Verbose.Active { NSLog("Log: No favorites found in database...") }
+            } else if Verbose.Active { NSLog("[LocalDB] Log: No favorites found in database...") }
             break
         case 1: // conversations
             if var storedFavorites = UserDefaults.standard.array(forKey: "keyStoreFavoritesURL") as? NSMutableArray {
@@ -71,10 +75,27 @@ class LocalDatabase: NSObject {
                     }
                 }
                 self.favoritesUrl = storedFavorites
-            } else if Verbose.Active { NSLog("Log: No favorite-URLs found in database...") }
+            } else if Verbose.Active { NSLog("[LocalDB] Log: No favorite-URLs found in database...") }
             break
         default: break
         }
+    }
+
+    /**
+     Function that removes an entry from DB
+     - parameter element: The element to remove
+     - parameter url: The url to remove
+     */
+    func remove(_ element: String, url: String) {
+        if self.favoritesUrl.contains(url) {
+            if self.favorites.contains(element) {
+                self.favorites.remove(element)
+                self.favoritesUrl.remove(url)
+                NSLog("[LocalDB] Log: Removed \(element) from Favorites...")
+            } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) not found in Favorites -> Delete IGNORED...") } }
+        } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(url) not found in URL-favorites -> Delete IGNORED...") } }
+        self.synchronize(0)
+        self.synchronize(1)
     }
 
     /**
@@ -118,10 +139,10 @@ class LocalDatabase: NSObject {
         }
         let synchronized = UserDefaults.standard.synchronize()
         if !synchronized { // error message
-            NSLog("[UserDefaults] Error! An error trying to synch all values in local storage!")
+            NSLog("[LocalDB] Error! An error trying to synch all values in local storage!")
             let userInfo = [NSLocalizedDescriptionKey : "UserDefaults - Failed to synch all values in local storage",
                             NSLocalizedFailureReasonErrorKey : "500 - Failed to synch all values in local storage"]
             Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
-        } else if Verbose.Active { NSLog("Log: Stored \(key) into local database. Count \(count)") }
+        } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(count) items stored in \(key)...") }
     }
 }

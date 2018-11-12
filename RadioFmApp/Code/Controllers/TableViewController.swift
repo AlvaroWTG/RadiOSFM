@@ -210,23 +210,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let title = self.titles[row]
             let url = self.urls[row]
             if isAdding { // add
-                if !self.favoritesUrls.contains(url) {
-                    if !self.favorites.contains(title) {
-                        self.favorites.add(title)
-                        self.favoritesUrls.add(url)
-                        if Verbose.Active { NSLog("Log: Added \(title) to Favorites...") }
-                    } else { if Verbose.Active { NSLog("Warning! \(title) not found in Favorites -> Insert IGNORED...") } }
-                } else { if Verbose.Active { NSLog("Warning! \(url) not found in URL-favorites -> Insert IGNORED...") } }
-            } else { // remove
-                if self.favoritesUrls.contains(url) {
-                    if self.favorites.contains(title) {
-                        self.favorites.remove(title)
-                        self.favoritesUrls.remove(url)
-                        NSLog("Log: Removed \(title) from Favorites...")
-                    } else { if Verbose.Active { NSLog("Warning! \(title) not found in Favorites -> Delete IGNORED...") } }
-                } else { if Verbose.Active { NSLog("Warning! \(url) not found in URL-favorites -> Delete IGNORED...") } }
-            }
-            NSLog("Log: \(self.favoritesUrls.count) items stored in favorites...")
+                LocalDatabase.standard.add(title, url: url)
+            } else { LocalDatabase.standard.remove(title, url: url) } // remove
         } else { NSLog("Error! Cell indexPath.row out of bounds!") }
     }
 
