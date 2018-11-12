@@ -260,6 +260,11 @@ class NetworkUtils: NSObject {
             if Verbose.Active {
                 let messageError = "[UIApplication] Error! An unknown error when trying to open URL '\(url.absoluteString)'"
                 NSLog(success ? "[UIApplication] Log: URL '\(url.absoluteString)' opened successfully" : messageError)
+                if !success {
+                    let userInfo = [NSLocalizedDescriptionKey : "UIApplication - unknown error trying to open URL '\(url.absoluteString)'",
+                                    NSLocalizedFailureReasonErrorKey : "502"]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+                }
             }
             result = success
         }

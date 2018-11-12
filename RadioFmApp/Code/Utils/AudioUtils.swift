@@ -8,6 +8,7 @@
 
 import UIKit
 import Mute
+import Crashlytics
 import MediaPlayer
 import AVFoundation
 
@@ -68,6 +69,9 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
         if player.isPlaying { player.stop() }
         NSLog("[AVAudioPlayer] Error! An error occurred playing! Error 502 - \(error?.localizedDescription ?? Tag.Unknown)")
         if self.delegate != nil { self.delegate?.util(self, didFinish: false) }
+        let userInfo = [NSLocalizedDescriptionKey : "AVAudioPlayer - Audio player decode error did occur",
+                        NSLocalizedFailureReasonErrorKey : "502 - \(error?.localizedDescription ?? Tag.Unknown)"]
+        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
     }
 
     // MARK: - Inherited function from Speech synthesizer delegate
@@ -144,7 +148,12 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
         do { // Try to setup the audio sesion and read the volume
             try session.setActive(true)
             self.outputVolume = session.outputVolume
-        } catch { NSLog("[AVAudioSession] Error! An error ocurred activating the audioSession. Error 500 - \(error.localizedDescription)") }
+        } catch {
+            NSLog("[AVAudioSession] Error! An error ocurred activating the audioSession. Error 500 - \(error.localizedDescription)")
+            let userInfo = [NSLocalizedDescriptionKey : "AVAudioSession - Error activating the audioSession",
+                            NSLocalizedFailureReasonErrorKey : "500 - \(error.localizedDescription)"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+        }
     }
 
     /**
@@ -164,7 +173,12 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
         }
         do { // Try to deactive the audio sesion
             try AVAudioSession.sharedInstance().setActive(false)
-        } catch { NSLog("[AVAudioSession] Error! An error ocurred deactivating the audioSession. Error 501 - \(error.localizedDescription)") }
+        } catch {
+            NSLog("[AVAudioSession] Error! An error ocurred deactivating the audioSession. Error 501 - \(error.localizedDescription)")
+            let userInfo = [NSLocalizedDescriptionKey : "AVAudioSession - Error deactivating the audioSession",
+                            NSLocalizedFailureReasonErrorKey : "501 - \(error.localizedDescription)"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+        }
     }
 
     /**
@@ -191,7 +205,12 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
                 self.player = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: path))
                 self.player!.delegate = self
                 self.player!.play()
-            } catch { NSLog("[AVAudioPlayer] Error! An error occurred trying to init the player. Error 502 - \(error.localizedDescription)") }
+            } catch {
+                NSLog("[AVAudioPlayer] Error! An error occurred trying to init the player. Error 502 - \(error.localizedDescription)")
+                let userInfo = [NSLocalizedDescriptionKey : "AVAudioPlayer - Error on audio player init",
+                                NSLocalizedFailureReasonErrorKey : "502 - \(error.localizedDescription)"]
+                Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+            }
         }
     }
 

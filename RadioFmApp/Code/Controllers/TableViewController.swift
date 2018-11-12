@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 import FRadioPlayer
 
 class MainViewCell: UITableViewCell {
@@ -149,6 +150,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         switch state {
         case .error:
             NSLog("[FRadioPlayer] Error! Player failed to load!")
+            let userInfo = [NSLocalizedDescriptionKey : "RadioUtils - Player failed to load",
+                            NSLocalizedFailureReasonErrorKey : "500 - Player failed to load"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
             break
         case .loading:
             if Verbose.Active { NSLog("[FRadioPlayer] Log: Player is loading...") }
@@ -248,7 +252,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if row < self.urls.count {
             RadioUtils.shared.configure(self.urls[row])
             RadioUtils.shared.delegate = self
-        } else { NSLog("Error! Cell indexPath.row out of bounds!") }
+        } else {
+            NSLog("Error! Cell indexPath.row out of bounds!")
+            let userInfo = [NSLocalizedDescriptionKey : "Play - Cell indexPath.row out of bounds",
+                            NSLocalizedFailureReasonErrorKey : "404 - Cell indexPath.row out of bounds"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+        }
     }
 
     /**
@@ -263,7 +272,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             if !isAdding { // remove
                 LocalDatabase.standard.remove(station, url: url)
             } else { LocalDatabase.standard.add(station, url: url) } // add
-        } else { NSLog("Error! Cell indexPath.row out of bounds!") }
+        } else {
+            NSLog("Error! Cell indexPath.row out of bounds!")
+            let userInfo = [NSLocalizedDescriptionKey : "Populate Favorites - Cell indexPath.row out of bounds",
+                            NSLocalizedFailureReasonErrorKey : "404 - Cell indexPath.row out of bounds"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+        }
     }
 
     /**

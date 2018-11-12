@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
 import ViewDeck
 
 @UIApplicationMain
@@ -25,6 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        // Initialize Fabric
+        if Verbose.Active { NSLog("[Fabric] Fabric crashlytics kit enabled") }
+        Fabric.with([Crashlytics()])
 
         // Setup observers and battery monitoring
         NotificationCenter.default.addObserver(self, selector: #selector(powerStateChanged(_:)), name: .NSProcessInfoPowerStateDidChange, object: nil)
