@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "radio_app.png",
+      "filename" : "star_empty.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "radio_app@2x.png",
+      "filename" : "star_empty@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "radio_app@3x.png",
+      "filename" : "star_empty@3x.png",
       "scale" : "3x"
     }
   ],
