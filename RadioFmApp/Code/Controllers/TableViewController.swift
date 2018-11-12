@@ -58,7 +58,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.topViewController?.navigationItem.title = "RadiOS FM"
+        self.isPlaying = UserDefaults.standard.bool(forKey: "isPlaying")
+        self.isFavorites = UserDefaults.standard.bool(forKey: "isFavorites")
+        self.navigationController?.topViewController?.navigationItem.title = self.isFavorites ? "Favorites" : "Stations"
 
         // Setup table view controller and model
         self.titles = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
@@ -123,6 +125,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        UserDefaults.standard.set(self.stations[indexPath.row], forKey: "selectedStation")
         self.selectedRow = indexPath.row
         self.play(indexPath.row)
     }
@@ -139,6 +142,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             break
         case .loadingFinished:
             if Verbose.Active { NSLog("[FRadioPlayer] Log: Player finished loading...") }
+            UserDefaults.standard.set(true, forKey: "isPlaying")
             self.isPlaying = true
             self.refresh()
             break
@@ -172,6 +176,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.isPlaying = false
             self.refresh()
         } else { self.play(self.selectedRow) }
+        UserDefaults.standard.set(self.isPlaying, forKey: "isPlaying")
     }
 
     /**
