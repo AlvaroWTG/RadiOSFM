@@ -150,11 +150,11 @@ class RootViewController: UIViewController {
         self.navigationController?.topViewController?.navigationItem.leftBarButtonItem = nil
         if identifier == "MenuButton" { // create and show Menu button
             button.addTarget(self, action: #selector(menuWillShow(_:)), for: .touchUpInside)
-            button.setImage(UIImage(named: "ic_menu"), for: .normal)
+            button.setImage(UIImage(named: "menu"), for: .normal)
             button.contentMode = .center
         } else { // Create and show Back button
             button.addTarget(self.navigationController?.topViewController, action: #selector(didPressBack(_:)), for: .touchUpInside)
-            button.setImage(UIImage(named: "ic_back"), for: .normal)
+            button.setImage(UIImage(named: "arrow_back"), for: .normal)
             button.contentMode = .scaleAspectFit
         }
         self.navigationController?.topViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
