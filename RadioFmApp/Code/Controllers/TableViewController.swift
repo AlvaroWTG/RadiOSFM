@@ -51,10 +51,21 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.topViewController?.navigationItem.title = "RadiOS FM"
+
+        // Setup table view controller and model
+        self.titles = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
+        self.urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        self.button.setTitle("PLAY", for: .normal)
+
+        // Setup footer for player
+        self.iconStation.image = UIImage(named: "")
+        self.iconPlay.image = UIImage(named: "play")
+        self.labelStation.text = "RadiOS FM"
+
+        // Swap Back button
+        NotificationCenter.default.post(name: .swapBackButton, object: nil)
     }
 
     // MARK: - Inherited functions from UITableView data source
@@ -89,6 +100,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        self.play(indexPath.row)
     }
 
     // MARK: - Inherited functions from RadioUtils delegate
@@ -118,23 +130,24 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let url = url { self.refreshArtwork(url) }
         if let value = rawValue {
             NSLog("[FRadioPlayer] Log: Received metadata - \(value)")
-            DispatchQueue.main.async { self.labelArtwork.text = value }
+            DispatchQueue.main.async { self.labelStation.text = value }
         }
     }
 
-    // MARK: - IBAction function implementation
+    // MARK: - Functions
 
     /**
-     Function that performs an action when the menu button is clicked
-     - parameter sender: The identifier of the sender of the action
+     Function that plays the radio station
+     - parameter row: The row of the cell
      */
-    @IBAction func didPress(_ sender: UIButton) {
-        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", " http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-        RadioUtils.shared.configure(urls[7])
+    private func play(_ row: Int) {
+        RadioUtils.shared.configure(self.urls[row])
         RadioUtils.shared.delegate = self
+        DispatchQueue.main.async {
+            self.iconPlay.image = UIImage(named: "pause")
+            self.labelStation.text = self.titles[row]
+        }
     }
-
-    // MARK: - Functions
 
     /**
      Function that refreshes the artwork
@@ -144,7 +157,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         do { // download image
             let data = try Data(contentsOf: url)
             NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)")
-            DispatchQueue.main.async { self.imageView.image = UIImage(data: data) }
+            DispatchQueue.main.async { self.iconStation.image = UIImage(data: data) }
         } catch { NSLog("Exception!") }
     }
 
