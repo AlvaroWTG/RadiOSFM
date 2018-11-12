@@ -60,10 +60,17 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - Inherited functions from UITableView data source
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as! MainViewCell
         self.tableView = tableView
-        cell.backgroundColor = .white
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
+            cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
+            cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+            cell.labelTitle.adjustsFontSizeToFitWidth = true
+            cell.labelTitle.textColor = .gray
+            cell.labelTitle.numberOfLines = 0
+            cell.backgroundColor = .white
+            return cell
+        }
+        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -71,7 +78,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return self.titles.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -139,5 +146,16 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)")
             DispatchQueue.main.async { self.imageView.image = UIImage(data: data) }
         } catch { NSLog("Exception!") }
+    }
+
+    /**
+     Function that refreshes the artwork
+     - parameter url: The url or the artwork
+     */
+    private func toggle(_ imageView: UIImageView, selected: Bool) -> UIImageView {
+        var customView = imageView
+        customView.image = UIImage(named: selected ? "star_full" : "star_empty")
+        if !selected { customView = ColorUtils.shared.renderImage(customView, color: Color.k1097FB, userInteraction: true) }
+        return customView
     }
 }
