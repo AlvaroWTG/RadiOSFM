@@ -9,7 +9,14 @@
 import UIKit
 import StoreKit
 
-class RootViewController: UIViewController {
+class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+
+    // MARK: - Properties
+
+    /** Property that represents the list of time intervals for the picker */
+    private var timeIntervals = ["15 minutes", "30 minutes", "45 minutes", "1 hour", "2 hours", "3 hours"]
+    /** Property that represents the selected row */
+    private var selectedRow = 0
 
     // MARK: - Inherited functions from UIView controller
 
@@ -22,6 +29,26 @@ class RootViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.swapBackButton(_:)), name: .swapBackButton, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.selectMenuItem(_:)), name: .selectMenuItem, object: nil)
         self.push("LaunchViewController", animated: false)
+    }
+
+    // MARK: - Inherited functions from UIPicker data source
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.timeIntervals.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return self.timeIntervals[row]
+    }
+
+    // MARK: - Inherited functions from UIPicker delegate
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.selectedRow = row
     }
 
     // MARK: - Notification observers
@@ -54,7 +81,7 @@ class RootViewController: UIViewController {
                         viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
                         break
                     case 5: // sleep
-                        viewController = storyboard.instantiateViewController(withIdentifier: "TableViewController")
+                        self.presentPickerView()
                         break
                     default: break
                 }
@@ -98,6 +125,18 @@ class RootViewController: UIViewController {
     }
 
     /**
+     Function that adds a picker view as input view for textField
+     - returns: The picker view created
+     */
+    private func getPickerView() -> UIPickerView {
+        let pickerView = UIPickerView(frame: CGRect(x: 16, y: 20, width: 230, height: 150))
+        pickerView.showsSelectionIndicator = true
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        return pickerView
+    }
+
+    /**
      Function that shows/hides the left-side menu
      - parameter sender: The identifier of the sender of the action
      */
@@ -114,6 +153,20 @@ class RootViewController: UIViewController {
             self.push("TableViewController", animated: false)
             self.menuWillShow(nil)
         }
+    }
+
+    /**
+     Function that presents a picker view
+     */
+    private func presentPickerView() {
+        let alertController = UIAlertController(title: "Please select a time interval", message: "\n\n\n\n\n\n", preferredStyle: .alert)
+        alertController.isModalInPopover = true
+        alertController.view.addSubview(self.getPickerView())
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            NSLog("[UIPickerView] Log: User selected \(self.timeIntervals[self.selectedRow])...")
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.navigationController?.topViewController?.present(alertController, animated: true, completion: nil)
     }
 
     /**
