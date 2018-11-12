@@ -27,8 +27,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // MARK: - Properties
 
-    /** Property that represents wheter is favorite screen or not */
-    private var isFavorites = false
+    /** Property that represents the label for the error message */
+    @IBOutlet weak var labelMessage: UILabel!
     /** Property that represents the image view for the view */
     @IBOutlet weak var tableView: UITableView!
     /** Property that represents the label for the user */
@@ -40,7 +40,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     /** Property that represents the image view for the user */
     @IBOutlet weak var iconPlay: UIImageView!
     /** Property that represents the list of titles for the menu */
-    private var titles = [String]()
+    private var stations = [String]()
     /** Property that represents the list of images names for the menu */
     private var urls = [String]()
     /** Property that represents the list of titles for the menu */
@@ -63,7 +63,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         // Setup table view controller and model
         self.titles = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
         self.urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://94.75.227.133:1025/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
+        self.labelMessage.text = "No radio stations found.".uppercased()
+        self.labelMessage.isHidden = self.stations.count > 0
         self.tableView.tableFooterView = UIView(frame: .zero)
+        self.tableView.isHidden = self.stations.count <= 0
         self.tableView.dataSource = self
         self.tableView.delegate = self
 
@@ -72,6 +75,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.iconStation.image = UIImage(named: "")
         self.iconPlay.image = UIImage(named: "play")
         self.iconPlay.isUserInteractionEnabled = true
+        self.footer.isHidden = self.stations.count <= 0
         let tapToggle = UITapGestureRecognizer(target: self, action: #selector(self.didTap(_:)))
         tapToggle.numberOfTouchesRequired = 1
         tapToggle.numberOfTapsRequired = 1
@@ -86,7 +90,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
-            cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
+            cell.labelTitle.text = NSLocalizedString(self.stations[indexPath.row], comment: Tag.Empty)
             cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
             cell.starView.isUserInteractionEnabled = true
             let tapFavorite = UITapGestureRecognizer(target: self, action: #selector(self.didTapFavorite(_:)))
@@ -108,7 +112,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.titles.count
+        return self.stations.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -207,7 +211,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     private func populateFavorites(_ row: Int, isAdding: Bool) {
         if row < self.urls.count {
-            let title = self.titles[row]
+            let station = self.stations[row]
             let url = self.urls[row]
             if isAdding { // add
                 LocalDatabase.standard.add(title, url: url)
