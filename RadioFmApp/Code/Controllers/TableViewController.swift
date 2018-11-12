@@ -98,6 +98,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
+            cell.iconView.image = UIImage(named: "radio")
+            cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
             cell.labelTitle.text = NSLocalizedString(self.stations[indexPath.row], comment: Tag.Empty)
             cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
             cell.starView.isUserInteractionEnabled = true
@@ -280,8 +282,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     /**
-     Function that refreshes the artwork
-     - parameter url: The url or the artwork
+     Function that toggles an image view
+     - parameter imageView: The image view to toggle
+     - parameter selected: Whether is selected or not
+     - returns: The image view toggled
      */
     private func toggle(_ imageView: UIImageView, selected: Bool) -> UIImageView {
         var customView = imageView
