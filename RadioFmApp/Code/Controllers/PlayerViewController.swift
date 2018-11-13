@@ -12,6 +12,10 @@ class PlayerViewController: UIViewController {
 
     // MARK: - Properties
 
+    /** Property that represents the selected station */
+    var station = Station()
+    /** Property that represents whether is playing or not */
+    var isPlaying = false
     /** Property that represents the header for the advertising */
     @IBOutlet weak var headerMarketing: UIView!
     /** Property that represents the image view for the player */

@@ -29,6 +29,18 @@ class Station: NSObject, NSCoding {
     // MARK: - Functions
 
     /**
+     Initializes the station as default
+     */
+    override init() {
+        self.popularity = Tag.Empty
+        self.iconName = "radio"
+        self.artwork = Tag.Empty
+        self.isFavorite = false
+        self.name = Tag.Empty
+        self.url = Tag.Empty
+    }
+
+    /**
      Function to initialize the instance with some parameters
      - parameter name: The displayed name of the station
      - parameter url: The url of the station
