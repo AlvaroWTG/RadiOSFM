@@ -74,14 +74,19 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         // Setup footer for player
         self.labelStation.text = "RadiOS FM"
+        self.footer.isUserInteractionEnabled = true
         self.iconStation.image = UIImage(named: "radio")
         self.iconPlay.image = UIImage(named: "play")
         self.iconPlay.isUserInteractionEnabled = true
         self.footer.isHidden = self.stations.count <= 0
+        let tapFooter = UITapGestureRecognizer(target: self, action: #selector(self.didTapFooter(_:)))
         let tapToggle = UITapGestureRecognizer(target: self, action: #selector(self.didTap(_:)))
+        tapFooter.numberOfTouchesRequired = 1
         tapToggle.numberOfTouchesRequired = 1
+        tapFooter.numberOfTapsRequired = 1
         tapToggle.numberOfTapsRequired = 1
         self.iconPlay.addGestureRecognizer(tapToggle)
+        self.footer.addGestureRecognizer(tapFooter)
         if self.isPlaying { self.refresh() }
 
         // Swap Back button
@@ -191,6 +196,18 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.refresh()
         } else { self.play(self.selectedRow) }
         UserDefaults.standard.set(self.isPlaying, forKey: "isPlaying")
+    }
+
+    /**
+     Function that handles the tap gesture for footer
+     - parameter sender: The tap gesture recognizer
+     */
+    @objc func didTapFooter(_ sender: UITapGestureRecognizer) {
+        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
+            viewController.station = self.stations[self.selectedRow]
+            viewController.isPlaying = self.isPlaying
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 
     /**
