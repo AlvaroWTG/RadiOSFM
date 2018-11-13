@@ -276,7 +276,7 @@ class NetworkUtils: NSObject {
      - parameter level: The level of request
      */
     func post(_ level: Int) {
-        let isGetMethod = level == 0
+//        let isGetMethod = level == 0
         if NetworkUtils.shared.isOnline() {
 //            if let url = URL(string: self.getRequestAt(level)) {
 //                let request = NSMutableURLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
