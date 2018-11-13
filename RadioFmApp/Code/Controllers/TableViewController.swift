@@ -61,7 +61,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if self.isFavorites { // favorites screen
             LocalDatabase.standard.load()
             self.stations = LocalDatabase.standard.favorites as! [Station]
-        } else { self.stations = LocalDatabase.standard.createDummy() } // home screen
+        } else { // home screen
+            self.stations = LocalDatabase.standard.createDummy()
+            self.map()
+        }
         self.labelMessage.text = "No radio stations found.".uppercased()
         self.labelMessage.isHidden = self.stations.count > 0
         self.tableView.tableFooterView = UIView(frame: .zero)
@@ -235,6 +238,17 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tapGesture.numberOfTouchesRequired = 1
         tapGesture.numberOfTapsRequired = 1
         return tapGesture
+    }
+
+    /**
+     Function that maps the radio stations
+     */
+    private func map() {
+        if !UserDefaults.standard.bool(forKey: "applicationIsFresh") {
+            let mapped = LocalDatabase.standard.filter(self.stations)
+            self.stations = mapped
+        }
+        UserDefaults.standard.set(false, forKey: "applicationIsFresh")
     }
 
     /**

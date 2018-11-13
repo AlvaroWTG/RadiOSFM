@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(powerStateChanged(_:)), name: .NSProcessInfoPowerStateDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(toggleMenu(_:)), name: .toggleMenu, object: nil)
         UserDefaults.standard.set(Tag.Empty, forKey: "selectedStation")
+        UserDefaults.standard.set(true, forKey: "applicationIsFresh")
         UserDefaults.standard.set(false, forKey: "isPlaying")
         UIDevice.current.isBatteryMonitoringEnabled = true
         self.applicationIsActive = true
