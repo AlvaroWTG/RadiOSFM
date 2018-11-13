@@ -20,8 +20,6 @@ class MainViewCell: UITableViewCell {
     @IBOutlet weak var iconView: UIImageView!
     /** Property that represents the image view for the user */
     @IBOutlet weak var starView: UIImageView!
-    /** Property that represents wheter is favorite or not */
-    var isFavorite = false
 }
 
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RadioDelegate {
@@ -96,7 +94,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 let station = self.stations[indexPath.row]
                 cell.iconView.image = UIImage(named: station.iconName)
                 cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
-                cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+                cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
                 cell.starView.addGestureRecognizer(self.getGesture())
                 cell.labelTitle.adjustsFontSizeToFitWidth = true
                 cell.starView.isUserInteractionEnabled = true
@@ -307,7 +305,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var customView = imageView
         if self.isFavorites { // favorites
             customView.image = UIImage(named: "rubbish")
-            customView = ColorUtils.shared.renderImage(customView, color: selected ? .red : Color.k1097FB, userInteraction: true)
+            customView = ColorUtils.shared.renderImage(customView, color: Color.k1097FB, userInteraction: true)
         } else { // home screen
             customView.image = UIImage(named: selected ? "star_full" : "star_empty")
             if !selected { customView = ColorUtils.shared.renderImage(customView, color: Color.k1097FB, userInteraction: true) }
