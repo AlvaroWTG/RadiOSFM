@@ -96,6 +96,35 @@ class LocalDatabase: NSObject {
         } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) already in Favorites -> Insert IGNORED...") } }
     }
     
+    /**
+     Function that creates dummy entries in the DB
+     */
+    func createDummy() -> [Station] {
+        let dummyStations = NSMutableArray()
+        let names = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
+        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
+        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil)) }
+        return dummyStations as! [Station]
+    }
+
+    /**
+     Function that gets the radio station by name
+     - parameter name: The string-value for the name
+     - returns: The radio station instance
+     */
+    func getStation(_ name: String) -> Station? {
+        for item in self.favorites { if let favorite = item as? Station { if favorite.name == name { return favorite } } }
+        return nil
+    }
+
+    /**
+     Function that gets the radio station by name
+     - parameter index: The index of the list
+     - returns: The radio station instance
+     */
+    func getStation(_ index: Int) -> Station? {
+        if index < self.favorites.count { if let favorite = self.favorites[index] as? Station { return favorite } }
+        return nil
     }
 
     /**

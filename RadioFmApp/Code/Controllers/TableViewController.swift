@@ -40,10 +40,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var iconStation: UIImageView!
     /** Property that represents the image view for the user */
     @IBOutlet weak var iconPlay: UIImageView!
-    /** Property that represents the list of titles for the menu */
-    private var stations = [String]()
-    /** Property that represents the list of images names for the menu */
-    private var urls = [String]()
+    /** Property that represents the list of stations for the menu */
+    private var stations = [Station]()
     /** Property that represents wheter is playing radio or not */
     private var isPlaying = false
     /** Property that represents wheter is favorite screen or not */
