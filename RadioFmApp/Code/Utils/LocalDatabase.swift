@@ -115,6 +115,29 @@ class LocalDatabase: NSObject {
     }
 
     /**
+     Function that filter the stations
+     - parameter stations: The list of stations to map
+     - returns: The new filtered list of stations
+     */
+    func filter(_ stations: [Station]) -> [Station] {
+        if self.favorites.count <= 0 { return stations }
+        var mappedStations = stations
+        for i in 0..<stations.count {
+            let station = stations[i]
+            for item in self.favorites {
+                if let favorite = item as? Station {
+                    if favorite.name == station.name {
+                        station.isFavorite = true
+                        mappedStations[i] = station
+                        if Verbose.Active { NSLog("[LocalDB] Log: \(station.name) filtered...") }
+                    }
+                }
+            }
+        }
+        return mappedStations
+    }
+
+    /**
      Function that gets the radio station by name
      - parameter name: The string-value for the name
      - returns: The radio station instance
@@ -138,7 +161,7 @@ class LocalDatabase: NSObject {
      Function that loads the objects required from the database
      */
     func load() {
-        if var storedFavorites = UserDefaults.standard.array(forKey: "keyStoreFavorites") as? NSMutableArray {
+        if var storedFavorites = UserDefaults.standard.object(forKey: "keyStoreFavorites") as? NSMutableArray {
             let auxiliarStoredFavorites = storedFavorites
             storedFavorites = NSMutableArray()
             for item in auxiliarStoredFavorites {
@@ -181,6 +204,6 @@ class LocalDatabase: NSObject {
             let userInfo = [NSLocalizedDescriptionKey : "UserDefaults - Failed to synch all values in local storage",
                             NSLocalizedFailureReasonErrorKey : "500 - Failed to synch all values in local storage"]
             Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
-        } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) items stored in FAVORITES...") }
+        } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) favorites...") }
     }
 }
