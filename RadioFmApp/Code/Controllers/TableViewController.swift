@@ -61,14 +61,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
         // Setup table view controller and model
         if self.isFavorites { // favorites screen
-            LocalDatabase.standard.load(0)
-            LocalDatabase.standard.load(1)
-            self.stations = LocalDatabase.standard.favorites as! [String]
-            self.urls = LocalDatabase.standard.favoritesUrl as! [String]
-        } else { // home screen
-            self.stations = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
-            self.urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-        }
+            LocalDatabase.standard.load()
+            self.stations = LocalDatabase.standard.favorites as! [Station]
+        } else { self.stations = LocalDatabase.standard.createDummy() } // home screen
         self.labelMessage.text = "No radio stations found.".uppercased()
         self.labelMessage.isHidden = self.stations.count > 0
         self.tableView.tableFooterView = UIView(frame: .zero)
@@ -97,16 +92,19 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
-            cell.iconView.image = UIImage(named: "radio")
-            cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
-            cell.labelTitle.text = NSLocalizedString(self.stations[indexPath.row], comment: Tag.Empty)
-            cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
-            cell.starView.addGestureRecognizer(self.getGesture())
-            cell.labelTitle.adjustsFontSizeToFitWidth = true
-            cell.starView.isUserInteractionEnabled = true
-            cell.labelTitle.textColor = .gray
-            cell.labelTitle.numberOfLines = 0
-            cell.starView.tag = indexPath.row
+            if indexPath.row < self.stations.count {
+                let station = self.stations[indexPath.row]
+                cell.iconView.image = UIImage(named: station.iconName)
+                cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
+                cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
+                cell.starView.addGestureRecognizer(self.getGesture())
+                cell.labelTitle.adjustsFontSizeToFitWidth = true
+                cell.starView.isUserInteractionEnabled = true
+                cell.labelTitle.text = station.name
+                cell.labelTitle.textColor = .gray
+                cell.labelTitle.numberOfLines = 0
+                cell.starView.tag = indexPath.row
+            }
             cell.backgroundColor = .white
             return cell
         }
@@ -129,7 +127,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        UserDefaults.standard.set(self.stations[indexPath.row], forKey: "selectedStation")
+        UserDefaults.standard.set(self.stations[indexPath.row].name, forKey: "selectedStation")
         self.selectedRow = indexPath.row
         self.play(indexPath.row)
     }
@@ -220,10 +218,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter indexPath: The indexPath of the cell
      */
     private func deleteRowAt(_ indexPath: IndexPath) {
-        if indexPath.row < self.urls.count {
+        if indexPath.row < self.stations.count {
             self.populateFavorites(indexPath.row, isAdding: false)
             self.stations.remove(at: indexPath.row)
-            self.urls.remove(at: indexPath.row)
             self.tableView.beginUpdates()
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.tableView.endUpdates()
@@ -247,10 +244,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      */
     private func play(_ row: Int) {
-        if row < self.urls.count {
-            RadioUtils.shared.configure(self.urls[row])
+        if row < self.stations.count {
+            RadioUtils.shared.configure(self.stations[row].url)
             RadioUtils.shared.delegate = self
-        } else {
+        } else { // error
             NSLog("Error! Cell indexPath.row out of bounds!")
             let userInfo = [NSLocalizedDescriptionKey : "Play - Cell indexPath.row out of bounds",
                             NSLocalizedFailureReasonErrorKey : "404 - Cell indexPath.row out of bounds"]
@@ -264,13 +261,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter isAdding: Whether is adding new or not
      */
     private func populateFavorites(_ row: Int, isAdding: Bool) {
-        if row < self.urls.count {
+        if row < self.stations.count {
             let station = self.stations[row]
-            let url = self.urls[row]
             if !isAdding { // remove
-                LocalDatabase.standard.remove(station, url: url)
-            } else { LocalDatabase.standard.add(station, url: url) } // add
-        } else {
+                LocalDatabase.standard.remove(station)
+            } else { LocalDatabase.standard.add(station.name, url: station.url) } // add
+        } else { // error
             NSLog("Error! Cell indexPath.row out of bounds!")
             let userInfo = [NSLocalizedDescriptionKey : "Populate Favorites - Cell indexPath.row out of bounds",
                             NSLocalizedFailureReasonErrorKey : "404 - Cell indexPath.row out of bounds"]
@@ -284,8 +280,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func refresh() {
         DispatchQueue.main.async {
             self.iconPlay.image = UIImage(named: self.isPlaying ? "pause" : "play")
-            let station = UserDefaults.standard.string(forKey: "selectedStation")
-            self.labelStation.text = self.isPlaying ? station : "RadiOS FM"
+            let stationName = UserDefaults.standard.string(forKey: "selectedStation")
+            self.labelStation.text = self.isPlaying ? stationName : "RadiOS FM"
         }
     }
 
