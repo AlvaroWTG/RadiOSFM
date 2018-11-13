@@ -202,11 +202,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let indexPath = IndexPath(row: row, section: 0)
             if let cell = self.tableView.cellForRow(at: indexPath) as? MainViewCell {
                 if !self.isFavorites {
-                    if cell.isFavorite {
-                        cell.isFavorite = false
-                    } else { cell.isFavorite = true }
-                    cell.starView = self.toggle(cell.starView, selected: cell.isFavorite)
-                    self.populateFavorites(indexPath.row, isAdding: cell.isFavorite)
+                    let station = self.stations[row]
+                    if station.isFavorite {
+                        station.isFavorite = false
+                    } else { station.isFavorite = true }
+                    cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
+                    self.populateFavorites(indexPath.row, isAdding: station.isFavorite)
                 } else { self.deleteRowAt(indexPath) } // favorite screen
             }
         }
