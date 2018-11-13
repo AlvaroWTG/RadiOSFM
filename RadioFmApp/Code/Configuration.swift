@@ -48,6 +48,15 @@ struct Color {
     static let kE7B639 = UIColor(red: 231/255, green: 182/255, blue: 57/255, alpha: 1) // protectonaut accent yellow
 }
 
+// Constants for Encode keys
+struct Encode {
+    static let Artwork = "stationArtwork"
+    static let Icon = "stationIcon"
+    static let Name = "stationName"
+    static let Popularity = "stationPopularity"
+    static let URL = "stationURL"
+}
+
 // Constants for string tags
 struct Tag {
     static let At = "@"

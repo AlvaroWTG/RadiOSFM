@@ -9,6 +9,55 @@
 import UIKit
 import Crashlytics
 
+class Station: NSObject, NSCoding {
+
+    // MARK: - Properties
+
+    /** Property that represents the name of the icon for radio station */
+    var iconName = Tag.Empty
+    /** Property that represents the popularity of the station */
+    var popularity = Tag.Empty
+    /** Property that represents the name of the station */
+    var name = Tag.Empty
+    /** Property that represents the artwork of the station */
+    var artwork = Tag.Empty
+    /** Property that represents the host of the station */
+    var url = Tag.Empty
+
+    // MARK: - Functions
+
+    /**
+     Function to initialize the instance with some parameters
+     - parameter name: The displayed name of the account
+     - parameter deviceId: The device identifier of the account
+     - parameter identifier: The identifier of the conversation
+     - parameter path: The path of the avatar of the account
+     */
+    init(_ name: String, url: String, artwork: String?, popularity: String?, imageName: String?) {
+        self.popularity = popularity ?? Tag.Empty
+        self.iconName = imageName ?? "radio"
+        self.artwork = artwork ?? Tag.Empty
+        self.name = name
+        self.url = url
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.popularity, forKey: Encode.Popularity)
+        aCoder.encode(self.artwork, forKey: Encode.Artwork)
+        aCoder.encode(self.iconName, forKey: Encode.Icon)
+        aCoder.encode(self.name, forKey: Encode.Name)
+        aCoder.encode(self.url, forKey: Encode.URL)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        if let value = aDecoder.decodeObject(forKey: Encode.Popularity) as? String { self.popularity = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Artwork) as? String { self.artwork = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Icon) as? String { self.iconName = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Name) as? String { self.name = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.URL) as? String { self.url = value }
+    }
+}
+
 class LocalDatabase: NSObject {
 
     // MARK: - Properties
