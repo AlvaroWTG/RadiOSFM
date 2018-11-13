@@ -23,6 +23,8 @@
 		38F0DBDD2185BD750045CE66 /* RadioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDC2185BD750045CE66 /* RadioUtils.swift */; };
 		38F0DBDF2185D9920045CE66 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBDE2185D9920045CE66 /* TableViewController.swift */; };
 		38F0DBE12185D9A30045CE66 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F0DBE02185D9A30045CE66 /* MenuViewController.swift */; };
+		747CCE6A219B1C3A0025D180 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747CCE69219B1C3A0025D180 /* PlayerViewController.swift */; };
+		747CCE6C219B1C500025D180 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747CCE6B219B1C500025D180 /* LocationViewController.swift */; };
 		83B16EED5741D22BADBD98BB /* Pods_RadioFmApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +47,8 @@
 		38F0DBDC2185BD750045CE66 /* RadioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioUtils.swift; sourceTree = "<group>"; };
 		38F0DBDE2185D9920045CE66 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		38F0DBE02185D9A30045CE66 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		747CCE69219B1C3A0025D180 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		747CCE6B219B1C500025D180 /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		B786C0E790CCCC5A0FE7E97B /* Pods-RadioFmApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.debug.xcconfig"; sourceTree = "<group>"; };
 		BCCA7B8A5F25088233074501 /* Pods_RadioFmApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RadioFmApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C1FE89FF1BE8DFC9A3FE1F8A /* Pods-RadioFmApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RadioFmApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RadioFmApp/Pods-RadioFmApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -117,7 +121,9 @@
 			isa = PBXGroup;
 			children = (
 				38D97CFF2199718D004623C9 /* LaunchViewController.swift */,
+				747CCE6B219B1C500025D180 /* LocationViewController.swift */,
 				38F0DBE02185D9A30045CE66 /* MenuViewController.swift */,
+				747CCE69219B1C3A0025D180 /* PlayerViewController.swift */,
 				3853A5FC2180F3D30061DB09 /* RootViewController.swift */,
 				38F0DBDE2185D9920045CE66 /* TableViewController.swift */,
 			);
@@ -320,7 +326,9 @@
 				38F0DBDF2185D9920045CE66 /* TableViewController.swift in Sources */,
 				3853A5E22180ED0B0061DB09 /* AppDelegate.swift in Sources */,
 				38F0DBE12185D9A30045CE66 /* MenuViewController.swift in Sources */,
+				747CCE6A219B1C3A0025D180 /* PlayerViewController.swift in Sources */,
 				38D97D02219972A8004623C9 /* NetworkUtils.swift in Sources */,
+				747CCE6C219B1C500025D180 /* LocationViewController.swift in Sources */,
 				38D97D062199AB35004623C9 /* LocalDatabase.swift in Sources */,
 				3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */,
 				3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */,
