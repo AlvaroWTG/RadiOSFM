@@ -55,7 +55,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.navigationController?.navigationBar.isTranslucent = false
         self.isPlaying = UserDefaults.standard.bool(forKey: "isPlaying")
         self.isFavorites = UserDefaults.standard.bool(forKey: "isFavorites")
-        self.navigationController?.topViewController?.navigationItem.title = self.isFavorites ? "Favorites" : "Stations"
+        self.navigationController?.topViewController?.navigationItem.title = NSLocalizedString(self.isFavorites ? "MENU_ITEM_ONE" : "MENU_ITEM_ZERO", comment: Tag.Empty)
 
         // Setup table view controller and model
         if self.isFavorites { // favorites screen
@@ -65,7 +65,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.stations = LocalDatabase.standard.createDummy()
             self.map()
         }
-        self.labelMessage.text = "No radio stations found.".uppercased()
+        self.labelMessage.text = NSLocalizedString("MAIN_NO_STATIONS", comment: Tag.Empty).uppercased()
         self.labelMessage.isHidden = self.stations.count > 0
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.isHidden = self.stations.count <= 0
@@ -73,7 +73,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.delegate = self
 
         // Setup footer for player
-        self.labelStation.text = "RadiOS FM"
+        self.labelStation.text = NSLocalizedString("APP_NAME", comment: Tag.Empty)
         self.footer.isUserInteractionEnabled = true
         self.iconStation.image = UIImage(named: "radio")
         self.iconPlay.image = UIImage(named: "play")
@@ -324,7 +324,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let data = try Data(contentsOf: url)
             if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
             DispatchQueue.main.async { self.iconStation.image = UIImage(data: data) }
-        } catch { NSLog("Exception! An error ocurred trying to load the contents of an URL! Hint:\(error.localizedDescription)") }
+        } catch { // exception
+            NSLog("Exception! An error ocurred trying to load the contents of an URL! Hint:\(error.localizedDescription)")
+            let userInfo = [NSLocalizedDescriptionKey : "Refresh artwork - Failed to load the data content of URL",
+                            NSLocalizedFailureReasonErrorKey : "Hint: \(error.localizedDescription)"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+        }
     }
 
     /**

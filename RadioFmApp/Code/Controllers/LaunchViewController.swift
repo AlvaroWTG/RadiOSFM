@@ -28,9 +28,9 @@ class LaunchViewController: UIViewController, NetworkDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.labelFooter.text = "Copyright © 2018 Alvricia. All rights reserved."
+        self.labelFooter.text = NSLocalizedString("APP_COPYRIGHT", comment: Tag.Empty)
+        self.labelTitle.text = NSLocalizedString("APP_NAME", comment: Tag.Empty)
         self.imageView.image = UIImage(named: "radio_app")
-        self.labelTitle.text = "Radio FM iOS App"
 
         // Initial backend request
         if NetworkUtils.shared.isOnline() {
@@ -42,7 +42,8 @@ class LaunchViewController: UIViewController, NetworkDelegate {
         } else {
             let position = CSToastPositionCenter
             let duration = CSToastManager.defaultDuration()
-            self.view.makeToast("Error! No internet connection", duration: duration, position: position)
+            let message = NSLocalizedString("ALERT_NETWORK_DESC", comment: Tag.Empty)
+            self.view.makeToast(message, duration: duration, position: position)
         }
     }
 

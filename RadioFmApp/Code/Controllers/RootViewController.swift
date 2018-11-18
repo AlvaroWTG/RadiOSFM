@@ -14,7 +14,7 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     // MARK: - Properties
 
     /** Property that represents the list of time intervals for the picker */
-    private var timeIntervals = ["15 minutes", "30 minutes", "45 minutes", "1 hour", "2 hours", "3 hours"]
+    private var timeIntervals = ["SLEEP_INTERVAL_ZERO", "SLEEP_INTERVAL_ONE", "SLEEP_INTERVAL_TWO", "SLEEP_INTERVAL_THREE", "SLEEP_INTERVAL_FOUR", "SLEEP_INTERVAL_FIVE"]
     /** Property that represents the selected row */
     private var selectedRow = 0
 
@@ -42,7 +42,7 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return self.timeIntervals[row]
+        return NSLocalizedString(self.timeIntervals[row], comment: Tag.Empty)
     }
 
     // MARK: - Inherited functions from UIPicker delegate
@@ -101,7 +101,8 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
      */
     @objc func swapBackButton(_ notification: Notification) {
         if notification.name == .swapBackButton {
-            let menuTitles = ["Stations", "Favorites", "Top 20", "Rate App", "Share", "Sleep"]
+            let menuTitles = [NSLocalizedString("MENU_ITEM_ZERO", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_ONE", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_TWO", comment: Tag.Empty),
+                              NSLocalizedString("MENU_ITEM_THREE", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FOUR", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FIVE", comment: Tag.Empty)]
 //            let titleView = self.navigationController?.topViewController?.navigationItem.titleView
             let navigationTitle = self.navigationController?.topViewController?.navigationItem.title
             if navigationTitle != nil && menuTitles.contains(navigationTitle!) {
@@ -159,13 +160,14 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
      Function that presents a picker view
      */
     private func presentPickerView() {
-        let alertController = UIAlertController(title: "Please select a time interval", message: "\n\n\n\n\n\n", preferredStyle: .alert)
+        let timeInterval = NSLocalizedString(self.timeIntervals[self.selectedRow], comment: Tag.Empty)
+        let alertController = UIAlertController(title: NSLocalizedString("SLEEP_INTERVAL_DESC", comment: Tag.Empty), message: "\n\n\n\n\n\n", preferredStyle: .alert)
         alertController.isModalInPopover = true
         alertController.view.addSubview(self.getPickerView())
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            NSLog("[UIPickerView] Log: User selected \(self.timeIntervals[self.selectedRow])...")
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: Tag.Empty).uppercased(), style: .default, handler: { (action) in
+            NSLog("[UIPickerView] Log: User selected \(timeInterval)...")
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_CANCEL", comment: Tag.Empty), style: .cancel, handler: nil))
         self.navigationController?.topViewController?.present(alertController, animated: true, completion: nil)
     }
 

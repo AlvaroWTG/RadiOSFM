@@ -34,7 +34,7 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.titles = ["Stations", "Favorites", "Top 20", "Rate App", "Share", "Sleep"]
+        self.titles = ["MENU_ITEM_ZERO", "MENU_ITEM_ONE", "MENU_ITEM_TWO", "MENU_ITEM_THREE", "MENU_ITEM_FOUR", "MENU_ITEM_FIVE"]
         self.images = ["radio", "star", "top", "rating", "share", "timer"]
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.showsVerticalScrollIndicator = false
@@ -46,16 +46,18 @@ class MenuViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Inherited functions from UITableView data source
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MenuViewCell", for: indexPath) as! MenuViewCell
         self.tableView = tableView
-        cell.iconView.image = UIImage(named: self.images[indexPath.row])
-        cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
-        cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
-        cell.labelTitle.adjustsFontSizeToFitWidth = true
-        cell.labelTitle.textColor = .gray
-        cell.labelTitle.numberOfLines = 0
-        cell.backgroundColor = .white
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "MenuViewCell", for: indexPath) as? MenuViewCell {
+            cell.iconView.image = UIImage(named: self.images[indexPath.row])
+            cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
+            cell.labelTitle.text = NSLocalizedString(self.titles[indexPath.row], comment: Tag.Empty)
+            cell.labelTitle.adjustsFontSizeToFitWidth = true
+            cell.labelTitle.textColor = .gray
+            cell.labelTitle.numberOfLines = 0
+            cell.backgroundColor = .white
+            return cell
+        }
+        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
