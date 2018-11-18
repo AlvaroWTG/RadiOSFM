@@ -15,6 +15,8 @@
 		3853A5FB2180F11F0061DB09 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FA2180F11F0061DB09 /* Configuration.swift */; };
 		3853A5FD2180F3D30061DB09 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FC2180F3D30061DB09 /* RootViewController.swift */; };
 		3853A5FF2180F44C0061DB09 /* AudioUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3853A5FE2180F44C0061DB09 /* AudioUtils.swift */; };
+		38AED0CF21A17C1E006BF308 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38AED0D121A17C1E006BF308 /* Localizable.strings */; };
+		38AED0D521A17C59006BF308 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38AED0D721A17C59006BF308 /* InfoPlist.strings */; };
 		38D97D002199718D004623C9 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97CFF2199718D004623C9 /* LaunchViewController.swift */; };
 		38D97D02219972A8004623C9 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D01219972A8004623C9 /* NetworkUtils.swift */; };
 		38D97D0421998B41004623C9 /* ColorUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D97D0321998B41004623C9 /* ColorUtils.swift */; };
@@ -39,6 +41,12 @@
 		3853A5FC2180F3D30061DB09 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		3853A5FE2180F44C0061DB09 /* AudioUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUtils.swift; sourceTree = "<group>"; };
 		3853A6002180F68D0061DB09 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RadioFmApp/Info.plist; sourceTree = SOURCE_ROOT; };
+		38AED0CB21A17BC2006BF308 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		38AED0CC21A17BC2006BF308 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		38AED0D021A17C1E006BF308 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		38AED0D221A17C20006BF308 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		38AED0D621A17C59006BF308 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		38AED0D821A17C5A006BF308 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38D97CFF2199718D004623C9 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		38D97D01219972A8004623C9 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		38D97D0321998B41004623C9 /* ColorUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorUtils.swift; sourceTree = "<group>"; };
@@ -113,6 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				3853A6002180F68D0061DB09 /* Info.plist */,
+				38AED0D721A17C59006BF308 /* InfoPlist.strings */,
+				38AED0D121A17C1E006BF308 /* Localizable.strings */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -207,6 +217,7 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
 			);
 			mainGroup = 3853A5D52180ED0B0061DB09;
 			productRefGroup = 3853A5DF2180ED0B0061DB09 /* Products */;
@@ -224,8 +235,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3853A5EC2180ED0E0061DB09 /* LaunchScreen.storyboard in Resources */,
+				38AED0CF21A17C1E006BF308 /* Localizable.strings in Resources */,
 				3853A5E92180ED0E0061DB09 /* Assets.xcassets in Resources */,
 				3853A5E72180ED0B0061DB09 /* Main.storyboard in Resources */,
+				38AED0D521A17C59006BF308 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +357,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				3853A5E62180ED0B0061DB09 /* Base */,
+				38AED0CC21A17BC2006BF308 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -352,9 +366,29 @@
 			isa = PBXVariantGroup;
 			children = (
 				3853A5EB2180ED0E0061DB09 /* Base */,
+				38AED0CB21A17BC2006BF308 /* es */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
+		};
+		38AED0D121A17C1E006BF308 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38AED0D021A17C1E006BF308 /* en */,
+				38AED0D221A17C20006BF308 /* es */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		38AED0D721A17C59006BF308 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				38AED0D621A17C59006BF308 /* en */,
+				38AED0D821A17C5A006BF308 /* es */,
+			);
+			name = InfoPlist.strings;
+			path = RadioFmApp;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXVariantGroup section */
 
@@ -363,6 +397,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -424,6 +459,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
