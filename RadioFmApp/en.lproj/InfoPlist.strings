@@ -5,3 +5,6 @@
   Created by Alvaro on 18/11/18.
   Copyright © 2018 Alvaro. All rights reserved.
 */
+
+/* Localized LocationWhenInUse usage description */
+"NSLocationWhenInUseUsageDescription"="The app requests your position to search radio stations depending on the country.";
