@@ -5,3 +5,53 @@
   Created by Alvaro on 18/11/18.
   Copyright © 2018 Alvaro. All rights reserved.
 */
+
+/* ============================================================================= */
+/* COMMON STRINGS USED IN VARIOUS PLACES */
+/* ============================================================================= */
+
+"APP_NAME"="RadiOS FM iOS App";
+"APP_COPYRIGHT"="Copyright © 2018 Alvricia. All rights reserved.";
+"HELP"="Help";
+"YES"="Yes";
+"NO"="No";
+"NA"="N/A";
+
+/* ============================================================================= */
+/* MENU SCREEN */
+/* ============================================================================= */
+
+"MENU_ITEM_ZERO"="Stations";
+"MENU_ITEM_ONE"="Favorites";
+"MENU_ITEM_TWO"="Top 20";
+"MENU_ITEM_THREE"="Rate App";
+"MENU_ITEM_FOUR"="Share";
+"MENU_ITEM_FIVE"="Sleep";
+
+/* ============================================================================= */
+/* GENERAL BUTTONS TITLES */
+/* ============================================================================= */
+
+"BUTTON_CANCEL"="Cancel";
+"BUTTON_OK"="Ok";
+
+/* ============================================================================= */
+/* ALERT CONTROLLER */
+/* ============================================================================= */
+
+"ALERT_NETWORK_TITLE"="No connection";
+"ALERT_NETWORK_DESC"="You are currently not online.\nPlease establish an internet connection.";
+
+/* ============================================================================= */
+/* MAIN SCREEN */
+/* ============================================================================= */
+
+"SLEEP_INTERVAL_DESC"="Please select a time interval";
+"SLEEP_INTERVAL_ZERO"="15 minutes";
+"SLEEP_INTERVAL_ONE"="30 minutes";
+"SLEEP_INTERVAL_TWO"="45 minutes";
+"SLEEP_INTERVAL_THREE"="1 hour";
+"SLEEP_INTERVAL_FOUR"="2 hours";
+"SLEEP_INTERVAL_FIVE"="3 hours";
+
+"MAIN_NO_STATIONS"="No radio stations found.";
