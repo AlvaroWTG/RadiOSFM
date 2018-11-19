@@ -8,9 +8,22 @@
 
 import UIKit
 
-class LocationViewController: UIViewController {
+class LocationViewCell: UITableViewCell {
 
     // MARK: - Properties
+
+    /** Property that represents the label for the cell */
+    @IBOutlet weak var labelTitle: UILabel!
+}
+
+    // MARK: - Properties
+
+    /** Property that represents the table view for the screen */
+    @IBOutlet weak var tableView: UITableView!
+    /** Property that represents the button for the screen */
+    @IBOutlet weak var button: UIButton!
+    /** Property that represents the location manager of the device */
+    private var manager = CLLocationManager()
 
     // MARK: - Inherited functions from UIView controller
 
