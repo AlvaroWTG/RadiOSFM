@@ -80,6 +80,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         let country = NSLocalizedString(self.countries[indexPath.row], comment: Tag.Empty)
         tableView.deselectRow(at: indexPath, animated: true)
         NSLog("Log: user didSelectRowAt \(country)")
+        self.push(true)
     }
 
     // MARK: - Inherited functions from Core location manager
@@ -91,6 +92,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
             geocoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if let placemark = placemarks?.last { // get country code
                     NSLog("[CLGeocoder] Log: Placemark country code: \(placemark.isoCountryCode ?? "unknown")")
+                    self.push(true)
                 } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
                     let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to greverse geocode location",
@@ -175,5 +177,16 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
             if let url = URL(string: UIApplication.openSettingsURLString) { _ = NetworkUtils.shared.open(url) }
         }))
         self.present(alertController, animated: true, completion: nil)
+    }
+
+    /**
+     Function that presents the table view controller animated
+     - parameter animated: Wheter is animation or not
+     */
+    private func push(_ animated: Bool) {
+        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TableViewController") {
+            UserDefaults.standard.set(false, forKey: "isFavorites")
+            self.navigationController?.pushViewController(viewController, animated: animated)
+        }
     }
 }
