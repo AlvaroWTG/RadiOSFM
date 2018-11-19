@@ -23,6 +23,8 @@ class Station: NSObject, NSCoding {
     var artwork = Tag.Empty
     /** Property that represents the host of the station */
     var url = Tag.Empty
+    /** Property that represents the category of the station */
+    var category = Tag.Empty
     /** Property that represents whether the station is favorite or not */
     var isFavorite = false
 
@@ -33,6 +35,7 @@ class Station: NSObject, NSCoding {
      */
     override init() {
         self.popularity = Tag.Empty
+        self.category = Tag.Empty
         self.iconName = "radio"
         self.artwork = Tag.Empty
         self.isFavorite = false
@@ -47,10 +50,12 @@ class Station: NSObject, NSCoding {
      - parameter artwork: The artwork of the station
      - parameter popularity: The popularity of the station
      - parameter imageName: The name of the image of the station
+     - parameter category: The category of the station
      - parameter isFavorite: Whether is favorite station or not
      */
-    init(_ name: String, url: String, artwork: String?, popularity: String?, imageName: String?, isFavorite: Bool) {
+    init(_ name: String, url: String, artwork: String?, popularity: String?, imageName: String?, category: String?, isFavorite: Bool) {
         self.popularity = popularity ?? Tag.Empty
+        self.category = category ?? Tag.Empty
         self.iconName = imageName ?? "radio"
         self.artwork = artwork ?? Tag.Empty
         self.isFavorite = isFavorite
@@ -61,6 +66,7 @@ class Station: NSObject, NSCoding {
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.popularity, forKey: Encode.Popularity)
         aCoder.encode(self.isFavorite, forKey: Encode.Favorite)
+        aCoder.encode(self.category, forKey: Encode.Category)
         aCoder.encode(self.artwork, forKey: Encode.Artwork)
         aCoder.encode(self.iconName, forKey: Encode.Icon)
         aCoder.encode(self.name, forKey: Encode.Name)
@@ -69,11 +75,12 @@ class Station: NSObject, NSCoding {
 
     required init?(coder aDecoder: NSCoder) {
         if let value = aDecoder.decodeObject(forKey: Encode.Popularity) as? String { self.popularity = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Favorite) as? Bool { self.isFavorite = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Category) as? String { self.category = value }
         if let value = aDecoder.decodeObject(forKey: Encode.Artwork) as? String { self.artwork = value }
         if let value = aDecoder.decodeObject(forKey: Encode.Icon) as? String { self.iconName = value }
         if let value = aDecoder.decodeObject(forKey: Encode.Name) as? String { self.name = value }
         if let value = aDecoder.decodeObject(forKey: Encode.URL) as? String { self.url = value }
+        self.isFavorite = aDecoder.decodeBool(forKey: Encode.Favorite)
     }
 }
 
@@ -109,7 +116,7 @@ class LocalDatabase: NSObject {
             }
         }
         if isValid { // needs to add into favorites
-            self.favorites.add(Station(element, url: url, artwork: nil, popularity: nil, imageName: nil, isFavorite: true))
+            self.favorites.add(Station(element, url: url, artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: true))
             if Verbose.Active { NSLog("[LocalDB] Log: Added \(element) to Favorites...") }
             self.synchronize()
         } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) already in Favorites -> Insert IGNORED...") } }
@@ -122,7 +129,7 @@ class LocalDatabase: NSObject {
         let dummyStations = NSMutableArray()
         let names = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
         let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil, isFavorite: false)) }
+        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: false)) }
         return dummyStations as! [Station]
     }
 

@@ -61,6 +61,11 @@
 
 "MAIN_NO_STATIONS"="No radio stations found.";
 
+"SEARCH_SCOPE_ALL"="All";
+"SEARCH_SCOPE_NEWS"="News";
+"SEARCH_SCOPE_SPORTS"="Sports";
+"SEARCH_SCOPE_MUSIC"="Music";
+
 /* ============================================================================= */
 /* COUNTRY SCREEN */
 /* ============================================================================= */

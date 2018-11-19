@@ -51,6 +51,7 @@ struct Color {
 // Constants for Encode keys
 struct Encode {
     static let Artwork = "stationArtwork"
+    static let Category = "stationCategory"
     static let Favorite = "isFavorite"
     static let Icon = "stationIcon"
     static let Name = "stationName"
