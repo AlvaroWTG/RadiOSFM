@@ -61,6 +61,13 @@
 
 "MAIN_NO_STATIONS"="No radio stations found.";
 
+/* ============================================================================= */
+/* COUNTRY SCREEN */
+/* ============================================================================= */
+
+"COUNTRY_TITLE"="Countries";
+"COUNTRY_BUTTON"="Locate me";
+
 "COUNTRY_0"="Argentina";
 "COUNTRY_1"="Australia";
 "COUNTRY_2"="Austria";

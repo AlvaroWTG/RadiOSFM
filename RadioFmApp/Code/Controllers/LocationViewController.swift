@@ -35,12 +35,13 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.topViewController?.navigationItem.title = NSLocalizedString("MENU_ITEM_ONE", comment: Tag.Empty)
+        self.navigationController?.topViewController?.navigationItem.title = NSLocalizedString("COUNTRY_TITLE", comment: Tag.Empty)
 
         // Setup table view controller and model
         self.countries = ["COUNTRY_0", "COUNTRY_1", "COUNTRY_2", "COUNTRY_3", "COUNTRY_4", "COUNTRY_5", "COUNTRY_6", "COUNTRY_7", "COUNTRY_8", "COUNTRY_9",
                           "COUNTRY_10", "COUNTRY_11", "COUNTRY_12", "COUNTRY_13", "COUNTRY_14", "COUNTRY_15", "COUNTRY_16", "COUNTRY_17", "COUNTRY_18", "COUNTRY_19",
                           "COUNTRY_20", "COUNTRY_21", "COUNTRY_22", "COUNTRY_23", "COUNTRY_24", "COUNTRY_25", "COUNTRY_26", "COUNTRY_27"]
+        self.button.setTitle(NSLocalizedString("COUNTRY_BUTTON", comment: Tag.Empty).uppercased(), for: .normal)
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.dataSource = self
         self.tableView.delegate = self
