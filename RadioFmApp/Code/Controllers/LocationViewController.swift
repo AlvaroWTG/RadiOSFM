@@ -34,6 +34,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.topViewController?.navigationItem.title = NSLocalizedString("MENU_ITEM_ONE", comment: Tag.Empty)
 
         // Setup table view controller and model
         self.countries = ["COUNTRY_0", "COUNTRY_1", "COUNTRY_2", "COUNTRY_3", "COUNTRY_4", "COUNTRY_5", "COUNTRY_6", "COUNTRY_7", "COUNTRY_8", "COUNTRY_9",
@@ -43,6 +45,40 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView.dataSource = self
         self.tableView.delegate = self
 
+        // Swap Back button
+        NotificationCenter.default.post(name: .swapBackButton, object: nil)
+    }
+
+    // MARK: - Inherited functions from UITableView data source
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        self.tableView = tableView
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationViewCell", for: indexPath) as? LocationViewCell {
+            cell.labelTitle.text = NSLocalizedString(self.countries[indexPath.row], comment: Tag.Empty)
+            cell.backgroundColor = .white
+            return cell
+        }
+        return UITableViewCell()
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.countries.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60.0
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    // MARK: - Inherited functions from UITableView delegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let country = NSLocalizedString(self.countries[indexPath.row], comment: Tag.Empty)
+        tableView.deselectRow(at: indexPath, animated: true)
+        NSLog("Log: user didSelectRowAt \(country)")
     }
 
     // MARK: - Inherited functions from Core location manager
