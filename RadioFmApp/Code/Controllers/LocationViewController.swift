@@ -28,6 +28,10 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var button: UIButton!
     /** Property that represents the list of countries for the menu */
     private var countries = [String]()
+    /** Property that represents the location manager of the device */
+    private var manager: CLLocationManager?
+    /** Property that represents whether the new view controller is required */
+    private var requiredPush = true
 
     // MARK: - Inherited functions from UIView controller
 
@@ -86,13 +90,13 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Inherited functions from Core location manager
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        manager.stopUpdatingLocation()
         if let location = locations.last {
             let geocoder = CLGeocoder()
-            manager.stopUpdatingLocation()
             geocoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if let placemark = placemarks?.last { // get country code
                     NSLog("[CLGeocoder] Log: Placemark country code: \(placemark.isoCountryCode ?? "unknown")")
-                    self.push(true)
+                    if self.requiredPush { self.push(true) }
                 } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
                     let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to greverse geocode location",
@@ -148,10 +152,10 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
      - parameter sender: The identifier of the sender of the action
      */
     @IBAction func didPress(_ sender: UIButton) {
-        let manager = CLLocationManager()
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.delegate = self
-        manager.requestWhenInUseAuthorization()
+        if self.manager == nil { self.manager = CLLocationManager() }
+        self.manager!.desiredAccuracy = kCLLocationAccuracyBest
+        self.manager!.delegate = self
+        self.manager!.requestWhenInUseAuthorization()
     }
 
     // MARK: - Functions
@@ -185,6 +189,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
      */
     private func push(_ animated: Bool) {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TableViewController") {
+            self.requiredPush = false
             UserDefaults.standard.set(false, forKey: "isFavorites")
             self.navigationController?.pushViewController(viewController, animated: animated)
         }
