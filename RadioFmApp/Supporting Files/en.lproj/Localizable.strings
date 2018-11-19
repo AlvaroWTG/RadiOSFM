@@ -60,3 +60,32 @@
 "SLEEP_INTERVAL_FIVE"="3 hours";
 
 "MAIN_NO_STATIONS"="No radio stations found.";
+
+"COUNTRY_0"="Argentina";
+"COUNTRY_1"="Australia";
+"COUNTRY_2"="Austria";
+"COUNTRY_3"="Belgium";
+"COUNTRY_4"="Brasil";
+"COUNTRY_5"="Canada";
+"COUNTRY_6"="Chile";
+"COUNTRY_7"="Colombia";
+"COUNTRY_8"="Croatia";
+"COUNTRY_9"="Denmark";
+"COUNTRY_10"="Ecuador";
+"COUNTRY_11"="Finland";
+"COUNTRY_12"="France";
+"COUNTRY_13"="Germany";
+"COUNTRY_14"="Ireland";
+"COUNTRY_15"="Italy";
+"COUNTRY_16"="Mexico";
+"COUNTRY_17"="Netherlands";
+"COUNTRY_18"="New Zealand";
+"COUNTRY_19"="Norway";
+"COUNTRY_20"="Peru";
+"COUNTRY_21"="Poland";
+"COUNTRY_22"="Portugal";
+"COUNTRY_23"="Russia";
+"COUNTRY_24"="Spain";
+"COUNTRY_25"="Sweden";
+"COUNTRY_26"="Switzerland";
+"COUNTRY_27"="UK";
