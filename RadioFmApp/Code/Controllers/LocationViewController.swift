@@ -26,8 +26,6 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var tableView: UITableView!
     /** Property that represents the button for the screen */
     @IBOutlet weak var button: UIButton!
-    /** Property that represents the location manager of the device */
-    private var manager = CLLocationManager()
 
     // MARK: - Inherited functions from UIView controller
 
@@ -43,9 +41,9 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
             let geocoder = CLGeocoder()
             manager.stopUpdatingLocation()
             geocoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
-                if let placemark = placemarks?.last {
+                if let placemark = placemarks?.last { // get country code
                     NSLog("[CLGeocoder] Log: Placemark country code: \(placemark.isoCountryCode ?? "unknown")")
-                } else if error != nil {
+                } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
                     let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to greverse geocode location",
                                     NSLocalizedFailureReasonErrorKey : "405 - \(error!.localizedDescription)"]
@@ -93,4 +91,32 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
+    // MARK: - IBAction function implementation
+
+    /**
+     Function that performs an action when the menu button is clicked
+     - parameter sender: The identifier of the sender of the action
+     */
+    @IBAction func didPress(_ sender: UIButton) {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+    }
+
+    // MARK: - Functions
+
+    /**
+     Function that pushes a permission denied alert
+     */
+    @objc private func pushAlert() {
+        let alertController = UIAlertController(title: NSLocalizedString("ALERT_LOCATION_TITLE", comment: Tag.Empty), message: NSLocalizedString("ALERT_PERMISSION_DESC", comment: Tag.Empty), preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("ALERT_PERMISSION_CLOSE", comment: Tag.Empty), style: .default, handler: { (action) in
+            exit(0)
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("ALERT_PERMISSION_BUTTON", comment: Tag.Empty), style: .cancel, handler: { (action) in
+            if let url = URL(string: UIApplication.openSettingsURLString) { _ = NetworkUtils.shared.open(url) }
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
 }

@@ -42,6 +42,11 @@
 "ALERT_NETWORK_TITLE"="No connection";
 "ALERT_NETWORK_DESC"="You are currently not online.\nPlease establish an internet connection.";
 
+"ALERT_LOCATION_TITLE"="Location permission missing";
+"ALERT_PERMISSION_DESC"="A required app permission was rejected.\n\nPlease activate the missing permission in the app settings, otherwise the app cannot be used.";
+"ALERT_PERMISSION_BUTTON"="Go to Settings";
+"ALERT_PERMISSION_CLOSE"="Close app";
+
 /* ============================================================================= */
 /* MAIN SCREEN */
 /* ============================================================================= */

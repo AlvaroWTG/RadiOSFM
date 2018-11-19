@@ -42,6 +42,11 @@
 "ALERT_NETWORK_TITLE"="Sin conexión";
 "ALERT_NETWORK_DESC"="Actualmente no está en línea.\nPor favor, establezca una conexión a Internet.";
 
+"ALERT_LOCATION_TITLE"="Permiso de ubicación denegado";
+"ALERT_PERMISSION_DESC"="Un permiso de aplicación requerido fue rechazado.\n\nPor favor, active el permiso que falta en la configuración de la aplicación, de lo contrario la aplicación no se puede utilizar.";
+"ALERT_PERMISSION_BUTTON"="Ir a Ajustes";
+"ALERT_PERMISSION_CLOSE"="Cerrar app";
+
 /* ============================================================================= */
 /* MAIN SCREEN */
 /* ============================================================================= */
