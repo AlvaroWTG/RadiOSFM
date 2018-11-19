@@ -96,6 +96,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.footer.addGestureRecognizer(tapFooter)
         if self.isPlaying { self.refresh() }
 
+        // Setup Search Controller
+        self.configureSearchController()
+
         // Swap Back button
         NotificationCenter.default.post(name: .swapBackButton, object: nil)
     }
@@ -238,6 +241,33 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     // MARK: - Functions
+
+    /**
+     Function that configures the search controller
+     */
+    private func configureSearchController() {
+        self.searchController.searchBar.scopeButtonTitles = self.scopes
+        self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.searchResultsUpdater = self
+        self.searchController.searchBar.delegate = self
+        self.searchController.delegate = self
+        if #available(iOS 11.0, *) { // For iOS 11 and later, place the search bar in the navigation bar.
+            navigationItem.searchController = self.searchController
+            navigationItem.hidesSearchBarWhenScrolling = false
+        } else { // For iOS 10 and earlier, place the search controller's search bar in the table view's header.
+            self.tableView.tableHeaderView = self.searchController.searchBar
+        }
+        definesPresentationContext = true
+        self.searchController.searchBar.tintColor = .white
+        self.searchController.searchBar.barTintColor = .white
+        if let textfield = self.searchController.searchBar.value(forKey: "searchField") as? UITextField {
+            if let subview = textfield.subviews.first {
+                subview.backgroundColor = .white
+                subview.layer.cornerRadius = 10
+                subview.clipsToBounds = true
+            }
+        }
+    }
 
     /**
      Function that deletes a row
