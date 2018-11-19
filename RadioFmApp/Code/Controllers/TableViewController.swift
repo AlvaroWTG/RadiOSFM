@@ -22,7 +22,7 @@ class MainViewCell: UITableViewCell {
     @IBOutlet weak var starView: UIImageView!
 }
 
-class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, RadioDelegate {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate, RadioDelegate {
 
     // MARK: - Properties
 
@@ -38,8 +38,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var iconStation: UIImageView!
     /** Property that represents the image view for the user */
     @IBOutlet weak var iconPlay: UIImageView!
+    /** Property that represents the search controller */
+    private var searchController = UISearchController(searchResultsController: nil)
     /** Property that represents the list of stations for the menu */
     private var stations = [Station]()
+    /** Property that represents the list of filtered results */
+    private var filteredStations = [Station]()
+    /** Property that represents the list of scopes */
+    private var scopes = [NSLocalizedString("SEARCH_SCOPE_ALL", comment: Tag.Empty), NSLocalizedString("SEARCH_SCOPE_NEWS", comment: Tag.Empty),
+                          NSLocalizedString("SEARCH_SCOPE_SPORTS", comment: Tag.Empty), NSLocalizedString("SEARCH_SCOPE_MUSIC", comment: Tag.Empty)]
     /** Property that represents wheter is playing radio or not */
     private var isPlaying = false
     /** Property that represents wheter is favorite screen or not */
