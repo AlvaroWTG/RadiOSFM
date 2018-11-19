@@ -108,8 +108,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
-            if indexPath.row < self.stations.count {
-                let station = self.stations[indexPath.row]
+            let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+            if indexPath.row < listOfStations.count {
+                let station = listOfStations[indexPath.row]
                 cell.iconView.image = UIImage(named: station.iconName)
                 cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
                 cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
@@ -132,7 +133,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.stations.count
+        let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        return listOfStations.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -143,7 +145,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        UserDefaults.standard.set(self.stations[indexPath.row].name, forKey: "selectedStation")
+        let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        UserDefaults.standard.set(listOfStations[indexPath.row].name, forKey: "selectedStation")
         self.selectedRow = indexPath.row
         self.play(indexPath.row)
     }
@@ -154,6 +157,25 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if self.isFavorites && editingStyle == .delete { self.deleteRowAt(indexPath) }
+    }
+
+    // MARK: - Inherited functions from UISearchController delegate
+
+
+    /**
+     Function that evaluates whether the search bar is empty or not
+     - returns: Whether the search bar is empty or not
+     */
+    private func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+
+    /**
+     Function that evaluates whether the search bar is filtering or not
+     - returns: Whether the search bar is filtering or not
+     */
+    private func searchBarIsFiltering() -> Bool {
+        return searchController.isActive && !self.searchBarIsEmpty()
     }
 
     // MARK: - Inherited functions from RadioUtils delegate
@@ -214,7 +236,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     @objc func didTapFooter(_ sender: UITapGestureRecognizer) {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
-            viewController.station = self.stations[self.selectedRow]
+            let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+            viewController.station = listOfStations[self.selectedRow]
             viewController.isPlaying = self.isPlaying
             self.navigationController?.pushViewController(viewController, animated: true)
         }
@@ -229,7 +252,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let indexPath = IndexPath(row: row, section: 0)
             if let cell = self.tableView.cellForRow(at: indexPath) as? MainViewCell {
                 if !self.isFavorites {
-                    let station = self.stations[row]
+                    let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+                    let station = listOfStations[row]
                     if station.isFavorite {
                         station.isFavorite = false
                     } else { station.isFavorite = true }
@@ -274,9 +298,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter indexPath: The indexPath of the cell
      */
     private func deleteRowAt(_ indexPath: IndexPath) {
-        if indexPath.row < self.stations.count {
+        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        if indexPath.row < listOfStations.count {
             self.populateFavorites(indexPath.row, isAdding: false)
-            self.stations.remove(at: indexPath.row)
+            listOfStations.remove(at: indexPath.row)
             self.tableView.beginUpdates()
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
             self.tableView.endUpdates()
@@ -311,8 +336,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      */
     private func play(_ row: Int) {
-        if row < self.stations.count {
-            RadioUtils.shared.configure(self.stations[row].url)
+        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        if row < listOfStations.count {
+            RadioUtils.shared.configure(listOfStations[row].url)
             RadioUtils.shared.delegate = self
         } else { // error
             NSLog("Error! Cell indexPath.row out of bounds!")
@@ -328,8 +354,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter isAdding: Whether is adding new or not
      */
     private func populateFavorites(_ row: Int, isAdding: Bool) {
-        if row < self.stations.count {
-            let station = self.stations[row]
+        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        if row < listOfStations.count {
+            let station = listOfStations[row]
             if !isAdding { // remove
                 LocalDatabase.standard.remove(station)
             } else { LocalDatabase.standard.add(station.name, url: station.url) } // add
