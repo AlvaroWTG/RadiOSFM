@@ -155,6 +155,15 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Functions
 
     /**
+     Function that removes the present view controller
+     - parameter sender: The button sender of the action
+     */
+    @objc private func didPressBack(_ sender: UIButton?) {
+        self.navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: .swapBackButton, object: nil)
+    }
+
+    /**
      Function that pushes a permission denied alert
      */
     @objc private func pushAlert() {

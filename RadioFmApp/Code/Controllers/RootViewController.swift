@@ -102,7 +102,8 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     @objc func swapBackButton(_ notification: Notification) {
         if notification.name == .swapBackButton {
             let menuTitles = [NSLocalizedString("MENU_ITEM_ZERO", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_ONE", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_TWO", comment: Tag.Empty),
-                              NSLocalizedString("MENU_ITEM_THREE", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FOUR", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FIVE", comment: Tag.Empty)]
+                              NSLocalizedString("MENU_ITEM_THREE", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FOUR", comment: Tag.Empty), NSLocalizedString("MENU_ITEM_FIVE", comment: Tag.Empty),
+                              NSLocalizedString("COUNTRY_TITLE", comment: Tag.Empty)]
 //            let titleView = self.navigationController?.topViewController?.navigationItem.titleView
             let navigationTitle = self.navigationController?.topViewController?.navigationItem.title
             if navigationTitle != nil && menuTitles.contains(navigationTitle!) {
@@ -151,7 +152,7 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
      */
     @objc func popToHomeScreen(_ notification: Notification) {
         if notification.name == .homeNotification {
-            self.push("TableViewController", animated: false)
+            self.push("LocationViewController", animated: false)
             self.menuWillShow(nil)
         }
     }
@@ -184,6 +185,8 @@ class RootViewController: UIViewController, UIPickerViewDataSource, UIPickerView
             viewController = storyboard.instantiateViewController(withIdentifier: identifier)
             UserDefaults.standard.set(false, forKey: "isFavorites")
         } else if identifier == "LaunchViewController" { // launch
+            viewController = storyboard.instantiateViewController(withIdentifier: identifier)
+        } else if identifier == "LocationViewController" { // location screen
             viewController = storyboard.instantiateViewController(withIdentifier: identifier)
         } else { viewController = nil }
         if let viewController = viewController { // push view controller
