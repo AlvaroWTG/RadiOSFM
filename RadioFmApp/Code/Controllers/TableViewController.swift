@@ -161,6 +161,20 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // MARK: - Inherited functions from UISearchController delegate
 
+    func updateSearchResults(for searchController: UISearchController) {
+        if let text = searchController.searchBar.text {
+            let searchBar = searchController.searchBar
+            let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+            self.filterForSearchText(text, scope: scope)
+        }
+    }
+
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        if let text = searchController.searchBar.text {
+            let scope = searchBar.scopeButtonTitles![selectedScope]
+            self.filterForSearchText(text, scope: scope)
+        }
+    }
 
     /**
      Function that evaluates whether the search bar is empty or not
@@ -307,6 +321,20 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.tableView.endUpdates()
             self.tableView.reloadData()
         }
+    }
+
+    /**
+     Function that filters the table with search text
+     - parameter searchText: The search text found from search bar
+     - parameter scope: The string-value for the scope
+     */
+    private func filterForSearchText(_ searchText: String, scope: String) {
+        self.filteredStations = self.stations.filter({( station : Station) -> Bool in
+            let doesCategoryMatch = (scope == self.scopes[0]) || (station.category == scope)
+            let stationContainText = station.name.lowercased().contains(searchText.lowercased())
+            return self.searchBarIsEmpty() ? doesCategoryMatch : doesCategoryMatch && stationContainText
+        })
+        self.tableView.reloadData()
     }
 
     /**
