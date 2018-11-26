@@ -146,7 +146,7 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     private func activateSession() throws {
         let session = AVAudioSession.sharedInstance()
         do { // Try to setup the audio sesion and read the volume
-            try session.setActive(true)
+            try session.setActive(true, options: .notifyOthersOnDeactivation)
             self.outputVolume = session.outputVolume
         } catch {
             NSLog("[AVAudioSession] Error! An error ocurred activating the audioSession. Error 500 - \(error.localizedDescription)")
@@ -160,7 +160,6 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
      Function that deactivates the audio session
      */
     private func deactivateSession() {
-        NotificationCenter.default.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
         if let synthesizer = self.synthesizer { // stop synthesizer
             if synthesizer.isSpeaking { synthesizer.stopSpeaking(at: .immediate) }
             synthesizer.delegate = nil
@@ -172,7 +171,9 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
             self.player = nil
         }
         do { // Try to deactive the audio sesion
-            try AVAudioSession.sharedInstance().setActive(false)
+            let session = AVAudioSession.sharedInstance()
+            try session.setActive(false, options: .notifyOthersOnDeactivation)
+            NotificationCenter.default.removeObserver(self, name: AVAudioSession.routeChangeNotification, object: nil)
         } catch {
             NSLog("[AVAudioSession] Error! An error ocurred deactivating the audioSession. Error 501 - \(error.localizedDescription)")
             let userInfo = [NSLocalizedDescriptionKey : "AVAudioSession - Error deactivating the audioSession",
