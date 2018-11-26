@@ -262,8 +262,8 @@ class NetworkUtils: NSObject {
                 NSLog(success ? "[UIApplication] Log: URL '\(url.absoluteString)' opened successfully" : messageError)
                 if !success {
                     let userInfo = [NSLocalizedDescriptionKey : "UIApplication - unknown error trying to open URL '\(url.absoluteString)'",
-                                    NSLocalizedFailureReasonErrorKey : "502"]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+                                    NSLocalizedFailureReasonErrorKey : "unknown error trying to open URL"]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 502, userInfo: userInfo))
                 }
             }
             result = success

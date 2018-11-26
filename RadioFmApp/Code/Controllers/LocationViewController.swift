@@ -100,13 +100,13 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                 } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
                     let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to greverse geocode location",
-                                    NSLocalizedFailureReasonErrorKey : "405 - \(error!.localizedDescription)"]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+                                    NSLocalizedFailureReasonErrorKey : error!.localizedDescription]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 405, userInfo: userInfo))
                 } else { // placemark not found
                     NSLog("Error! An error occurred with reverse geodecode location! Error 406 - Last placemark not found")
                     let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to get last placemark",
-                                    NSLocalizedFailureReasonErrorKey : "406 - Last placemark not found"]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+                                    NSLocalizedFailureReasonErrorKey : "Last placemark not found"]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 406, userInfo: userInfo))
                 }
             })
         }
@@ -116,8 +116,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         manager.stopUpdatingLocation()
         NSLog("Error! Location didFailWithError! Error 404 - \(error.localizedDescription)")
         let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Location didFailWithError",
-                        NSLocalizedFailureReasonErrorKey : "404 - \(error.localizedDescription)"]
-        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+                        NSLocalizedFailureReasonErrorKey : error.localizedDescription]
+        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 404, userInfo: userInfo))
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
