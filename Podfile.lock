@@ -1,10 +1,10 @@
 PODS:
-  - Alamofire (4.7.3)
-  - Crashlytics (3.11.1):
-    - Fabric (~> 1.8.1)
-  - Fabric (1.8.2)
-  - FRadioPlayer (0.1.11)
-  - Mute (0.3.0)
+  - Alamofire (4.8.1)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
+  - Fabric (1.9.0)
+  - FRadioPlayer (0.1.15)
+  - Mute (0.4.0)
   - ReachabilitySwift (4.3.0)
   - Toast (4.0.0)
   - ViewDeck (3.1.0)
@@ -31,11 +31,11 @@ SPEC REPOS:
     - ViewDeck
 
 SPEC CHECKSUMS:
-  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  Crashlytics: ca7ab4bc304aa216bdc2e4c1a96389ee77252203
-  Fabric: d2b22f443ba195d8a7cc204da230977c72733b40
-  FRadioPlayer: 27b1b7dd33d12ff01b67dc57c89999baf0bbb3e6
-  Mute: 448b37cf5b12dd87f742dcea6141898e25422dea
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  FRadioPlayer: 0ad8b63756c3597af3c4a2672334c5dc22e026e4
+  Mute: 59d71529fec513c129fd799104fec292e2485e4c
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   ViewDeck: 942d90dd23c9f97cc8038be352255378167edcca
