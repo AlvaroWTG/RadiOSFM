@@ -34,11 +34,10 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 
         // Initial backend request
         if NetworkUtils.shared.isOnline() {
-            Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.dismissLaunch), userInfo: nil, repeats: false)
-//            DispatchQueue.global(qos: .background).async {
-//                NetworkUtils.shared.delegate = self
-//                NetworkUtils.shared.post(0)
-//            }
+            DispatchQueue.global(qos: .background).async {
+                NetworkUtils.shared.delegate = self
+                NetworkUtils.shared.post(0)
+            }
         } else {
             let position = CSToastPositionCenter
             let duration = CSToastManager.defaultDuration()
@@ -60,27 +59,12 @@ class LaunchViewController: UIViewController, NetworkDelegate {
     // MARK: - Inherited functions from Network utils delegate
 
     func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?) {
-//        let response = message ?? Tag.Unknown
-//        if status == 200 { // success
-//            NSLog("[HTTP] Log: \(status) - Available version: \(response)")
-//            if let parameters = OSUtils.shared.getProjectParameters() {
-//                let projectVersion = ParserUtils.shared.substring(parameters[0], key: Tag.Dot, isPrefix: true)
-//                if response > projectVersion { // update available
-//                    UserDefaults.standard.set(true, forKey: "updateAvailable")
-//                    DispatchQueue.main.async { self.toggleDialog(true, response: response) }
-//                } else { // same version
-//                    UserDefaults.standard.set(false, forKey: "updateAvailable")
-//                    NSLog("[HTTP] Log: No update available...")
-//                }
-//            }
-//        } else {
-//            UserDefaults.standard.set(false, forKey: "updateAvailable")
-//            NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
-//            let userInfo = [NSLocalizedDescriptionKey : "Versionscheck request failed",
-//                            NSLocalizedFailureReasonErrorKey : "Response returned \(status) - \(response)",
-//                NSLocalizedRecoverySuggestionErrorKey : "Is the server up and running?"]
-//            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
-//        }
+        let response = message ?? Tag.Unknown
+        if status == 200 { // success
+        } else { // error
+            NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
+        }
     }
 
     // MARK: - Function
