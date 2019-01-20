@@ -396,4 +396,34 @@ class NetworkUtils: NSObject {
             self.isLive = true
         }catch { NSLog("[Reachability] Error 404 - Could not start reachability notifier!") }
     }
+
+    // MARK: -  JSON de-/serialization functions
+
+    /**
+     Function that obtain a json from the serialized one
+     - parameter serializedJson: The JSON object serialized
+     - returns: The json object obtained from the body
+     */
+    func deserialize(_ serializedJson: Data) -> [String : Any]? {
+        do { // try to deserialize the data
+            let json = try JSONSerialization.jsonObject(with: serializedJson, options: .mutableContainers)
+            if Verbose.Active { NSLog("Log: Connection didFinishLoading. JSON: \(json)") }
+            if let jsonObject = json as? [String : Any] {
+                return jsonObject
+            } else { return nil }
+        } catch let error as NSError { NSLog("Error! JSON -> Dictionary serialization didFailWithError!\nError \(error.code) - \(error.localizedDescription))") }
+        return nil
+    }
+
+    /**
+     Function that serializes a JSON object
+     - parameter json: The JSON object received for the body
+     - returns: The JSON object serialized
+     */
+    func serialize(_ json: [String : Any]) -> Data? {
+        do { // try to serialize the data
+            return try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+        } catch let error as NSError { NSLog("Error! Dictionary -> JSON serialization didFailWithError!\nError \(error.code) - \(error.localizedDescription)") }
+        return nil
+    }
 }
