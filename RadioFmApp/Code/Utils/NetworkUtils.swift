@@ -332,6 +332,27 @@ class NetworkUtils: NSObject {
     // MARK: - Auxiliary functions
 
     /**
+     Function that gets the request session
+     - parameter level: The level of request
+     - returns: The request session created
+     */
+    private func getRequestAt(_ level: Int) -> String {
+        let origin = "https://des.hertzify.com/api"
+        var stringBuilder = Tag.Empty
+        switch level {
+            case 0: // GET countries
+                stringBuilder = "\(origin)/countries"
+                if Verbose.Active { NSLog("[HTTP] Log: Sending GET request \(stringBuilder)") }
+                break
+            case 1: // contract submission
+                stringBuilder = ""
+                if Verbose.Active { NSLog("[HTTP] Log: Sending POST request \(stringBuilder)") }
+            default: break
+        }
+        return stringBuilder
+    }
+
+    /**
      Function that reads the status bar
      - parameter keySubview: The subview key to look for
      - parameter key: The item key to look for
