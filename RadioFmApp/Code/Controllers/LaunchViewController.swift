@@ -61,6 +61,12 @@ class LaunchViewController: UIViewController, NetworkDelegate {
     func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?) {
         let response = message ?? Tag.Unknown
         if status == 200 { // success
+            if let jsonData = UserDefaults.standard.data(forKey: "responseJsonData") {
+                if let json = NetworkUtils.shared.deserialize(jsonData) {
+                    let content = json["data"]
+                    NSLog("json content \(content[0])")
+                }
+            }
         } else { // error
             NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
             Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
