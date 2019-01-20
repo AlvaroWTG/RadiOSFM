@@ -276,32 +276,24 @@ class NetworkUtils: NSObject {
      - parameter level: The level of request
      */
     func post(_ level: Int) {
-//        let isGetMethod = level == 0
         if NetworkUtils.shared.isOnline() {
-//            if let url = URL(string: self.getRequestAt(level)) {
-//                let request = NSMutableURLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
-//                request.httpMethod = isGetMethod ? "GET" : "POST"
-//                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//                if !isGetMethod { // needs http body
-//                    if let httpBody = self.createHttpBody() { // valid body
-//                        if Verbose.Active { NSLog("[HTTP] Log: Serialized JSON \(httpBody)") }
-//                        request.httpBody = Intractable.server.serialize(httpBody)
-//                    }
-//                }
-//                let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
-//                    if let httpResponse = response as? HTTPURLResponse {
-//                        if let data = data { // valid data
-//                            let dataString = String(data: data, encoding: .utf8)
-//                            UserDefaults.standard.set(data, forKey: "responseJsonData")
-//                            if httpResponse.statusCode == 200 { _ = Intractable.server.deserialize(data) }
-//                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: dataString) }
-//                        } else if let error = error { // error
-//                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: error.localizedDescription) }
-//                        } else { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: nil, message: "No data found in response") }
-//                    }
-//                }
-//                task.resume()
-//            }
+            if let url = URL(string: self.getRequestAt(level)) {
+                let request = NSMutableURLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
+                request.httpMethod = "GET"
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
+                    if let httpResponse = response as? HTTPURLResponse {
+                        if let data = data { // valid data
+                            let dataString = String(data: data, encoding: .utf8)
+                            UserDefaults.standard.set(data, forKey: "responseJsonData")
+                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: dataString) }
+                        } else if let error = error { // error
+                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: error.localizedDescription) }
+                        } else { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: nil, message: "No data found in response") }
+                    } else { self.delegate?.util(self, didReceiveResponse: 408, error: error, message: "Request timeout") }
+                }
+                task.resume()
+            }
         } else { self.delegate?.util(self, didReceiveResponse: 523, error: nil, message: "No internet connection") }
     }
 
