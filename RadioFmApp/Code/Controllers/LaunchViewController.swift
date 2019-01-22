@@ -58,15 +58,18 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 
     // MARK: - Inherited functions from Network utils delegate
 
-    func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?) {
-        let response = message ?? Tag.Unknown
+    func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?) {
         if status == 200 { // success
-            if let jsonData = UserDefaults.standard.data(forKey: "responseJsonData") {
-                if let json = NetworkUtils.shared.deserialize(jsonData) { if let countries = json["data"] as? [Any] { LocalDatabase.standard.parseCountries(countries) } }
+            if let json = NetworkUtils.shared.deserialize(data) {
+                if let countries = json["data"] as? [Any] {
+                    LocalDatabase.standard.parseCountries(countries)
+                }
             }
         } else { // error
-            NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
+            if let response = String(data: data, encoding: .utf8) {
+                NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
+                Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
+            }
         }
         DispatchQueue.main.async { self.dismissLaunch() }
     }
