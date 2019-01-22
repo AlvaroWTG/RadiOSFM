@@ -14,14 +14,14 @@ import Reachability
 import SystemConfiguration.CaptiveNetwork
 
 protocol NetworkDelegate: class {
-    
+
     /**
      This method is invoked when the util receives a response.
      - parameter util: The util instance that handles communication
-     - parameter error: The error value of the response
      - parameter message: The string value of the message
+     - parameter error: The error value of the response
      */
-    func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?)
+    func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?)
 }
 
 class NetworkUtils: NSObject {
@@ -284,17 +284,30 @@ class NetworkUtils: NSObject {
                 let task = URLSession.shared.dataTask(with: request as URLRequest) { (data, response, error) in
                     if let httpResponse = response as? HTTPURLResponse {
                         if let data = data { // valid data
-                            let dataString = String(data: data, encoding: .utf8)
                             UserDefaults.standard.set(data, forKey: "responseJsonData")
-                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: dataString) }
+                            self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, data: data, error: error)
                         } else if let error = error { // error
-                            if self.delegate != nil { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: error, message: error.localizedDescription) }
-                        } else { self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, error: nil, message: "No data found in response") }
-                    } else { self.delegate?.util(self, didReceiveResponse: 408, error: error, message: "Request timeout") }
+                            if let errorData = error.localizedDescription.data(using: .utf8) {
+                                self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, data: errorData, error: error)
+                            }
+                        } else { // unknown error
+                            if let errorData = "No data found in response".data(using: .utf8) {
+                                self.delegate?.util(self, didReceiveResponse: httpResponse.statusCode, data: errorData, error: nil)
+                            }
+                        }
+                    } else { // timeout
+                        if let errorData = "Request timeout".data(using: .utf8) {
+                            self.delegate?.util(self, didReceiveResponse: 408, data: errorData, error: error)
+                        }
+                    }
                 }
                 task.resume()
             }
-        } else { self.delegate?.util(self, didReceiveResponse: 523, error: nil, message: "No internet connection") }
+        } else { // offline
+            if let errorData = "No internet connection".data(using: .utf8) {
+                self.delegate?.util(self, didReceiveResponse: 523, data: errorData, error: nil)
+            }
+        }
     }
 
     /**
