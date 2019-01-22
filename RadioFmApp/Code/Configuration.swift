@@ -57,6 +57,13 @@ struct Encode {
     static let Name = "stationName"
     static let Popularity = "stationPopularity"
     static let URL = "stationURL"
+    static let DateCreated = "countryDateCreated"
+    static let DateUpdated = "countryDateUpdated"
+    static let Id = "countryID"
+    static let CountryName = "countryName"
+    static let CountryLocalName = "countryLocalName"
+    static let Iso = "isoCountryCode"
+    static let ImageUrl = "countryImageUrl"
 }
 
 // Constants for string tags

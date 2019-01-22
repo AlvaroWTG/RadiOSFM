@@ -9,6 +9,75 @@
 import UIKit
 import Crashlytics
 
+class Country: NSObject, NSCoding {
+
+    // MARK: - Properties
+
+    /** Property that represents the date of creation */
+    var dateCreated = Tag.Empty
+    /** Property that represents the date of updated */
+    var dateUpdated = Tag.Empty
+    /** Property that represents the country identifier */
+    var identifier = 0
+    /** Property that represents the country name */
+    var name = Tag.Empty
+    /** Property that represents the country localized name */
+    var localizedName = Tag.Empty
+    /** Property that represents the ISO country code */
+    var isoCode = Tag.Empty
+    /** Property that represents the URL of the country image */
+    var url = Tag.Empty
+
+    // MARK: - Functions
+
+    /**
+     Initializes the station as default
+     */
+    override init() {
+        self.localizedName = Tag.Empty
+        self.dateCreated = Tag.Empty
+        self.dateUpdated = Tag.Empty
+        self.identifier = 0
+        self.isoCode = Tag.Empty
+        self.name = Tag.Empty
+        self.url = Tag.Empty
+    }
+
+    /**
+     Function to initialize the instance with some parameters
+     - parameter parameters: The list of parameters
+     */
+    init(_ parameters: [String : Any]) {
+        if let localizedName = parameters["nombre"] as? String { self.localizedName = localizedName }
+        if let dateCreated = parameters["created_at"] as? String { self.dateCreated = dateCreated }
+        if let dateUpdated = parameters["updated_at"] as? String { self.dateUpdated = dateUpdated }
+        if let identifier = parameters["id"] as? Int { self.identifier = identifier }
+        if let isoCode = parameters["iso"] as? String { self.isoCode = isoCode }
+        if let name = parameters["name"] as? String { self.name = name }
+        if let url = parameters["image"] as? String { self.url = url }
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.localizedName, forKey: Encode.CountryLocalName)
+        aCoder.encode(self.dateCreated, forKey: Encode.DateCreated)
+        aCoder.encode(self.dateUpdated, forKey: Encode.DateUpdated)
+        aCoder.encode(self.name, forKey: Encode.CountryName)
+        aCoder.encode(self.identifier, forKey: Encode.Id)
+        aCoder.encode(self.url, forKey: Encode.ImageUrl)
+        aCoder.encode(self.isoCode, forKey: Encode.Iso)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        if let value = aDecoder.decodeObject(forKey: Encode.CountryLocalName) as? String { self.localizedName = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.DateCreated) as? String { self.dateCreated = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.DateUpdated) as? String { self.dateUpdated = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.CountryName) as? String { self.name = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.url = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Iso) as? String { self.isoCode = value }
+        self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
+    }
+}
+
 class Station: NSObject, NSCoding {
 
     // MARK: - Properties
