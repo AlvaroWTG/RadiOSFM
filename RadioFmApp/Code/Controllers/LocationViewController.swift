@@ -28,6 +28,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var button: UIButton!
     /** Property that represents the location manager of the device */
     private var manager: CLLocationManager?
+    /** Property that represents the country found */
+    private var country: Country?
     /** Property that represents whether the new view controller is required */
     private var requiredPush = true
 
@@ -78,8 +80,9 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let country = LocalDatabase.standard.getCountry(indexPath.row) {
-            NSLog("Log: user didSelectRowAt \(country.name)")
-            self.push(country, animated: true)
+            NetworkUtils.shared.delegate = self
+            NetworkUtils.shared.post(1)
+            self.country = country
         }
     }
 
@@ -93,7 +96,10 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                 if let placemark = placemarks?.last { // get country code
                     NSLog("[CLGeocoder] Log: Placemark country code: \(placemark.isoCountryCode ?? "unknown")")
                     if let country = LocalDatabase.standard.getCountry(placemark.isoCountryCode) {
-                        if self.requiredPush { self.push(country, animated: true) }
+                        NetworkUtils.shared.delegate = self
+                        NetworkUtils.shared.post(1)
+                        self.country = country
+//                        if self.requiredPush { self.push(country, animated: true) }
                     }
                 } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")

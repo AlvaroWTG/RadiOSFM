@@ -344,7 +344,7 @@ class NetworkUtils: NSObject {
                 stringBuilder = "\(origin)/countries"
                 if Verbose.Active { NSLog("[HTTP] Log: Sending GET request \(stringBuilder)") }
                 break
-            case 1: // contract submission
+            case 1: // GET stations
                 stringBuilder = ""
                 if Verbose.Active { NSLog("[HTTP] Log: Sending POST request \(stringBuilder)") }
             default: break
