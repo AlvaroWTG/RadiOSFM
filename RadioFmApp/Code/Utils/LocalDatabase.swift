@@ -228,22 +228,40 @@ class LocalDatabase: NSObject {
     }
 
     /**
-     Function that gets the radio station by name
-     - parameter name: The string-value for the name
-     - returns: The radio station instance
+     Function that gets the country by index
+     - parameter index: The index of the list
+     - returns: The country instance
      */
-    func getStation(_ name: String) -> Station? {
-        for item in self.favorites { if let favorite = item as? Station { if favorite.name == name { return favorite } } }
+    func getCountry(_ index: Int) -> Country? {
+        if index < self.countries.count { // found country
+            if let country = self.countries[index] as? Country { return country }
+        }
         return nil
     }
 
     /**
      Function that gets the radio station by name
+     - parameter name: The string-value for the name
+     - returns: The radio station instance
+     */
+    func getStation(_ name: String) -> Station? {
+        for item in self.favorites { // found station
+            if let favorite = item as? Station {
+                if favorite.name == name { return favorite }
+            }
+        }
+        return nil
+    }
+
+    /**
+     Function that gets the radio station by index
      - parameter index: The index of the list
      - returns: The radio station instance
      */
     func getStation(_ index: Int) -> Station? {
-        if index < self.favorites.count { if let favorite = self.favorites[index] as? Station { return favorite } }
+        if index < self.favorites.count { // found station
+            if let favorite = self.favorites[index] as? Station { return favorite }
+        }
         return nil
     }
 
