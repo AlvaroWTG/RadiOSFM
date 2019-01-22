@@ -240,12 +240,28 @@ class LocalDatabase: NSObject {
     }
 
     /**
+     Function that gets the country by isoCountryCode
+     - parameter isoCountryCode: The isoCountryCode of the country
+     - returns: The country instance
+     */
+    func getCountry(_ isoCountryCode: String?) -> Country? {
+        if let isoCountryCode = isoCountryCode {
+            for item in self.countries { // loop on countries
+                if let country = item as? Country {
+                    if country.isoCode == isoCountryCode { return country }
+                }
+            }
+        }
+        return nil
+    }
+
+    /**
      Function that gets the radio station by name
      - parameter name: The string-value for the name
      - returns: The radio station instance
      */
     func getStation(_ name: String) -> Station? {
-        for item in self.favorites { // found station
+        for item in self.favorites { // loop on favorites
             if let favorite = item as? Station {
                 if favorite.name == name { return favorite }
             }
