@@ -26,8 +26,6 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var tableView: UITableView!
     /** Property that represents the button for the screen */
     @IBOutlet weak var button: UIButton!
-    /** Property that represents the list of countries for the menu */
-    private var countries = [String]()
     /** Property that represents the location manager of the device */
     private var manager: CLLocationManager?
     /** Property that represents whether the new view controller is required */
@@ -42,9 +40,6 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         self.navigationController?.topViewController?.navigationItem.title = NSLocalizedString("COUNTRY_TITLE", comment: Tag.Empty)
 
         // Setup table view controller and model
-        self.countries = ["COUNTRY_0", "COUNTRY_1", "COUNTRY_2", "COUNTRY_3", "COUNTRY_4", "COUNTRY_5", "COUNTRY_6", "COUNTRY_7", "COUNTRY_8", "COUNTRY_9",
-                          "COUNTRY_10", "COUNTRY_11", "COUNTRY_12", "COUNTRY_13", "COUNTRY_14", "COUNTRY_15", "COUNTRY_16", "COUNTRY_17", "COUNTRY_18", "COUNTRY_19",
-                          "COUNTRY_20", "COUNTRY_21", "COUNTRY_22", "COUNTRY_23", "COUNTRY_24", "COUNTRY_25", "COUNTRY_26", "COUNTRY_27"]
         self.button.setTitle(NSLocalizedString("COUNTRY_BUTTON", comment: Tag.Empty).uppercased(), for: .normal)
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.dataSource = self
@@ -59,7 +54,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationViewCell", for: indexPath) as? LocationViewCell {
-            cell.labelTitle.text = NSLocalizedString(self.countries[indexPath.row], comment: Tag.Empty)
+            if let country = LocalDatabase.standard.getCountry(indexPath.row) { cell.labelTitle.text = country.name }
             cell.backgroundColor = .white
             return cell
         }
@@ -67,7 +62,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.countries.count
+        return LocalDatabase.standard.countries.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -81,10 +76,11 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: - Inherited functions from UITableView delegate
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let country = NSLocalizedString(self.countries[indexPath.row], comment: Tag.Empty)
         tableView.deselectRow(at: indexPath, animated: true)
-        NSLog("Log: user didSelectRowAt \(country)")
-        self.push(true)
+        if let country = LocalDatabase.standard.getCountry(indexPath.row) {
+            NSLog("Log: user didSelectRowAt \(country.name)")
+            self.push(true)
+        }
     }
 
     // MARK: - Inherited functions from Core location manager
