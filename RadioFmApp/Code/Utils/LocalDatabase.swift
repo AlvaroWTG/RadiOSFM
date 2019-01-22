@@ -159,6 +159,8 @@ class LocalDatabase: NSObject {
 
     /** Property that represents the list of favorites stations */
     var favorites: NSMutableArray = NSMutableArray()
+    /** Property that represents the list of countries */
+    var countries: NSMutableArray = NSMutableArray()
 
     // MARK: - Singleton
 
@@ -259,6 +261,22 @@ class LocalDatabase: NSObject {
             }
             self.favorites = storedFavorites
         } else if Verbose.Active { NSLog("[LocalDB] Log: No favorites found in database...") }
+    }
+
+    /**
+     Function that fill the countries
+     - parameter list: The list of countries
+     */
+    func parseCountries(_ list: [Any]) {
+        if self.countries.count == 0 { self.countries = NSMutableArray() }
+        for element in list { // loop around countries
+            if let parameters = element as? [String : Any] {
+                let country = Country(parameters)
+                self.countries.add(country)
+                if Verbose.Active { NSLog("[LocalDB] Log: Added \(country.name)...") }
+            }
+        }
+        if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.countries.count) countries...") }
     }
 
     /**
