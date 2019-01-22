@@ -18,7 +18,7 @@ class LocationViewCell: UITableViewCell {
     @IBOutlet weak var labelTitle: UILabel!
 }
 
-class LocationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
+class LocationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, NetworkDelegate {
 
     // MARK: - Properties
 
@@ -146,6 +146,18 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                 if Verbose.Active { NSLog("[CoreLocation] Error! Location access is denied!") }
                 self.performSelector(onMainThread: #selector(self.pushAlert), with: nil, waitUntilDone: false)
                 break
+        }
+    }
+
+    // MARK: - Inherited functions from Network utils delegate
+
+    func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?) {
+        let response = message ?? Tag.Unknown
+        if status == 200 { // success
+            DispatchQueue.main.async { self.push(self.country, animated: true) }
+        } else { // error
+            NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
+            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
         }
     }
 
