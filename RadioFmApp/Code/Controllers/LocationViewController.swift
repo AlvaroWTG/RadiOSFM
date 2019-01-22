@@ -151,13 +151,14 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
 
     // MARK: - Inherited functions from Network utils delegate
 
-    func util(_ util: NetworkUtils, didReceiveResponse status: Int, error: Error?, message: String?) {
-        let response = message ?? Tag.Unknown
+    func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?) {
         if status == 200 { // success
             DispatchQueue.main.async { self.push(self.country, animated: true) }
         } else { // error
-            NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
+            if let response = String(data: data, encoding: .utf8) {
+                NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
+                Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: status, userInfo: [NSLocalizedDescriptionKey : response]))
+            }
         }
     }
 
