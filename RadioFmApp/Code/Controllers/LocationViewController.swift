@@ -152,10 +152,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?) {
         if status == 200 { // success
-            if let json = NetworkUtils.shared.deserialize(data) {
-                if let stations = json["data"] as? [Any] {
-                    LocalDatabase.standard.parseStations(stations)
-                }
+            if let json = NetworkUtils.shared.deserialize(data) { // get json
+                if let stations = json["data"] as? [Any] { LocalDatabase.standard.parse(1, list: stations) }
             }
             DispatchQueue.main.async { self.push(true) }
         } else { // error

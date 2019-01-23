@@ -60,10 +60,8 @@ class LaunchViewController: UIViewController, NetworkDelegate {
 
     func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?) {
         if status == 200 { // success
-            if let json = NetworkUtils.shared.deserialize(data) {
-                if let countries = json["data"] as? [Any] {
-                    LocalDatabase.standard.parseCountries(countries)
-                }
+            if let json = NetworkUtils.shared.deserialize(data) { // get json
+                if let countries = json["data"] as? [Any] { LocalDatabase.standard.parse(0, list: countries) }
             }
         } else { // error
             if let response = String(data: data, encoding: .utf8) {

@@ -318,35 +318,38 @@ class LocalDatabase: NSObject {
     }
 
     /**
-     Function that fill the countries
-     - parameter list: The list of countries
-     */
-    func parseCountries(_ list: [Any]) {
-        if self.countries.count == 0 { self.countries = NSMutableArray() }
-        for element in list { // loop around countries
-            if let parameters = element as? [String : Any] {
-                let country = Country(parameters)
-                self.countries.add(country)
-                if Verbose.Active { NSLog("[LocalDB] Log: Added \(country.name)...") }
-            }
-        }
-        if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.countries.count) countries...") }
-    }
-
-    /**
-     Function that fill the stations for a country
+     Function that fill the list from a response
+     - parameter level: The level of response
      - parameter list: The list of stations
      */
-    func parseStations(_ list: [Any]) {
-        if self.stations.count == 0 { self.stations = NSMutableArray() }
-        for element in list { // loop around countries
-            if let parameters = element as? [String : Any] {
-                let station = Station(parameters)
-                self.stations.add(station)
-                if Verbose.Active { NSLog("[LocalDB] Log: Added \(station.name)...") }
-            }
+    func parse(_ level: Int, list: [Any]) {
+        switch level {
+            case 0: // countries
+                if self.countries.count == 0 { self.countries = NSMutableArray() }
+                for element in list { // loop around countries
+                    if let parameters = element as? [String : Any] {
+                        let country = Country(parameters)
+                        self.countries.add(country)
+                        if Verbose.Active { NSLog("[LocalDB] Log: Added \(country.name)...") }
+                    }
+                }
+                if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.countries.count) countries...") }
+                break
+            case 1: // stations
+                if self.stations.count == 0 { self.stations = NSMutableArray() }
+                for element in list { // loop around countries
+                    if let parameters = element as? [String : Any] {
+                        let station = Station(parameters)
+                        self.stations.add(station)
+                        if Verbose.Active { NSLog("[LocalDB] Log: Added \(station.name)...") }
+                    }
+                }
+                if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.stations.count) stations...") }
+                break
+            default: // invalid level
+                NSLog("[HTTP] Error! Invalid response level!")
+                break
         }
-        if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.stations.count) stations...") }
     }
 
     /**
