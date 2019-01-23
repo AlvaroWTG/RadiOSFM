@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 import Crashlytics
 
 class Country: NSObject, NSCoding {
@@ -51,6 +52,7 @@ class Country: NSObject, NSCoding {
      - parameter parameters: The list of parameters
      */
     init(_ parameters: [String : Any]) {
+        super.init()
         if let value = parameters["nombre"] as? String { self.localizedName = value }
         if let value = parameters["created_at"] as? String { self.dateCreated = value }
         if let value = parameters["updated_at"] as? String { self.dateUpdated = value }
@@ -58,6 +60,17 @@ class Country: NSObject, NSCoding {
         if let value = parameters["iso"] as? String { self.isoCode = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
+        if let url = URL(string: self.imageUrl) {
+            Alamofire.request(url).responseData { (response) in
+                if let error = response.error as NSError? { // error
+                    NSLog("[HTTP] Error \(error.code)  - \(error.localizedDescription)")
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
+                } else if let data = response.data {
+                    if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
+                    if let image = UIImage(data: data) { self.image = image }
+                }
+            }
+        }
     }
 
     func encode(with aCoder: NSCoder) {
