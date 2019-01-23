@@ -63,21 +63,31 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-5j-DwU">
+                                                    <rect key="frame" x="15" y="14" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="Doc-Lu-GUO"/>
+                                                        <constraint firstAttribute="width" constant="30" id="thZ-Yf-piY"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOQ-tQ-Rl3">
-                                                    <rect key="frame" x="15" y="0.0" width="290" height="60"/>
+                                                    <rect key="frame" x="62" y="0.0" width="243" height="60"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="lOQ-tQ-Rl3" firstAttribute="leading" secondItem="y2y-ws-2WU" secondAttribute="leading" constant="15" id="3jk-as-1cN"/>
                                                 <constraint firstAttribute="trailing" secondItem="lOQ-tQ-Rl3" secondAttribute="trailing" constant="15" id="5ki-xL-ktk"/>
+                                                <constraint firstItem="lOQ-tQ-Rl3" firstAttribute="leading" secondItem="Hqo-5j-DwU" secondAttribute="trailing" constant="17" id="B1f-jG-K4S"/>
                                                 <constraint firstItem="lOQ-tQ-Rl3" firstAttribute="top" secondItem="y2y-ws-2WU" secondAttribute="top" id="YPX-Pp-f39"/>
+                                                <constraint firstItem="Hqo-5j-DwU" firstAttribute="leading" secondItem="y2y-ws-2WU" secondAttribute="leading" constant="15" id="c5g-4U-L8t"/>
                                                 <constraint firstAttribute="bottom" secondItem="lOQ-tQ-Rl3" secondAttribute="bottom" constant="-0.5" id="uKA-56-ulX"/>
+                                                <constraint firstItem="Hqo-5j-DwU" firstAttribute="top" secondItem="y2y-ws-2WU" secondAttribute="top" constant="14" id="xya-iD-JoJ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="iconView" destination="Hqo-5j-DwU" id="A4Z-vc-hSy"/>
                                             <outlet property="labelTitle" destination="lOQ-tQ-Rl3" id="8nv-sy-46C"/>
                                         </connections>
                                     </tableViewCell>
@@ -239,7 +249,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mlq-Sk-HLb">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mlq-Sk-HLb">
                                                     <rect key="frame" x="15" y="14" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="Hs8-cf-3qh"/>

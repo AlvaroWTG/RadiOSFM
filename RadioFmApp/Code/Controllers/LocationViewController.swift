@@ -16,6 +16,8 @@ class LocationViewCell: UITableViewCell {
 
     /** Property that represents the label for the cell */
     @IBOutlet weak var labelTitle: UILabel!
+    /** Property that represents the image view for the user */
+    @IBOutlet weak var iconView: UIImageView!
 }
 
 class LocationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate, NetworkDelegate {
@@ -56,7 +58,12 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationViewCell", for: indexPath) as? LocationViewCell {
-            if let country = LocalDatabase.standard.getCountry(indexPath.row) { cell.labelTitle.text = country.name }
+            if let country = LocalDatabase.standard.getCountry(indexPath.row) {
+                cell.labelTitle.text = country.name
+                cell.iconView.image = country.image
+                cell.labelTitle.textColor = .gray
+                cell.labelTitle.numberOfLines = 0
+            }
             cell.backgroundColor = .white
             return cell
         }
