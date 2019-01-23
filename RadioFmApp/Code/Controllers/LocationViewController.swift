@@ -80,8 +80,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let country = LocalDatabase.standard.getCountry(indexPath.row) {
+            NetworkUtils.shared.post(1, input: "\(country.identifier)")
             NetworkUtils.shared.delegate = self
-            NetworkUtils.shared.post(1)
             self.country = country
         }
     }
@@ -96,8 +96,8 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                 if let placemark = placemarks?.last { // get country code
                     NSLog("[CLGeocoder] Log: Placemark country code: \(placemark.isoCountryCode ?? "unknown")")
                     if let country = LocalDatabase.standard.getCountry(placemark.isoCountryCode) {
+                        NetworkUtils.shared.post(1, input: "\(country.identifier)")
                         NetworkUtils.shared.delegate = self
-                        NetworkUtils.shared.post(1)
                         self.country = country
 //                        if self.requiredPush { self.push(country, animated: true) }
                     }

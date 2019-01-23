@@ -35,8 +35,8 @@ class LaunchViewController: UIViewController, NetworkDelegate {
         // Initial backend request
         if NetworkUtils.shared.isOnline() {
             DispatchQueue.global(qos: .background).async {
+                NetworkUtils.shared.post(0, input: Tag.Empty)
                 NetworkUtils.shared.delegate = self
-                NetworkUtils.shared.post(0)
             }
         } else {
             let position = CSToastPositionCenter
