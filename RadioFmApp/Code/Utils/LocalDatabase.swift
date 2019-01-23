@@ -82,18 +82,26 @@ class Station: NSObject, NSCoding {
 
     // MARK: - Properties
 
+    /** Property that represents the ISO country code */
+    var countryID = Tag.Empty
+    /** Property that represents the date of creation */
+    var dateCreated = Tag.Empty
+    /** Property that represents the date of updated */
+    var dateUpdated = Tag.Empty
     /** Property that represents the name of the icon for radio station */
-    var iconName = Tag.Empty
+    var descriptionStation = Tag.Empty
+    /** Property that represents the country identifier */
+    var identifier = 0
     /** Property that represents the popularity of the station */
-    var popularity = Tag.Empty
+    var isEnabled = 0
     /** Property that represents the name of the station */
+    var isGeoblocked = 0
+    /** Property that represents the URL of the country image */
+    var imageUrl = Tag.Empty
+    /** Property that represents the country name */
     var name = Tag.Empty
     /** Property that represents the artwork of the station */
-    var artwork = Tag.Empty
-    /** Property that represents the host of the station */
-    var url = Tag.Empty
-    /** Property that represents the category of the station */
-    var category = Tag.Empty
+    var parentStation = 0
     /** Property that represents whether the station is favorite or not */
     var isFavorite = false
 
@@ -103,53 +111,63 @@ class Station: NSObject, NSCoding {
      Initializes the station as default
      */
     override init() {
-        self.popularity = Tag.Empty
-        self.category = Tag.Empty
-        self.iconName = "radio"
-        self.artwork = Tag.Empty
+        self.descriptionStation = Tag.Empty
+        self.dateCreated = Tag.Empty
+        self.dateUpdated = Tag.Empty
+        self.countryID = Tag.Empty
+        self.imageUrl = Tag.Empty
         self.isFavorite = false
+        self.parentStation = 0
         self.name = Tag.Empty
-        self.url = Tag.Empty
+        self.isGeoblocked = 0
+        self.identifier = 0
+        self.isEnabled = 0
     }
 
     /**
      Function to initialize the instance with some parameters
-     - parameter name: The displayed name of the station
-     - parameter url: The url of the station
-     - parameter artwork: The artwork of the station
-     - parameter popularity: The popularity of the station
-     - parameter imageName: The name of the image of the station
-     - parameter category: The category of the station
-     - parameter isFavorite: Whether is favorite station or not
+     - parameter parameters: The list of parameters
      */
-    init(_ name: String, url: String, artwork: String?, popularity: String?, imageName: String?, category: String?, isFavorite: Bool) {
-        self.popularity = popularity ?? Tag.Empty
-        self.category = category ?? Tag.Empty
-        self.iconName = imageName ?? "radio"
-        self.artwork = artwork ?? Tag.Empty
-        self.isFavorite = isFavorite
-        self.name = name
-        self.url = url
+    init(_ parameters: [String : Any]) {
+        if let value = parameters["description"] as? String { self.descriptionStation = value }
+        if let value = parameters["station_parent"] as? Int { self.parentStation = value }
+        if let value = parameters["created_at"] as? String { self.dateCreated = value }
+        if let value = parameters["updated_at"] as? String { self.dateUpdated = value }
+        if let value = parameters["geoblocked"] as? Int { self.isGeoblocked = value }
+        if let value = parameters["country_id"] as? String { self.countryID = value }
+        if let value = parameters["enabled"] as? Int { self.isEnabled = value }
+        if let value = parameters["image"] as? String { self.imageUrl = value }
+        if let value = parameters["id"] as? Int { self.identifier = value }
+        if let value = parameters["name"] as? String { self.name = value }
+        self.isFavorite = false
     }
 
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.popularity, forKey: Encode.Popularity)
+        aCoder.encode(self.descriptionStation, forKey: Encode.Description)
+        aCoder.encode(self.parentStation, forKey: Encode.Parent)
+        aCoder.encode(self.dateCreated, forKey: Encode.DateCreated)
+        aCoder.encode(self.dateUpdated, forKey: Encode.DateUpdated)
+        aCoder.encode(self.isGeoblocked, forKey: Encode.Geoblocked)
+        aCoder.encode(self.countryID, forKey: Encode.CountryId)
         aCoder.encode(self.isFavorite, forKey: Encode.Favorite)
-        aCoder.encode(self.category, forKey: Encode.Category)
-        aCoder.encode(self.artwork, forKey: Encode.Artwork)
-        aCoder.encode(self.iconName, forKey: Encode.Icon)
+        aCoder.encode(self.isEnabled, forKey: Encode.Enabled)
+        aCoder.encode(self.imageUrl, forKey: Encode.ImageUrl)
+        aCoder.encode(self.identifier, forKey: Encode.Id)
         aCoder.encode(self.name, forKey: Encode.Name)
-        aCoder.encode(self.url, forKey: Encode.URL)
     }
 
     required init?(coder aDecoder: NSCoder) {
-        if let value = aDecoder.decodeObject(forKey: Encode.Popularity) as? String { self.popularity = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Category) as? String { self.category = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Artwork) as? String { self.artwork = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Icon) as? String { self.iconName = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.Description) as? String { self.descriptionStation = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.DateCreated) as? String { self.dateCreated = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.DateUpdated) as? String { self.dateUpdated = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.CountryId) as? String { self.countryID = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.imageUrl = value }
         if let value = aDecoder.decodeObject(forKey: Encode.Name) as? String { self.name = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.URL) as? String { self.url = value }
+        self.isGeoblocked = aDecoder.decodeInteger(forKey: Encode.Geoblocked)
+        self.parentStation = aDecoder.decodeInteger(forKey: Encode.Parent)
+        self.isEnabled = aDecoder.decodeInteger(forKey: Encode.Enabled)
         self.isFavorite = aDecoder.decodeBool(forKey: Encode.Favorite)
+        self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
     }
 }
 

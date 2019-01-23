@@ -64,6 +64,11 @@ struct Encode {
     static let CountryLocalName = "countryLocalName"
     static let Iso = "isoCountryCode"
     static let ImageUrl = "countryImageUrl"
+    static let Description = "descriptionStation"
+    static let Parent = "parentStation"
+    static let Geoblocked = "isGeoblocked"
+    static let CountryId = "countryIdentifier"
+    static let Enabled = "isEnabled"
 }
 
 // Constants for string tags
