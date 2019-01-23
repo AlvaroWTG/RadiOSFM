@@ -26,7 +26,9 @@ class Country: NSObject, NSCoding {
     /** Property that represents the ISO country code */
     var isoCode = Tag.Empty
     /** Property that represents the URL of the country image */
-    var url = Tag.Empty
+    var imageUrl = Tag.Empty
+    /** Property that represents the image of the country */
+    var image = UIImage()
 
     // MARK: - Functions
 
@@ -37,10 +39,11 @@ class Country: NSObject, NSCoding {
         self.localizedName = Tag.Empty
         self.dateCreated = Tag.Empty
         self.dateUpdated = Tag.Empty
-        self.identifier = 0
+        self.imageUrl = Tag.Empty
         self.isoCode = Tag.Empty
+        self.image = UIImage()
         self.name = Tag.Empty
-        self.url = Tag.Empty
+        self.identifier = 0
     }
 
     /**
@@ -51,19 +54,19 @@ class Country: NSObject, NSCoding {
         if let value = parameters["nombre"] as? String { self.localizedName = value }
         if let value = parameters["created_at"] as? String { self.dateCreated = value }
         if let value = parameters["updated_at"] as? String { self.dateUpdated = value }
-        if let value = parameters["id"] as? Int { self.identifier = value }
+        if let value = parameters["image"] as? String { self.imageUrl = value }
         if let value = parameters["iso"] as? String { self.isoCode = value }
+        if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-        if let value = parameters["image"] as? String { self.url = value }
     }
 
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.localizedName, forKey: Encode.CountryLocalName)
         aCoder.encode(self.dateCreated, forKey: Encode.DateCreated)
         aCoder.encode(self.dateUpdated, forKey: Encode.DateUpdated)
+        aCoder.encode(self.imageUrl, forKey: Encode.ImageUrl)
         aCoder.encode(self.name, forKey: Encode.CountryName)
         aCoder.encode(self.identifier, forKey: Encode.Id)
-        aCoder.encode(self.url, forKey: Encode.ImageUrl)
         aCoder.encode(self.isoCode, forKey: Encode.Iso)
     }
 
@@ -71,8 +74,8 @@ class Country: NSObject, NSCoding {
         if let value = aDecoder.decodeObject(forKey: Encode.CountryLocalName) as? String { self.localizedName = value }
         if let value = aDecoder.decodeObject(forKey: Encode.DateCreated) as? String { self.dateCreated = value }
         if let value = aDecoder.decodeObject(forKey: Encode.DateUpdated) as? String { self.dateUpdated = value }
+        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.imageUrl = value }
         if let value = aDecoder.decodeObject(forKey: Encode.CountryName) as? String { self.name = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.url = value }
         if let value = aDecoder.decodeObject(forKey: Encode.Iso) as? String { self.isoCode = value }
         self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
     }
