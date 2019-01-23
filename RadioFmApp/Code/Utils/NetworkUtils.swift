@@ -274,10 +274,11 @@ class NetworkUtils: NSObject {
     /**
      Function that post a request with a body
      - parameter level: The level of request
+     - parameter input: The input of request
      */
-    func post(_ level: Int) {
+    func post(_ level: Int, input: String) {
         if NetworkUtils.shared.isOnline() {
-            if let url = URL(string: self.getRequestAt(level)) {
+            if let url = URL(string: self.getRequestAt(level, input: input)) {
                 let request = NSMutableURLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 10)
                 request.httpMethod = "GET"
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -349,19 +350,27 @@ class NetworkUtils: NSObject {
      - parameter level: The level of request
      - returns: The request session created
      */
-    private func getRequestAt(_ level: Int) -> String {
+    private func getRequestAt(_ level: Int, input: String) -> String {
         let origin = "https://des.hertzify.com/api"
         var stringBuilder = Tag.Empty
         switch level {
-            case 0: // GET countries
+            case 0: // GET Countries
                 stringBuilder = "\(origin)/countries"
-                if Verbose.Active { NSLog("[HTTP] Log: Sending GET request \(stringBuilder)") }
                 break
-            case 1: // GET stations
-                stringBuilder = ""
-                if Verbose.Active { NSLog("[HTTP] Log: Sending POST request \(stringBuilder)") }
-            default: break
+            case 1: // GET Country - Stations
+                stringBuilder = "\(origin)/countries/\(input)/stations"
+                break
+            case 2: // GET Country - Counters
+                stringBuilder = "\(origin)/countries/\(input)/counters"
+                break
+            case 3: // GET Country - Locations
+                stringBuilder = "\(origin)/countries/\(input)/locations"
+                break
+            default: // error
+                NSLog("[HTTP] Error! Invalid request level!")
+                break
         }
+        if Verbose.Active { NSLog("[HTTP] Log: Sending GET request \(stringBuilder)") }
         return stringBuilder
     }
 
