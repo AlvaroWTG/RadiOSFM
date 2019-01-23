@@ -6,6 +6,8 @@
 //  Copyright © 2018 Alvaro. All rights reserved.
 //
 import UIKit
+import Alamofire
+import Crashlytics
 
 // MARK: - VERBOSE
 
@@ -27,6 +29,45 @@ extension Notification.Name {
     public static let selectMenuItem = Notification.Name("selectMenuItem")
     public static let swapBackButton = Notification.Name("swapBackButton")
     public static let toggleMenu = Notification.Name("toggleMenu")
+}
+
+extension UIImageView {
+
+    /**
+     Function that set an image from a host
+     - parameter host: The endpoint host that has the image
+     */
+    func setImageFrom(_ host: String) {
+        if let url = URL(string: host) { // Use Alamofire to download
+            Alamofire.request(url).responseData { (response) in
+                if let error = response.error as NSError? { // error
+                    NSLog("[Alamofire] Error \(error.code) - \(error.localizedDescription)")
+                    let userInfo = [NSLocalizedDescriptionKey : error.localizedDescription]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: "Alamofire", code: error.code, userInfo: userInfo))
+                } else if let data = response.data { // Setup image
+                    if Verbose.Active { NSLog("[Alamofire] Log: Downloaded image from \(host)") }
+                    if let image = UIImage(data: data) { self.image = image }
+                }
+            }
+        }
+    }
+
+    /**
+     Function that set an image from a host
+     - parameter url: The URL host that has the image
+     */
+    func setImageFrom(_ url: URL) {
+        Alamofire.request(url).responseData { (response) in
+            if let error = response.error as NSError? { // error
+                NSLog("[Alamofire] Error \(error.code) - \(error.localizedDescription)")
+                let userInfo = [NSLocalizedDescriptionKey : error.localizedDescription]
+                Crashlytics.sharedInstance().recordError(NSError(domain: "Alamofire", code: error.code, userInfo: userInfo))
+            } else if let data = response.data { // Setup image
+                if Verbose.Active { NSLog("[Alamofire] Log: Downloaded image from \(url.absoluteString)") }
+                if let image = UIImage(data: data) { self.image = image }
+            }
+        }
+    }
 }
 
 // MARK: - STRUCTURES
