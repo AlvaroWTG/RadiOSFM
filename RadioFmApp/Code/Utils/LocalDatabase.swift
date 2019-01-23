@@ -179,6 +179,8 @@ class LocalDatabase: NSObject {
     var favorites: NSMutableArray = NSMutableArray()
     /** Property that represents the list of countries */
     var countries: NSMutableArray = NSMutableArray()
+    /** Property that represents the list of stations on a country */
+    var stations: NSMutableArray = NSMutableArray()
 
     // MARK: - Singleton
 
@@ -329,6 +331,22 @@ class LocalDatabase: NSObject {
             }
         }
         if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.countries.count) countries...") }
+    }
+
+    /**
+     Function that fill the stations for a country
+     - parameter list: The list of stations
+     */
+    func parseStations(_ list: [Any]) {
+        if self.stations.count == 0 { self.stations = NSMutableArray() }
+        for element in list { // loop around countries
+            if let parameters = element as? [String : Any] {
+                let station = Station(parameters)
+                self.stations.add(station)
+                if Verbose.Active { NSLog("[LocalDB] Log: Added \(station.name)...") }
+            }
+        }
+        if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.stations.count) stations...") }
     }
 
     /**
