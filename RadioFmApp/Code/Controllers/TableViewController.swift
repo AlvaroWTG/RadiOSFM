@@ -69,7 +69,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             LocalDatabase.standard.load()
             self.stations = LocalDatabase.standard.favorites as! [Station]
         } else { // home screen
-            self.stations = LocalDatabase.standard.createDummy()
+            self.stations = LocalDatabase.standard.stations as! [Station]
             self.map()
         }
         self.labelMessage.text = NSLocalizedString("MAIN_NO_STATIONS", comment: Tag.Empty).uppercased()
@@ -111,7 +111,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
             if indexPath.row < listOfStations.count {
                 let station = listOfStations[indexPath.row]
-                cell.iconView.image = UIImage(named: station.iconName)
+                cell.iconView.image = UIImage(named: station.imageUrl)
                 cell.iconView = ColorUtils.shared.renderImage(cell.iconView, color: .lightGray, userInteraction: true)
                 cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
                 cell.starView.addGestureRecognizer(self.getGesture())

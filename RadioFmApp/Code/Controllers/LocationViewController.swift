@@ -152,7 +152,12 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func util(_ util: NetworkUtils, didReceiveResponse status: Int, data: Data, error: Error?) {
         if status == 200 { // success
-            DispatchQueue.main.async { self.push(self.country, animated: true) }
+            if let json = NetworkUtils.shared.deserialize(data) {
+                if let stations = json["data"] as? [Any] {
+                    LocalDatabase.standard.parseStations(stations)
+                }
+            }
+            DispatchQueue.main.async { self.push(true) }
         } else { // error
             if let response = String(data: data, encoding: .utf8) {
                 NSLog("[HTTP] Error! Received ERROR \(status)! Info: \(response)")
