@@ -120,6 +120,8 @@ class Station: NSObject, NSCoding {
     var parentStation = 0
     /** Property that represents whether the station is favorite or not */
     var isFavorite = false
+    /** Property that represents the image of the station */
+    var image = UIImage()
 
     // MARK: - Functions
 
@@ -134,6 +136,7 @@ class Station: NSObject, NSCoding {
         self.imageUrl = Tag.Empty
         self.isFavorite = false
         self.parentStation = 0
+        self.image = UIImage()
         self.name = Tag.Empty
         self.isGeoblocked = 0
         self.identifier = 0
@@ -145,6 +148,7 @@ class Station: NSObject, NSCoding {
      - parameter parameters: The list of parameters
      */
     init(_ parameters: [String : Any]) {
+        super.init()
         if let value = parameters["description"] as? String { self.descriptionStation = value }
         if let value = parameters["station_parent"] as? Int { self.parentStation = value }
         if let value = parameters["created_at"] as? String { self.dateCreated = value }
@@ -155,7 +159,17 @@ class Station: NSObject, NSCoding {
         if let value = parameters["image"] as? String { self.imageUrl = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-        self.isFavorite = false
+        if let url = URL(string: self.imageUrl) {
+            Alamofire.request(url).responseData { (response) in
+                if let error = response.error as NSError? { // error
+                    NSLog("[HTTP] Error \(error.code)  - \(error.localizedDescription)")
+                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
+                } else if let data = response.data {
+                    if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
+                    if let image = UIImage(data: data) { self.image = image }
+                }
+            }
+        }
     }
 
     func encode(with aCoder: NSCoder) {
