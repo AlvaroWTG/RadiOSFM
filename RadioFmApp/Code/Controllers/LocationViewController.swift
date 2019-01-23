@@ -59,8 +59,9 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "LocationViewCell", for: indexPath) as? LocationViewCell {
             if let country = LocalDatabase.standard.getCountry(indexPath.row) {
+                cell.iconView.image = UIImage(named: "radio")
+                cell.iconView.setImageFrom(country.imageUrl)
                 cell.labelTitle.text = country.name
-                cell.iconView.image = country.image
                 cell.labelTitle.textColor = .gray
                 cell.labelTitle.numberOfLines = 0
             }

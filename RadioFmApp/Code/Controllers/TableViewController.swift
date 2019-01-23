@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import Crashlytics
 import FRadioPlayer
 
@@ -112,12 +111,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
             if indexPath.row < listOfStations.count {
                 let station = listOfStations[indexPath.row]
+                cell.iconView.image = UIImage(named: "radio")
+                cell.iconView.setImageFrom(station.imageUrl)
                 cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
                 cell.starView.addGestureRecognizer(self.getGesture())
                 cell.labelTitle.adjustsFontSizeToFitWidth = true
                 cell.starView.isUserInteractionEnabled = true
                 cell.labelTitle.text = station.name
-                cell.iconView.image = station.image
                 cell.labelTitle.textColor = .gray
                 cell.labelTitle.numberOfLines = 0
                 cell.starView.tag = indexPath.row
@@ -222,7 +222,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func util(_ util: RadioUtils, metadataChanged rawValue: String?, url: URL?) {
-        if let url = url { self.refreshArtwork(url) }
+        if let url = url { self.iconStation.setImageFrom(url) }
         if let value = rawValue {
             if Verbose.Active { NSLog("[FRadioPlayer] Log: Received metadata - \(value)") }
             DispatchQueue.main.async { self.labelStation.text = value }
@@ -404,22 +404,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             self.iconPlay.image = UIImage(named: self.isPlaying ? "pause" : "play")
             let stationName = UserDefaults.standard.string(forKey: "selectedStation")
             self.labelStation.text = self.isPlaying ? stationName : "RadiOS FM"
-        }
-    }
-
-    /**
-     Function that refreshes the artwork
-     - parameter url: The url or the artwork
-     */
-    private func refreshArtwork(_ url: URL) {
-        Alamofire.request(url).responseData { (response) in
-            if let error = response.error as NSError? { // error
-                NSLog("[HTTP] Error \(error.code)  - \(error.localizedDescription)")
-                Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
-            } else if let data = response.data {
-                if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
-                DispatchQueue.main.async { self.iconStation.image = UIImage(data: data)! }
-            }
         }
     }
 
