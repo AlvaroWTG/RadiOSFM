@@ -99,7 +99,6 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                         NetworkUtils.shared.post(1, input: "\(country.identifier)")
                         NetworkUtils.shared.delegate = self
                         self.country = country
-//                        if self.requiredPush { self.push(country, animated: true) }
                     }
                 } else if error != nil { // error reversing geocode
                     NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
@@ -204,7 +203,7 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
      Function that presents the table view controller animated
      - parameter animated: Wheter is animation or not
      */
-    private func push(_ country: Country?, animated: Bool) {
+    private func push(_ animated: Bool) {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "TableViewController") {
             self.requiredPush = false
             UserDefaults.standard.set(false, forKey: "isFavorites")

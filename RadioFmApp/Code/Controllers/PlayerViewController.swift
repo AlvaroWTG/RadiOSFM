@@ -41,8 +41,8 @@ class PlayerViewController: UIViewController {
 
         // Setup view controller content
         self.headerMarketing.backgroundColor = .lightGray
-        self.imageView.image = UIImage(named: self.station.iconName)
-        self.labelPlayer.text = "\(self.station.name)\n\(self.station.popularity)"
+//        self.imageView.image = UIImage(named: self.station.iconName)
+//        self.labelPlayer.text = "\(self.station.name)\n\(self.station.popularity)"
         self.imageFavorite.image = UIImage(named: self.station.isFavorite ? "star_full" : "star_empty")
         self.imageView = ColorUtils.shared.renderImage(self.imageView, color: .lightGray, userInteraction: true)
         if !self.station.isFavorite { self.imageFavorite = ColorUtils.shared.renderImage(self.imageFavorite, color: Color.k1097FB, userInteraction: true) }

@@ -329,11 +329,11 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter scope: The string-value for the scope
      */
     private func filterForSearchText(_ searchText: String, scope: String) {
-        self.filteredStations = self.stations.filter({( station : Station) -> Bool in
-            let doesCategoryMatch = (scope == self.scopes[0]) || (station.category == scope)
-            let stationContainText = station.name.lowercased().contains(searchText.lowercased())
-            return self.searchBarIsEmpty() ? doesCategoryMatch : doesCategoryMatch && stationContainText
-        })
+//        self.filteredStations = self.stations.filter({( station : Station) -> Bool in
+//            let doesCategoryMatch = (scope == self.scopes[0]) || (station.category == scope)
+//            let stationContainText = station.name.lowercased().contains(searchText.lowercased())
+//            return self.searchBarIsEmpty() ? doesCategoryMatch : doesCategoryMatch && stationContainText
+//        })
         self.tableView.reloadData()
     }
 
@@ -366,7 +366,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func play(_ row: Int) {
         var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
         if row < listOfStations.count {
-            RadioUtils.shared.configure(listOfStations[row].url)
+//            RadioUtils.shared.configure(listOfStations[row].url)
             RadioUtils.shared.delegate = self
         } else { // error
             NSLog("Error! Cell indexPath.row out of bounds!")
@@ -385,9 +385,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
         if row < listOfStations.count {
             let station = listOfStations[row]
-            if !isAdding { // remove
-                LocalDatabase.standard.remove(station)
-            } else { LocalDatabase.standard.add(station.name, url: station.url) } // add
+//            if !isAdding { // remove
+//                LocalDatabase.standard.remove(station)
+//            } else { LocalDatabase.standard.add(station.name, url: station.url) } // add
         } else { // error
             NSLog("Error! Cell indexPath.row out of bounds!")
             let userInfo = [NSLocalizedDescriptionKey : "Populate Favorites - Cell indexPath.row out of bounds",

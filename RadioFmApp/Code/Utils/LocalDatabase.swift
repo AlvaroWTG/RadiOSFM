@@ -48,13 +48,13 @@ class Country: NSObject, NSCoding {
      - parameter parameters: The list of parameters
      */
     init(_ parameters: [String : Any]) {
-        if let localizedName = parameters["nombre"] as? String { self.localizedName = localizedName }
-        if let dateCreated = parameters["created_at"] as? String { self.dateCreated = dateCreated }
-        if let dateUpdated = parameters["updated_at"] as? String { self.dateUpdated = dateUpdated }
-        if let identifier = parameters["id"] as? Int { self.identifier = identifier }
-        if let isoCode = parameters["iso"] as? String { self.isoCode = isoCode }
-        if let name = parameters["name"] as? String { self.name = name }
-        if let url = parameters["image"] as? String { self.url = url }
+        if let value = parameters["nombre"] as? String { self.localizedName = value }
+        if let value = parameters["created_at"] as? String { self.dateCreated = value }
+        if let value = parameters["updated_at"] as? String { self.dateUpdated = value }
+        if let value = parameters["id"] as? Int { self.identifier = value }
+        if let value = parameters["iso"] as? String { self.isoCode = value }
+        if let value = parameters["name"] as? String { self.name = value }
+        if let value = parameters["image"] as? String { self.url = value }
     }
 
     func encode(with aCoder: NSCoder) {
@@ -178,16 +178,16 @@ class LocalDatabase: NSObject {
      */
     func add(_ element: String, url: String) {
         var isValid = true
-        for item in self.favorites {
-            if let favorite = item as? Station {
-                if favorite.url == url || favorite.name == element {
-                    isValid = false
-                    break
-                }
-            }
-        }
+//        for item in self.favorites {
+//            if let favorite = item as? Station {
+//                if favorite.url == url || favorite.name == element {
+//                    isValid = false
+//                    break
+//                }
+//            }
+//        }
         if isValid { // needs to add into favorites
-            self.favorites.add(Station(element, url: url, artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: true))
+//            self.favorites.add(Station(element, url: url, artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: true))
             if Verbose.Active { NSLog("[LocalDB] Log: Added \(element) to Favorites...") }
             self.synchronize()
         } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) already in Favorites -> Insert IGNORED...") } }
@@ -198,9 +198,9 @@ class LocalDatabase: NSObject {
      */
     func createDummy() -> [Station] {
         let dummyStations = NSMutableArray()
-        let names = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
-        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: false)) }
+//        let names = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
+//        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
+//        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: false)) }
         return dummyStations as! [Station]
     }
 
