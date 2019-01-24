@@ -198,21 +198,23 @@ class LocalDatabase: NSObject {
      - parameter element: The element to add
      - parameter url: The url to add
      */
-    func add(_ element: String, url: String) {
+    func add(_ element: Station) {
         var isValid = true
-//        for item in self.favorites {
-//            if let favorite = item as? Station {
-//                if favorite.url == url || favorite.name == element {
-//                    isValid = false
-//                    break
-//                }
-//            }
-//        }
+        for item in self.favorites {
+            if let favorite = item as? Station {
+                if favorite.name == element.name {
+                    isValid = false
+                    break
+                }
+            }
+        }
         if isValid { // needs to add into favorites
-//            self.favorites.add(Station(element, url: url, artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: true))
-            if Verbose.Active { NSLog("[LocalDB] Log: Added \(element) to Favorites...") }
+            self.favorites.add(element)
+            if Verbose.Active { NSLog("[LocalDB] Log: Added \(element.name) to Favorites...") }
             self.synchronize()
-        } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element) already in Favorites -> Insert IGNORED...") } }
+        } else { // ignored
+            if Verbose.Active { NSLog("[LocalDB] Warning! \(element.name) already in Favorites -> Insert IGNORED...") }
+        }
     }
     
     /**
