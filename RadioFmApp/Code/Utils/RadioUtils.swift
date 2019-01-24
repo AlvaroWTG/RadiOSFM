@@ -112,11 +112,11 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     /**
      Function that configures the audio util and device
      */
-    func configure(_ stationURL: String) {
-        self.watchDog = WatchDog()
-        self.player = FRadioPlayer.shared
-        player!.radioURL = URL(string: stationURL)
-        player!.delegate = self
+    func configure(_ station: Station) {
+//        self.watchDog = WatchDog()
+//        self.player = FRadioPlayer.shared
+//        player!.radioURL = URL(string: station.url)
+//        player!.delegate = self
     }
 
     /**

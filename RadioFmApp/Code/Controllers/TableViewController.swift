@@ -378,7 +378,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     private func play(_ row: Int) {
         if let station = self.getStationAt(row) {
-//            RadioUtils.shared.configure(station)
+            RadioUtils.shared.configure(station)
             RadioUtils.shared.delegate = self
         }
     }
