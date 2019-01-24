@@ -328,11 +328,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter scope: The string-value for the scope
      */
     private func filterForSearchText(_ searchText: String, scope: String) {
-//        self.filteredStations = self.stations.filter({( station : Station) -> Bool in
-//            let doesCategoryMatch = (scope == self.scopes[0]) || (station.category == scope)
-//            let stationContainText = station.name.lowercased().contains(searchText.lowercased())
-//            return self.searchBarIsEmpty() ? doesCategoryMatch : doesCategoryMatch && stationContainText
-//        })
+        self.filteredStations = self.stations.filter({( station : Station) -> Bool in
+            let categoryMatches = (scope == self.scopes[0]) || (station.descriptionStation == scope)
+            let stationContainText = station.name.lowercased().contains(searchText.lowercased())
+            let bothValid = categoryMatches && stationContainText
+            return self.searchBarIsEmpty() ? categoryMatches : bothValid
+        })
         self.tableView.reloadData()
     }
 
