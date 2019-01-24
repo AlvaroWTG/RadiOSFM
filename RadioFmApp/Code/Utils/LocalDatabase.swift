@@ -28,8 +28,6 @@ class Country: NSObject, NSCoding {
     var isoCode = Tag.Empty
     /** Property that represents the URL of the country image */
     var imageUrl = Tag.Empty
-    /** Property that represents the image of the country */
-    var image = UIImage()
 
     // MARK: - Functions
 
@@ -42,7 +40,6 @@ class Country: NSObject, NSCoding {
         self.dateUpdated = Tag.Empty
         self.imageUrl = Tag.Empty
         self.isoCode = Tag.Empty
-        self.image = UIImage()
         self.name = Tag.Empty
         self.identifier = 0
     }
@@ -60,17 +57,6 @@ class Country: NSObject, NSCoding {
         if let value = parameters["iso"] as? String { self.isoCode = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-        if let url = URL(string: self.imageUrl) {
-            Alamofire.request(url).responseData { (response) in
-                if let error = response.error as NSError? { // error
-                    NSLog("[HTTP] Error \(error.code)  - \(error.localizedDescription)")
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
-                } else if let data = response.data {
-                    if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
-                    if let image = UIImage(data: data) { self.image = image }
-                }
-            }
-        }
     }
 
     func encode(with aCoder: NSCoder) {
@@ -120,8 +106,6 @@ class Station: NSObject, NSCoding {
     var parentStation = 0
     /** Property that represents whether the station is favorite or not */
     var isFavorite = false
-    /** Property that represents the image of the station */
-    var image = UIImage()
 
     // MARK: - Functions
 
@@ -136,7 +120,6 @@ class Station: NSObject, NSCoding {
         self.imageUrl = Tag.Empty
         self.isFavorite = false
         self.parentStation = 0
-        self.image = UIImage()
         self.name = Tag.Empty
         self.isGeoblocked = 0
         self.identifier = 0
@@ -159,17 +142,6 @@ class Station: NSObject, NSCoding {
         if let value = parameters["image"] as? String { self.imageUrl = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-        if let url = URL(string: self.imageUrl) {
-            Alamofire.request(url).responseData { (response) in
-                if let error = response.error as NSError? { // error
-                    NSLog("[HTTP] Error \(error.code)  - \(error.localizedDescription)")
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
-                } else if let data = response.data {
-                    if Verbose.Active { NSLog("[FRadioPlayer] Log: Received artwork @ \(url.absoluteString)") }
-                    if let image = UIImage(data: data) { self.image = image }
-                }
-            }
-        }
     }
 
     func encode(with aCoder: NSCoder) {
