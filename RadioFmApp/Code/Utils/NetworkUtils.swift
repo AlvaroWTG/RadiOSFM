@@ -260,10 +260,9 @@ class NetworkUtils: NSObject {
             if Verbose.Active {
                 let messageError = "[UIApplication] Error! An unknown error when trying to open URL '\(url.absoluteString)'"
                 NSLog(success ? "[UIApplication] Log: URL '\(url.absoluteString)' opened successfully" : messageError)
-                if !success {
-                    let userInfo = [NSLocalizedDescriptionKey : "UIApplication - unknown error trying to open URL '\(url.absoluteString)'",
-                                    NSLocalizedFailureReasonErrorKey : "unknown error trying to open URL"]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 502, userInfo: userInfo))
+                if !success { // failed to open
+                    let userInfo = [NSLocalizedDescriptionKey : "unknown error trying to open URL"]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: "UIApplication", code: 502, userInfo: userInfo))
                 }
             }
             result = success
@@ -384,9 +383,8 @@ class NetworkUtils: NSObject {
         var statusBarItem: UIView?
         guard let statusBar = UIApplication.shared.value(forKeyPath: "statusBarWindow.statusBar") as? UIView else {
             NSLog("[Network] Error! Invalid raw value for statusBarWindow.statusBar!")
-            let userInfo = [NSLocalizedDescriptionKey : "Network - Failed to read status bar",
-                            NSLocalizedFailureReasonErrorKey : "Invalid raw value for statusBarWindow.statusBar"]
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: -1001, userInfo: userInfo))
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid raw value for statusBarWindow.statusBar"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: "UIApplication", code: 501, userInfo: userInfo))
             return 0
         }
         if NSClassFromString("UIStatusBar_Modern") == nil { return 0 }

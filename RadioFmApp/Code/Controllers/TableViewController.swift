@@ -197,9 +197,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         switch state {
         case .error:
             NSLog("[FRadioPlayer] Error! Player failed to load!")
-            let userInfo = [NSLocalizedDescriptionKey : "RadioUtils - Player failed to load",
-                            NSLocalizedFailureReasonErrorKey : "Player failed to load"]
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 500, userInfo: userInfo))
+            let userInfo = [NSLocalizedDescriptionKey : "Player failed to load"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: "RadioUtils", code: 500, userInfo: userInfo))
             break
         case .loading:
             if Verbose.Active { NSLog("[FRadioPlayer] Log: Player is loading...") }
@@ -358,7 +357,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if row < listOfStations.count { return listOfStations[row] } // valid index
         NSLog("Error! Cell indexPath.row \(row) out of bounds \(listOfStations.count)!")
         let userInfo = [NSLocalizedDescriptionKey : "Cell indexPath.row \(row) out of bounds \(listOfStations.count)"]
-        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 405, userInfo: userInfo))
+        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 404, userInfo: userInfo))
         return nil
     }
 

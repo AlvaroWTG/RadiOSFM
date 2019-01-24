@@ -108,16 +108,14 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
                         NetworkUtils.shared.delegate = self
                         self.country = country
                     }
-                } else if error != nil { // error reversing geocode
-                    NSLog("Error! An error occurred with reverse geodecode location! Error 405 - \(error!.localizedDescription)")
-                    let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to greverse geocode location",
-                                    NSLocalizedFailureReasonErrorKey : error!.localizedDescription]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 405, userInfo: userInfo))
+                } else if let error = error as NSError? { // error reversing geocode
+                    NSLog("Error \(error.code) - \(error.localizedDescription)")
+                    let userInfo = [NSLocalizedDescriptionKey : error.localizedDescription]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: "CLGeocoder", code: error.code, userInfo: userInfo))
                 } else { // placemark not found
-                    NSLog("Error! An error occurred with reverse geodecode location! Error 406 - Last placemark not found")
-                    let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Failed to get last placemark",
-                                    NSLocalizedFailureReasonErrorKey : "Last placemark not found"]
-                    Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 406, userInfo: userInfo))
+                    NSLog("Error 406 - Last placemark not found!")
+                    let userInfo = [NSLocalizedDescriptionKey : "Failed to get last placemark"]
+                    Crashlytics.sharedInstance().recordError(NSError(domain: "CLGeocoder", code: 406, userInfo: userInfo))
                 }
             })
         }
@@ -125,10 +123,9 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         manager.stopUpdatingLocation()
+        let userInfo = [NSLocalizedDescriptionKey : error.localizedDescription]
         NSLog("Error! Location didFailWithError! Error 404 - \(error.localizedDescription)")
-        let userInfo = [NSLocalizedDescriptionKey : "CLLocationManager - Location didFailWithError",
-                        NSLocalizedFailureReasonErrorKey : error.localizedDescription]
-        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 404, userInfo: userInfo))
+        Crashlytics.sharedInstance().recordError(NSError(domain: "CLLocationManager", code: 404, userInfo: userInfo))
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

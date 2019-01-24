@@ -384,9 +384,8 @@ class LocalDatabase: NSObject {
         let synchronized = UserDefaults.standard.synchronize()
         if !synchronized { // error message
             NSLog("[LocalDB] Error! An error trying to synch all values in local storage!")
-            let userInfo = [NSLocalizedDescriptionKey : "UserDefaults - Failed to synch all values in local storage",
-                            NSLocalizedFailureReasonErrorKey : "Failed to synch all values in local storage"]
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 500, userInfo: userInfo))
+            let userInfo = [NSLocalizedDescriptionKey : "Failed to synch all values in local storage"]
+            Crashlytics.sharedInstance().recordError(NSError(domain: "LocalDB", code: 500, userInfo: userInfo))
         } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) favorites...") }
     }
 }
