@@ -108,9 +108,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         self.tableView = tableView
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCell", for: indexPath) as? MainViewCell {
-            let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-            if indexPath.row < listOfStations.count {
-                let station = listOfStations[indexPath.row]
+            if let station = self.getStationAt(indexPath.row) {
                 cell.iconView.image = UIImage(named: "radio")
                 cell.iconView.setImageFrom(station.imageUrl)
                 cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
@@ -145,10 +143,11 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-        UserDefaults.standard.set(listOfStations[indexPath.row].name, forKey: "selectedStation")
-        self.selectedRow = indexPath.row
-        self.play(indexPath.row)
+        if let station = self.getStationAt(indexPath.row) {
+            UserDefaults.standard.set(station.name, forKey: "selectedStation")
+            self.selectedRow = indexPath.row
+            self.play(indexPath.row)
+        }
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -249,11 +248,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter sender: The tap gesture recognizer
      */
     @objc func didTapFooter(_ sender: UITapGestureRecognizer) {
-        if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
-            let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-            viewController.station = listOfStations[self.selectedRow]
-            viewController.isPlaying = self.isPlaying
-            self.navigationController?.pushViewController(viewController, animated: true)
+        if let station = self.getStationAt(self.selectedRow) {
+            if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "PlayerViewController") as? PlayerViewController {
+                viewController.isPlaying = self.isPlaying
+                viewController.station = station
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }
         }
     }
 
@@ -265,14 +265,14 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         if let row = sender.view?.tag {
             let indexPath = IndexPath(row: row, section: 0)
             if let cell = self.tableView.cellForRow(at: indexPath) as? MainViewCell {
-                if !self.isFavorites {
-                    let listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-                    let station = listOfStations[row]
-                    if station.isFavorite {
-                        station.isFavorite = false
-                    } else { station.isFavorite = true }
-                    cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
-                    self.populateFavorites(indexPath.row, isAdding: station.isFavorite)
+                if !self.isFavorites { // default view controller
+                    if let station = self.getStationAt(row) {
+                        if station.isFavorite {
+                            station.isFavorite = false
+                        } else { station.isFavorite = true }
+                        cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
+                        self.populateFavorites(station, isAdding: station.isFavorite)
+                    }
                 } else { self.deleteRowAt(indexPath) } // favorite screen
             }
         }
@@ -312,9 +312,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter indexPath: The indexPath of the cell
      */
     private func deleteRowAt(_ indexPath: IndexPath) {
-        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-        if indexPath.row < listOfStations.count {
-            self.populateFavorites(indexPath.row, isAdding: false)
+        if let station = self.getStationAt(indexPath.row) {
+            var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+            self.populateFavorites(station, isAdding: false)
             listOfStations.remove(at: indexPath.row)
             self.tableView.beginUpdates()
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -378,15 +378,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      */
     private func play(_ row: Int) {
-        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-        if row < listOfStations.count {
-//            RadioUtils.shared.configure(listOfStations[row].url)
+        if let station = self.getStationAt(row) {
+//            RadioUtils.shared.configure(station)
             RadioUtils.shared.delegate = self
-        } else { // error
-            NSLog("Error! Cell indexPath.row out of bounds!")
-            let userInfo = [NSLocalizedDescriptionKey : "Play - Cell indexPath.row out of bounds",
-                            NSLocalizedFailureReasonErrorKey : "Cell indexPath.row out of bounds"]
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 405, userInfo: userInfo))
         }
     }
 
@@ -395,19 +389,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      - parameter isAdding: Whether is adding new or not
      */
-    private func populateFavorites(_ row: Int, isAdding: Bool) {
-        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-        if row < listOfStations.count {
-            let station = listOfStations[row]
-//            if !isAdding { // remove
-//                LocalDatabase.standard.remove(station)
-//            } else { LocalDatabase.standard.add(station.name, url: station.url) } // add
-        } else { // error
-            NSLog("Error! Cell indexPath.row out of bounds!")
-            let userInfo = [NSLocalizedDescriptionKey : "Populate Favorites - Cell indexPath.row out of bounds",
-                            NSLocalizedFailureReasonErrorKey : "Cell indexPath.row out of bounds"]
-            Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 404, userInfo: userInfo))
-        }
+    private func populateFavorites(_ station: Station, isAdding: Bool) {
+        if isAdding { // add
+            LocalDatabase.standard.add(station)
+        } else { LocalDatabase.standard.remove(station) } // remove
     }
 
     /**
