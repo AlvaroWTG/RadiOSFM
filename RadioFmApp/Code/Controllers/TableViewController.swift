@@ -349,6 +349,20 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     /**
+     Function that gets a station at an index
+     - parameter row: The row of the station
+     - returns: The station found or nil
+     */
+    private func getStationAt(_ row: Int) -> Station? {
+        var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
+        if row < listOfStations.count { return listOfStations[row] } // valid index
+        NSLog("Error! Cell indexPath.row \(row) out of bounds \(listOfStations.count)!")
+        let userInfo = [NSLocalizedDescriptionKey : "Cell indexPath.row \(row) out of bounds \(listOfStations.count)"]
+        Crashlytics.sharedInstance().recordError(NSError(domain: Api.ErrorDomain, code: 405, userInfo: userInfo))
+        return nil
+    }
+
+    /**
      Function that maps the radio stations
      */
     private func map() {
