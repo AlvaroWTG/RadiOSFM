@@ -120,13 +120,13 @@ class NetworkUtils: NSObject {
     func getNetworkType() -> String {
         let networkType = self.readNetworkType()
         switch networkType {
-        case 0: return NSLocalizedString("TEST_NETWORK_TYPE_UNKNOWN", comment: Tag.Empty)
-        case 1: return NSLocalizedString("TEST_NETWORK_TYPE_2G", comment: Tag.Empty)
-        case 2: return NSLocalizedString("TEST_NETWORK_TYPE_3G", comment: Tag.Empty)
-        case 3: return NSLocalizedString("TEST_NETWORK_TYPE_4G", comment: Tag.Empty)
-        case 4: return NSLocalizedString("TEST_NETWORK_TYPE_LTE", comment: Tag.Empty)
-        case 5: return NSLocalizedString("TEST_NETWORK_TYPE_WIFI", comment: Tag.Empty)
-        default: return NSLocalizedString("TEST_NETWORK_TYPE_UNKNOWN", comment: Tag.Empty)
+            case 0: return NSLocalizedString("TEST_NETWORK_TYPE_UNKNOWN", comment: Tag.Empty)
+            case 1: return NSLocalizedString("TEST_NETWORK_TYPE_2G", comment: Tag.Empty)
+            case 2: return NSLocalizedString("TEST_NETWORK_TYPE_3G", comment: Tag.Empty)
+            case 3: return NSLocalizedString("TEST_NETWORK_TYPE_4G", comment: Tag.Empty)
+            case 4: return NSLocalizedString("TEST_NETWORK_TYPE_LTE", comment: Tag.Empty)
+            case 5: return NSLocalizedString("TEST_NETWORK_TYPE_WIFI", comment: Tag.Empty)
+            default: return NSLocalizedString("TEST_NETWORK_TYPE_UNKNOWN", comment: Tag.Empty)
         }
     }
 
@@ -351,7 +351,7 @@ class NetworkUtils: NSObject {
      - returns: The request session created
      */
     private func getRequestAt(_ level: Int, input: String) -> String {
-        let origin = "https://des.hertzify.com/api"
+        let origin = Api.RadioOriginTest
         var stringBuilder = Tag.Empty
         switch level {
             case 0: // GET Countries

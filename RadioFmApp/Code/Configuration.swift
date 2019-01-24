@@ -75,8 +75,7 @@ extension UIImageView {
 // Constants for Protectonaut API values
 struct Api {
     static let ErrorDomain = "crashlytics.alvricia.radiOS"
-    static let VersionCheckTest = "https://"
-    static let VersionCheckProduction = "https://"
+    static let RadioOriginTest = "https://des.hertzify.com/api"
 }
 
 // Constants for color definitions used in the app
