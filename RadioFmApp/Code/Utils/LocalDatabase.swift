@@ -9,6 +9,17 @@
 import UIKit
 import Alamofire
 import Crashlytics
+import SQLite
+
+protocol LocalDbDelegate: class {
+
+    /**
+     This method is invoked wheter the local database hander fails.
+     - parameter database: The database util component
+     - parameter error: The error of the action
+     */
+    func database(_ database: LocalDatabase, didFailWithError error: NSError)
+}
 
 class Country: NSObject, NSCoding {
 
@@ -185,12 +196,16 @@ class LocalDatabase: NSObject {
 
     // MARK: - Properties
 
+    /** Property that represents the delegate of the utils */
+    weak var delegate: LocalDbDelegate?
     /** Property that represents the list of favorites stations */
-    var favorites: NSMutableArray = NSMutableArray()
+    var favorites = NSMutableArray()
     /** Property that represents the list of countries */
-    var countries: NSMutableArray = NSMutableArray()
+    var countries = NSMutableArray()
     /** Property that represents the list of stations on a country */
-    var stations: NSMutableArray = NSMutableArray()
+    var stations = NSMutableArray()
+    /** Property that represents the database for the connection */
+    var database: Connection?
 
     // MARK: - Singleton
 
