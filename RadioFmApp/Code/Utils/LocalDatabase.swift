@@ -420,6 +420,7 @@ class LocalDatabase: NSObject {
     func open() {
         if !Verbose.Production { self.destroyDatabase() }
         self.connect()
+        self.createSchema()
         self.manage()
     }
 
@@ -465,28 +466,55 @@ class LocalDatabase: NSObject {
     /**
      Function that opens the DB connection
      */
-    private func manage() {
+    private func createSchema() {
         guard let db = self.database else {
             let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
             self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
             return
         }
-        let users = Table("users")
+
+        // Table Countries
+        let stations = Table("stations")
+        let countries = Table("countries")
         let id = Expression<Int64>("id")
         let name = Expression<String?>("name")
-        let email = Expression<String>("email")
+        let localizedName = Expression<String>("localized_name")
+        let dateCreated = Expression<String?>("date_created")
+        let dateUpdated = Expression<String>("date_updated")
+        let isoCode = Expression<String?>("iso_country_code")
+        let imageUrl = Expression<String>("image_url")
+        let countryID = Expression<String>("country_id")
+        let descriptionStation = Expression<String?>("description_station")
+        let isEnabled = Expression<Int64>("is_enabled")
+        let isGeoblocked = Expression<Int64>("is_geoblocked")
+        let parentStation = Expression<Int64>("parent_station")
         do {
-            try db.run(users.create { table in
+            try db.run(countries.create { table in
                 table.column(id, primaryKey: true)
-                table.column(name)
-                table.column(email, unique: true)
+                table.column(name, unique: true)
+                table.column(localizedName)
+                table.column(dateCreated)
+                table.column(dateUpdated)
+                table.column(isoCode)
+                table.column(imageUrl)
             })
-            let rowID = try db.run(users.insert(name <- "Alice", email <- "alice@mac.com")) // INSERT
-            for user in try db.prepare(users) { print("id: \(user[id]), name: \(user[name] ?? "unknown"), email: \(user[email])") } // SELECT * FROM "users"
-            let alice = users.filter(id == rowID)
-            try db.run(alice.update(email <- email.replace("mac.com", with: "me.com"))) // UPDATE
-            try db.run(alice.delete()) // DELETE
-            let result = try db.scalar(users.count)
+            try db.run(stations.create { table in
+                table.column(id, primaryKey: true)
+                table.column(name, unique: true)
+                table.column(dateCreated)
+                table.column(dateUpdated)
+                table.column(imageUrl)
+                table.column(countryID)
+                table.column(descriptionStation)
+                table.column(isEnabled)
+                table.column(isGeoblocked)
+                table.column(parentStation)
+            })
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
         } catch let error as NSError {
             NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
             self.delegate?.database(self, didFailWithError: error)
