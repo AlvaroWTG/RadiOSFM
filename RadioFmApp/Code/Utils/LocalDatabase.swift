@@ -517,6 +517,33 @@ class LocalDatabase: NSObject {
     }
 
     /**
+     Function that inserts a new country
+     */
+    private func insert(_ country: Country) {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        let countries = Table("countries")
+        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        let localizedName = Expression<String>("localized_name")
+        let dateCreated = Expression<String?>("date_created")
+        let dateUpdated = Expression<String>("date_updated")
+        let isoCode = Expression<String?>("iso_country_code")
+        let imageUrl = Expression<String>("image_url")
+        do {
+            let rowID = try db.run(countries.insert(name <- country.name, localizedName <- country.localizedName, dateCreated <- country.dateCreated,
+                                                dateUpdated <- country.dateUpdated, isoCode <- country.isoCode, imageUrl <- country.imageUrl))
+            NSLog("Log: Insert new country @ \(rowID)")
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
+
+    /**
      Function that opens the DB connection
      */
     private func manage() {
