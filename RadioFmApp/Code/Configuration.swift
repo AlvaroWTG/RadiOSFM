@@ -14,6 +14,7 @@ import Crashlytics
 // Constants for backup type values
 struct Verbose {
     static let Active = true
+    static let Production = false
 }
 
 // MARK: - EXTENSIONS
