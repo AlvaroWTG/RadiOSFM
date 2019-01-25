@@ -76,7 +76,7 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     // MARK: - Inherited function from FRadioPlayer delegate
 
     func radioPlayer(_ player: FRadioPlayer, playerStateDidChange state: FRadioPlayerState) {
-        if self.delegate != nil { self.delegate?.util(self, playerStateChanged: state) }
+        self.delegate?.util(self, playerStateChanged: state)
         if state == .loadingFinished { if let watchDog = self.watchDog { watchDog.logDuration() } }
     }
 
@@ -100,11 +100,11 @@ class RadioUtils: NSObject, FRadioPlayerDelegate {
     }
 
     func radioPlayer(_ player: FRadioPlayer, metadataDidChange rawValue: String?) {
-        if self.delegate != nil { self.delegate?.util(self, metadataChanged: rawValue, url: nil) }
+        self.delegate?.util(self, metadataChanged: rawValue, url: nil)
     }
 
     func radioPlayer(_ player: FRadioPlayer, artworkDidChange artworkURL: URL?) {
-        if self.delegate != nil { self.delegate?.util(self, metadataChanged: nil, url: artworkURL) }
+        self.delegate?.util(self, metadataChanged: nil, url: artworkURL)
     }
 
     // MARK: - Functions

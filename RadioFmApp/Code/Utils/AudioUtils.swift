@@ -62,14 +62,14 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.deactivateSession()
         if Verbose.Active { NSLog(flag ? "[AVAudioPlayer] Log: Player finished playing..." : "[AVAudioPlayer] Warning: Something happened while playing...") }
-        if self.delegate != nil { self.delegate?.util(self, didFinish: flag) }
+        self.delegate?.util(self, didFinish: flag)
     }
 
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
         if player.isPlaying { player.stop() }
         if let error = error as NSError? {
             NSLog("[AVAudioPlayer] Error \(error.code) - \(error.localizedDescription)")
-            if self.delegate != nil { self.delegate?.util(self, didFinish: false) }
+            self.delegate?.util(self, didFinish: false)
             Crashlytics.sharedInstance().recordError(NSError(domain: "AVAudioPlayer", code: error.code, userInfo: [NSLocalizedDescriptionKey : error.localizedDescription]))
         }
     }
@@ -94,7 +94,7 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         if Verbose.Active { NSLog("[AVSpeechSynthesizer] Log: didFinish...") }
-        if self.delegate != nil { self.delegate?.util(self, didFinish: true) }
+        self.delegate?.util(self, didFinish: true)
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
@@ -109,9 +109,7 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
     func configure() {
         do { // try to get all configuration ready
             try activateSession()
-        } catch { // handle error
-            if self.delegate != nil { self.delegate?.util(self, canSpeak: false) }
-        }
+        } catch { self.delegate?.util(self, canSpeak: false) } // handle error
         self.volumeChanged()
         self.muteSwitchWillUpdate()
     }
@@ -191,7 +189,7 @@ class AudioUtils: NSObject, AVAudioPlayerDelegate, AVSpeechSynthesizerDelegate {
             Mute.shared.isPaused = true
             if silent { // is silent
                 NotificationCenter.default.post(name: .alertNotification, object:["SPEAKER_MUTED_TITLE", "SPEAKER_MUTED_DESC", "WTG_BUTTON_OK"])
-            } else { if self.delegate != nil { self.delegate?.util(self, canSpeak: true) } }
+            } else { self.delegate?.util(self, canSpeak: true) }
         }
     }
 
