@@ -435,4 +435,20 @@ class LocalDatabase: NSObject {
         }
     }
 
+    /**
+     Function that destroys the DB
+     */
+    private func destroyDatabase() {
+        guard let path = self.getDatabasePath() else { return }
+        if FileManager.default.fileExists(atPath: path) {
+            if Verbose.Active { NSLog("[NSFileManager] Log: DB already exists @ \(path)") }
+            do {
+                try FileManager.default.removeItem(atPath: path)
+                if Verbose.Active { NSLog("[NSFileManager] Log: Removed item @ \(path)") }
+            } catch let error as NSError {
+                self.delegate?.database(self, didFailWithError: error)
+            }
+        }
+    }
+
 }
