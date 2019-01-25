@@ -515,6 +515,28 @@ class LocalDatabase: NSObject {
             self.delegate?.database(self, didFailWithError: error)
         }
     }
+
+    /**
+     Function that opens the DB connection
+     */
+    private func manage() {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        // Table Countries
+        let countries = Table("countries")
+        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        do {
+            if let country = self.getCountry(0) { self.insert(country) }
+            for country in try db.prepare(countries) { print("id: \(country[id]), name: \(country[name] ?? "unknown")") } // SELECT * FROM "users"
+
+//            let alice = users.filter(id == rowID)
+//            try db.run(alice.update(email <- email.replace("mac.com", with: "me.com"))) // UPDATE
+//            try db.run(alice.delete()) // DELETE
+//            let result = try db.scalar(users.count)
         } catch let error as NSError {
             NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
             self.delegate?.database(self, didFailWithError: error)
