@@ -98,6 +98,10 @@ class Station: NSObject, NSCoding {
     var isEnabled = 0
     /** Property that represents the name of the station */
     var isGeoblocked = 0
+    /** Property that represents whether the icon is downloaded or not */
+    var iconDownloaded = false
+    /** Property that represents the icon of the station */
+    var icon = UIImage()
     /** Property that represents the URL of the country image */
     var imageUrl = Tag.Empty
     /** Property that represents the country name */
@@ -116,12 +120,14 @@ class Station: NSObject, NSCoding {
         self.descriptionStation = Tag.Empty
         self.dateCreated = Tag.Empty
         self.dateUpdated = Tag.Empty
+        self.iconDownloaded = false
         self.countryID = Tag.Empty
         self.imageUrl = Tag.Empty
         self.isFavorite = false
         self.parentStation = 0
         self.name = Tag.Empty
         self.isGeoblocked = 0
+        self.icon = UIImage()
         self.identifier = 0
         self.isEnabled = 0
     }
@@ -170,6 +176,8 @@ class Station: NSObject, NSCoding {
         self.isEnabled = aDecoder.decodeInteger(forKey: Encode.Enabled)
         self.isFavorite = aDecoder.decodeBool(forKey: Encode.Favorite)
         self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
+        self.iconDownloaded = false
+        self.icon = UIImage()
     }
 }
 
