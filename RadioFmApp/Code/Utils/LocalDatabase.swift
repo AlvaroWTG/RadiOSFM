@@ -412,6 +412,17 @@ class LocalDatabase: NSObject {
         } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) favorites...") }
     }
 
+    // MARK: - DB Manager functions
+
+    /**
+     Function that opens the DB connection
+     */
+    func open() {
+        if Verbose.Active { self.destroyDatabase() }
+        self.connect()
+        self.manage()
+    }
+
     /**
      Function that gets the DB path
      - returns: The optional database path
@@ -451,4 +462,34 @@ class LocalDatabase: NSObject {
         }
     }
 
+    /**
+     Function that opens the DB connection
+     */
+    private func manage() {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        let users = Table("users")
+        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        let email = Expression<String>("email")
+        do {
+            try db.run(users.create { table in
+                table.column(id, primaryKey: true)
+                table.column(name)
+                table.column(email, unique: true)
+            })
+            let rowID = try db.run(users.insert(name <- "Alice", email <- "alice@mac.com")) // INSERT
+            for user in try db.prepare(users) { print("id: \(user[id]), name: \(user[name] ?? "unknown"), email: \(user[email])") } // SELECT * FROM "users"
+            let alice = users.filter(id == rowID)
+            try db.run(alice.update(email <- email.replace("mac.com", with: "me.com"))) // UPDATE
+            try db.run(alice.delete()) // DELETE
+            let result = try db.scalar(users.count)
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
 }
