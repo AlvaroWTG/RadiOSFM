@@ -6,6 +6,9 @@ PODS:
   - FRadioPlayer (0.1.15)
   - Mute (0.4.0)
   - ReachabilitySwift (4.3.0)
+  - SQLite.swift (0.11.5):
+    - SQLite.swift/standard (= 0.11.5)
+  - SQLite.swift/standard (0.11.5)
   - Toast (4.0.0)
   - ViewDeck (3.1.0)
 
@@ -16,6 +19,7 @@ DEPENDENCIES:
   - FRadioPlayer
   - Mute
   - ReachabilitySwift
+  - SQLite.swift
   - Toast
   - ViewDeck
 
@@ -27,6 +31,7 @@ SPEC REPOS:
     - FRadioPlayer
     - Mute
     - ReachabilitySwift
+    - SQLite.swift
     - Toast
     - ViewDeck
 
@@ -37,9 +42,10 @@ SPEC CHECKSUMS:
   FRadioPlayer: 0ad8b63756c3597af3c4a2672334c5dc22e026e4
   Mute: 59d71529fec513c129fd799104fec292e2485e4c
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
+  SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   ViewDeck: 942d90dd23c9f97cc8038be352255378167edcca
 
-PODFILE CHECKSUM: 818161b856b7b9b3157a51a4e35a59c81d58b5fe
+PODFILE CHECKSUM: b513c7376020e40ddb26428c166e4d41cf007b7b
 
 COCOAPODS: 1.5.3

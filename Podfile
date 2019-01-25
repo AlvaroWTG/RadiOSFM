@@ -14,5 +14,6 @@ target 'RadioFmApp' do
   pod 'Alamofire'
   pod 'FRadioPlayer'
   pod 'ReachabilitySwift'
+  pod 'SQLite.swift'
 
 end
