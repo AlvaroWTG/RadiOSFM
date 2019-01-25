@@ -411,4 +411,28 @@ class LocalDatabase: NSObject {
             Crashlytics.sharedInstance().recordError(NSError(domain: "LocalDB", code: 500, userInfo: userInfo))
         } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) favorites...") }
     }
+
+    /**
+     Function that gets the DB path
+     - returns: The optional database path
+     */
+    private func getDatabasePath() -> String? {
+        if let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
+            return "\(path)/db.sqlite3"
+        } else { return nil }
+    }
+
+    /**
+     Function that connects to DB
+     */
+    private func connect() {
+        guard let path = self.getDatabasePath() else { return }
+        do {
+            self.database = try Connection(path)
+            NSLog("[LocalDB] Log: DB connection established...")
+        } catch let error as NSError {
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
+
 }
