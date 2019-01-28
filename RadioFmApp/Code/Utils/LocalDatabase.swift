@@ -57,7 +57,7 @@ class Country: NSObject {
     }
 }
 
-class Station: NSObject, NSCoding {
+class Station: NSObject {
 
     // MARK: - Properties
 
@@ -109,12 +109,11 @@ class Station: NSObject, NSCoding {
         self.isEnabled = 0
     }
 
-    /**
+    /*
      Function to initialize the instance with some parameters
      - parameter parameters: The list of parameters
      */
     init(_ parameters: [String : Any]) {
-        super.init()
         if let value = parameters["description"] as? String { self.descriptionStation = value }
         if let value = parameters["station_parent"] as? Int { self.parentStation = value }
         if let value = parameters["created_at"] as? String { self.dateCreated = value }
@@ -125,36 +124,6 @@ class Station: NSObject, NSCoding {
         if let value = parameters["image"] as? String { self.imageUrl = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-    }
-
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.descriptionStation, forKey: Encode.Description)
-        aCoder.encode(self.parentStation, forKey: Encode.Parent)
-        aCoder.encode(self.dateCreated, forKey: Encode.DateCreated)
-        aCoder.encode(self.dateUpdated, forKey: Encode.DateUpdated)
-        aCoder.encode(self.isGeoblocked, forKey: Encode.Geoblocked)
-        aCoder.encode(self.countryID, forKey: Encode.CountryId)
-        aCoder.encode(self.isFavorite, forKey: Encode.Favorite)
-        aCoder.encode(self.isEnabled, forKey: Encode.Enabled)
-        aCoder.encode(self.imageUrl, forKey: Encode.ImageUrl)
-        aCoder.encode(self.identifier, forKey: Encode.Id)
-        aCoder.encode(self.name, forKey: Encode.Name)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        if let value = aDecoder.decodeObject(forKey: Encode.Description) as? String { self.descriptionStation = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.DateCreated) as? String { self.dateCreated = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.DateUpdated) as? String { self.dateUpdated = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.CountryId) as? String { self.countryID = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.imageUrl = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Name) as? String { self.name = value }
-        self.isGeoblocked = aDecoder.decodeInteger(forKey: Encode.Geoblocked)
-        self.parentStation = aDecoder.decodeInteger(forKey: Encode.Parent)
-        self.isEnabled = aDecoder.decodeInteger(forKey: Encode.Enabled)
-        self.isFavorite = aDecoder.decodeBool(forKey: Encode.Favorite)
-        self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
-        self.iconDownloaded = false
-        self.icon = UIImage()
     }
 }
 
@@ -492,7 +461,7 @@ class LocalDatabase: NSObject {
             return
         }
         let countries = Table("countries")
-        let id = Expression<Int64>("id")
+//        let id = Expression<Int64>("id")
         let name = Expression<String?>("name")
         let localizedName = Expression<String>("localized_name")
         let dateCreated = Expression<String?>("date_created")
