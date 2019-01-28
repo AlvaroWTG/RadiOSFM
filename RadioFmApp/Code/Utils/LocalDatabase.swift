@@ -470,6 +470,52 @@ class LocalDatabase: NSObject {
         self.createSchema()
     }
 
+    /**
+     Function that updates a country parameter
+     - parameter rowID: The identifier of the row to update
+     - parameter country: The country object to update
+     */
+    func update(_ rowID: Expression<Int64>, country: Country) {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        let countries = Table("countries")
+        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        let filtered = countries.filter(id == rowID)
+        do {
+            try db.run(filtered.update(name <- country.name)) // TODO
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
+
+    /**
+     Function that updates a station parameter
+     - parameter rowID: The identifier of the row to update
+     - parameter station: The station object to update
+     */
+    func update(_ rowID: Expression<Int64>, station: Station) {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        let stations = Table("stations")
+        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        let filtered = stations.filter(id == rowID)
+        do {
+            try db.run(filtered.update(name <- station.name)) // TODO
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
+
     // MARK: - Functions Favorites
 
     /**
