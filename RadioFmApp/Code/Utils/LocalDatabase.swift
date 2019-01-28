@@ -402,6 +402,38 @@ class LocalDatabase: NSObject {
     }
 
     /**
+     Function that inserts a new station
+     - parameter station: The station object to insert
+     */
+    private func insert(_ station: Station) {
+        guard let db = self.database else {
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle, cannot insert station"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
+            return
+        }
+        let stations = Table("stations")
+//        let id = Expression<Int64>("id")
+        let name = Expression<String?>("name")
+        let dateCreated = Expression<String?>("date_created")
+        let dateUpdated = Expression<String>("date_updated")
+        let countryID = Expression<String>("country_id")
+        let imageUrl = Expression<String>("image_url")
+        let descriptionStation = Expression<String?>("description_station")
+        let isEnabled = Expression<Int64>("is_enabled")
+        let isGeoblocked = Expression<Int64>("is_geoblocked")
+        let parentStation = Expression<Int64>("parent_station")
+        do {
+            let rowID = try db.run(stations.insert(name <- station.name, dateCreated <- station.dateCreated, dateUpdated <- station.dateUpdated,
+                                                   countryID <- station.countryID, imageUrl <- station.imageUrl, descriptionStation <- station.descriptionStation,
+                                                   isEnabled <- Int64(station.isEnabled), isGeoblocked <- Int64(station.isGeoblocked), parentStation <- Int64(station.parentStation)))
+            if Verbose.Active { NSLog("[LocalDB] Log: Station '\(station.name)' inserted. ID: \(rowID)") }
+        } catch let error as NSError {
+            NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
+            self.delegate?.database(self, didFailWithError: error)
+        }
+    }
+
+    /**
      Function that opens the DB connection
      */
     private func manage() {
