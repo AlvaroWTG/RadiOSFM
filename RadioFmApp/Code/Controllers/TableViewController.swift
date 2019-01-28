@@ -270,7 +270,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                             station.isFavorite = false
                         } else { station.isFavorite = true }
                         cell.starView = self.toggle(cell.starView, selected: station.isFavorite)
-                        self.populateFavorites(station, isAdding: station.isFavorite)
+                        self.refreshFavorites(station, isAdding: station.isFavorite)
                     }
                 } else { self.deleteRowAt(indexPath) } // favorite screen
             }
@@ -313,7 +313,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func deleteRowAt(_ indexPath: IndexPath) {
         if let station = self.getStationAt(indexPath.row) {
             var listOfStations = self.searchBarIsFiltering() ? self.filteredStations : self.stations
-            self.populateFavorites(station, isAdding: false)
+            self.refreshFavorites(station, isAdding: false)
             listOfStations.remove(at: indexPath.row)
             self.tableView.beginUpdates()
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -367,7 +367,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     private func map() {
         if !UserDefaults.standard.bool(forKey: "applicationIsFresh") {
-            let mapped = LocalDatabase.standard.filter(self.stations)
+            let mapped = LocalDatabase.standard.filterFavorites(self.stations)
             self.stations = mapped
         }
         UserDefaults.standard.set(false, forKey: "applicationIsFresh")
@@ -389,10 +389,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
      - parameter row: The row of the cell
      - parameter isAdding: Whether is adding new or not
      */
-    private func populateFavorites(_ station: Station, isAdding: Bool) {
+    private func refreshFavorites(_ station: Station, isAdding: Bool) {
         if isAdding { // add
-            LocalDatabase.standard.add(station)
-        } else { LocalDatabase.standard.remove(station) } // remove
+            LocalDatabase.standard.addToFavorites(station)
+        } else { LocalDatabase.standard.removeFromFavorites(station) } // remove
     }
 
     /**

@@ -152,64 +152,6 @@ class LocalDatabase: NSObject {
     // MARK: - Functions
 
     /**
-     Function that adds an entry to DB
-     - parameter element: The element to add
-     - parameter url: The url to add
-     */
-    func add(_ element: Station) {
-        var isValid = true
-        for item in self.favorites {
-            if let favorite = item as? Station {
-                if favorite.name == element.name {
-                    isValid = false
-                    break
-                }
-            }
-        }
-        if isValid { // needs to add into favorites
-            self.favorites.add(element)
-            if Verbose.Active { NSLog("[LocalDB] Log: Added \(element.name) to Favorites...") }
-            self.synchronize()
-        } else { // ignored
-            if Verbose.Active { NSLog("[LocalDB] Warning! \(element.name) already in Favorites -> Insert IGNORED...") }
-        }
-    }
-    
-    /**
-     Function that creates dummy entries in the DB
-     */
-    func createDummy() -> [Station] {
-        let dummyStations = NSMutableArray()
-//        let names = ["Megastar FM", "RPA Radio", "RNE", "Ibiza Sonica Radio", "RAC 105", "Cadena Ser", "Radio Voz", "Radio Galaxia"]
-//        let urls = ["http://195.10.10.222/cope/megastar.aac?GKID=d51d8e14d69011e88f2900163ea2c744", "http://195.55.74.203/rtpa/live/radio.mp3?GKID=280fad92d69a11e8b65b00163e914", "http://rne-hls.flumotion.com/playlist.m3u8", "http://s1.sonicabroadcast.com:7005/stream/1/", "http://rac105.radiocat.net/", "http://playerservices.streamtheworld.com/api/livestream-redirect/CADENASERAAC_SC", "http://live.radiovoz.es/coruna/master.m3u8", "http://radios-ec.cdn.nedmedia.io/radios/ec-galaxia.m3u8"]
-//        for i in 0..<names.count { dummyStations.add(Station(names[i], url: urls[i], artwork: nil, popularity: nil, imageName: nil, category: nil, isFavorite: false)) }
-        return dummyStations as! [Station]
-    }
-
-    /**
-     Function that filter the stations
-     - parameter stations: The list of stations to map
-     - returns: The new filtered list of stations
-     */
-    func filter(_ stations: [Station]) -> [Station] {
-        if self.favorites.count <= 0 { return stations }
-        var mappedStations = stations
-        for i in 0..<stations.count {
-            let station = stations[i]
-            for item in self.favorites {
-                if let favorite = item as? Station {
-                    if favorite.name == station.name {
-                        station.isFavorite = true
-                        mappedStations[i] = station
-                        if Verbose.Active { NSLog("[LocalDB] Log: \(station.name) filtered...") }
-                    }
-                }
-            }
-        }
-        return mappedStations
-    }
-
-    /**
      Function that gets the country by index
      - parameter index: The index of the list
      - returns: The country instance
@@ -315,19 +257,6 @@ class LocalDatabase: NSObject {
     }
 
     /**
-     Function that removes an entry from DB
-     - parameter station: The station to remove or nil
-     - parameter url: The url to remove
-     */
-    func remove(_ station: Station?) {
-        if let foundStation = station { // radio station found
-            if Verbose.Active { NSLog("[LocalDB] Log: Removed \(foundStation.name) from Favorites...") }
-            self.favorites.remove(foundStation)
-            self.synchronize()
-        } else { if Verbose.Active { NSLog("[LocalDB] Warning! station not found in Favorites -> Delete IGNORED...") } }
-    }
-
-    /**
      Function that stores the objects required in the database
      */
     func synchronize() {
@@ -347,17 +276,7 @@ class LocalDatabase: NSObject {
         } else if Verbose.Active { NSLog("[LocalDB] Log: Stored \(favoritesData.count) favorites...") }
     }
 
-    // MARK: - DB Manager functions
-
-    /**
-     Function that opens the DB connection
-     */
-    func open() {
-        if !Verbose.Production { self.destroyDatabase() }
-        self.connect()
-        self.createSchema()
-        self.manage()
-    }
+    // MARK: - Functions DB Manager
 
     /**
      Function that connects to DB
@@ -373,32 +292,6 @@ class LocalDatabase: NSObject {
     }
 
     /**
-     Function that destroys the DB
-     */
-    private func destroyDatabase() {
-        guard let path = self.getDatabasePath() else { return }
-        if FileManager.default.fileExists(atPath: path) {
-            if Verbose.Active { NSLog("[NSFileManager] Log: DB already exists @ /.../Documents/db.sqlite3") }
-            do {
-                try FileManager.default.removeItem(atPath: path)
-                if Verbose.Active { NSLog("[NSFileManager] Log: Removed item @ /.../Documents/db.sqlite3") }
-            } catch let error as NSError {
-                self.delegate?.database(self, didFailWithError: error)
-            }
-        }
-    }
-
-    /**
-     Function that gets the DB path
-     - returns: The optional database path
-     */
-    private func getDatabasePath() -> String? {
-        if let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
-            return "\(path)/db.sqlite3"
-        } else { return nil }
-    }
-
-    /**
      Function that opens the DB connection
      */
     private func createSchema() {
@@ -408,7 +301,7 @@ class LocalDatabase: NSObject {
             return
         }
 
-        // Table Countries
+        // Table Countries and Stations
         let stations = Table("stations")
         let countries = Table("countries")
         let id = Expression<Int64>("id")
@@ -452,11 +345,40 @@ class LocalDatabase: NSObject {
     }
 
     /**
+     Function that destroys the DB
+     */
+    private func destroyDatabase() {
+        guard let path = self.getDatabasePath() else { return }
+        if FileManager.default.fileExists(atPath: path) {
+            do {
+                try FileManager.default.removeItem(atPath: path)
+                if Verbose.Active { NSLog("[NSFileManager] Log: Removed item @ /.../Documents/db.sqlite3") }
+            } catch let error as NSError {
+                self.delegate?.database(self, didFailWithError: error)
+            }
+        } else { if Verbose.Active { NSLog("[NSFileManager] Warning! Not found DB @ /.../Documents/db.sqlite3") } }
+    }
+
+    /**
+     Function that gets the DB path
+     - returns: The optional database path
+     */
+    private func getDatabasePath() -> String? {
+        if let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first {
+            return "\(path)/db.sqlite3"
+        } else { // error
+            let userInfo = [NSLocalizedDescriptionKey : "Database path not found"]
+            self.delegate?.database(self, didFailWithError: NSError(domain: "documentDirectory", code: 404, userInfo: userInfo))
+            return nil
+        }
+    }
+
+    /**
      Function that inserts a new country
      */
     private func insert(_ country: Country) {
         guard let db = self.database else {
-            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle"]
+            let userInfo = [NSLocalizedDescriptionKey : "Invalid database to handle, cannot insert country"]
             self.delegate?.database(self, didFailWithError: NSError(domain: "SQLite3", code: 404, userInfo: userInfo))
             return
         }
@@ -471,7 +393,7 @@ class LocalDatabase: NSObject {
         do {
             let rowID = try db.run(countries.insert(name <- country.name, localizedName <- country.localizedName, dateCreated <- country.dateCreated,
                                                 dateUpdated <- country.dateUpdated, isoCode <- country.isoCode, imageUrl <- country.imageUrl))
-            NSLog("Log: Insert new country @ \(rowID)")
+            NSLog("[LocalDB] Log: Country inserted @ \(rowID)")
         } catch let error as NSError {
             NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
             self.delegate?.database(self, didFailWithError: error)
@@ -503,5 +425,75 @@ class LocalDatabase: NSObject {
             NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
             self.delegate?.database(self, didFailWithError: error)
         }
+    }
+
+    /**
+     Function that opens the DB connection
+     */
+    func open() {
+        if !Verbose.Production { self.destroyDatabase() }
+        self.connect()
+        self.createSchema()
+        self.manage()
+    }
+
+    // MARK: - Functions Favorites
+
+    /**
+     Function that adds an entry to DB
+     - parameter element: The element to add
+     - parameter url: The url to add
+     */
+    func addToFavorites(_ element: Station) {
+        var isValid = true
+        for item in self.favorites {
+            if let favorite = item as? Station {
+                if favorite.name == element.name {
+                    isValid = false
+                    break
+                }
+            }
+        }
+        if isValid { // needs to add into favorites
+            self.favorites.add(element)
+            if Verbose.Active { NSLog("[LocalDB] Log: Added \(element.name) to Favorites...") }
+            self.synchronize()
+        } else { if Verbose.Active { NSLog("[LocalDB] Warning! \(element.name) already in Favorites -> Insert IGNORED...") } } // ignored
+    }
+
+    /**
+     Function that filter the stations
+     - parameter stations: The list of stations to map
+     - returns: The new filtered list of stations
+     */
+    func filterFavorites(_ stations: [Station]) -> [Station] {
+        if self.favorites.count <= 0 { return stations }
+        var mappedStations = stations
+        for i in 0..<stations.count {
+            let station = stations[i]
+            for item in self.favorites {
+                if let favorite = item as? Station {
+                    if favorite.name == station.name {
+                        station.isFavorite = true
+                        mappedStations[i] = station
+                        if Verbose.Active { NSLog("[LocalDB] Log: \(station.name) filtered...") }
+                    }
+                }
+            }
+        }
+        return mappedStations
+    }
+
+    /**
+     Function that removes an entry from DB
+     - parameter station: The station to remove or nil
+     - parameter url: The url to remove
+     */
+    func removeFromFavorites(_ station: Station?) {
+        if let foundStation = station { // radio station found
+            if Verbose.Active { NSLog("[LocalDB] Log: Removed \(foundStation.name) from Favorites...") }
+            self.favorites.remove(foundStation)
+            self.synchronize()
+        } else { if Verbose.Active { NSLog("[LocalDB] Warning! station not found in Favorites -> Delete IGNORED...") } }
     }
 }
