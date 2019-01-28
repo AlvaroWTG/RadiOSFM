@@ -21,7 +21,7 @@ protocol LocalDbDelegate: class {
     func database(_ database: LocalDatabase, didFailWithError error: NSError)
 }
 
-class Country: NSObject, NSCoding {
+class Country: NSObject {
 
     // MARK: - Properties
 
@@ -40,54 +40,20 @@ class Country: NSObject, NSCoding {
     /** Property that represents the URL of the country image */
     var imageUrl = Tag.Empty
 
-    // MARK: - Functions
-
-    /**
-     Initializes the station as default
-     */
-    override init() {
-        self.localizedName = Tag.Empty
-        self.dateCreated = Tag.Empty
-        self.dateUpdated = Tag.Empty
-        self.imageUrl = Tag.Empty
-        self.isoCode = Tag.Empty
-        self.name = Tag.Empty
-        self.identifier = 0
-    }
+    // MARK: - Function
 
     /**
      Function to initialize the instance with some parameters
      - parameter parameters: The list of parameters
      */
     init(_ parameters: [String : Any]) {
-        super.init()
-        if let value = parameters["nombre"] as? String { self.localizedName = value }
         if let value = parameters["created_at"] as? String { self.dateCreated = value }
         if let value = parameters["updated_at"] as? String { self.dateUpdated = value }
+        if let value = parameters["nombre"] as? String { self.localizedName = value }
         if let value = parameters["image"] as? String { self.imageUrl = value }
         if let value = parameters["iso"] as? String { self.isoCode = value }
         if let value = parameters["id"] as? Int { self.identifier = value }
         if let value = parameters["name"] as? String { self.name = value }
-    }
-
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.localizedName, forKey: Encode.CountryLocalName)
-        aCoder.encode(self.dateCreated, forKey: Encode.DateCreated)
-        aCoder.encode(self.dateUpdated, forKey: Encode.DateUpdated)
-        aCoder.encode(self.imageUrl, forKey: Encode.ImageUrl)
-        aCoder.encode(self.name, forKey: Encode.CountryName)
-        aCoder.encode(self.identifier, forKey: Encode.Id)
-        aCoder.encode(self.isoCode, forKey: Encode.Iso)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        if let value = aDecoder.decodeObject(forKey: Encode.CountryLocalName) as? String { self.localizedName = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.DateCreated) as? String { self.dateCreated = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.DateUpdated) as? String { self.dateUpdated = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.ImageUrl) as? String { self.imageUrl = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.CountryName) as? String { self.name = value }
-        if let value = aDecoder.decodeObject(forKey: Encode.Iso) as? String { self.isoCode = value }
-        self.identifier = aDecoder.decodeInteger(forKey: Encode.Id)
     }
 }
 
