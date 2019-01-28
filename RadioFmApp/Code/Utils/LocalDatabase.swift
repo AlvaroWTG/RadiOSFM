@@ -235,7 +235,7 @@ class LocalDatabase: NSObject {
                     if let parameters = element as? [String : Any] {
                         let country = Country(parameters)
                         self.countries.add(country)
-                        if Verbose.Active { NSLog("[LocalDB] Log: Added \(country.name)...") }
+                        self.insert(country)
                     }
                 }
                 if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.countries.count) countries...") }
@@ -246,7 +246,7 @@ class LocalDatabase: NSObject {
                     if let parameters = element as? [String : Any] {
                         let station = Station(parameters)
                         self.stations.add(station)
-                        if Verbose.Active { NSLog("[LocalDB] Log: Added \(station.name)...") }
+                        self.insert(station)
                     }
                 }
                 if Verbose.Active { NSLog("[LocalDB] Log: Stored \(self.stations.count) stations...") }
@@ -376,6 +376,7 @@ class LocalDatabase: NSObject {
 
     /**
      Function that inserts a new country
+     - parameter country: The country object to insert
      */
     private func insert(_ country: Country) {
         guard let db = self.database else {
@@ -394,7 +395,7 @@ class LocalDatabase: NSObject {
         do {
             let rowID = try db.run(countries.insert(name <- country.name, localizedName <- country.localizedName, dateCreated <- country.dateCreated,
                                                 dateUpdated <- country.dateUpdated, isoCode <- country.isoCode, imageUrl <- country.imageUrl))
-            NSLog("[LocalDB] Log: Country inserted @ \(rowID)")
+            if Verbose.Active { NSLog("[LocalDB] Log: Country '\(country.name)' inserted. ID: \(rowID)") }
         } catch let error as NSError {
             NSLog("[LocalDB] Error \(error.code) - \(error.localizedDescription)")
             self.delegate?.database(self, didFailWithError: error)
