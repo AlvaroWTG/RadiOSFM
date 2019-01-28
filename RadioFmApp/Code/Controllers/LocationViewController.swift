@@ -160,7 +160,6 @@ class LocationViewController: UIViewController, UITableViewDataSource, UITableVi
             if let json = NetworkUtils.shared.deserialize(data) { // get json
                 if let stations = json["data"] as? [Any] { LocalDatabase.standard.parse(1, list: stations) }
             }
-            LocalDatabase.standard.open()
             DispatchQueue.main.async { self.push(true) }
         } else { // error
             if let response = String(data: data, encoding: .utf8) {

@@ -227,6 +227,7 @@ class LocalDatabase: NSObject {
      - parameter list: The list of stations
      */
     func parse(_ level: Int, list: [Any]) {
+        self.open()
         switch level {
             case 0: // countries
                 if self.countries.count == 0 { self.countries = NSMutableArray() }
@@ -434,7 +435,6 @@ class LocalDatabase: NSObject {
         if !Verbose.Production { self.destroyDatabase() }
         self.connect()
         self.createSchema()
-        self.manage()
     }
 
     // MARK: - Functions Favorites
